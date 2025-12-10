@@ -1,0 +1,16 @@
+flask
+flask-cors
+flask-limiter
+flask-jwt-extended
+python-dotenv
+requests
+numpy
+scikit-learn
+python-dateutil
+pytest
+redis
+aiohttp
+gunicorn
+sqlalchemy
+flask-sqlalchemy
+google-generativeai

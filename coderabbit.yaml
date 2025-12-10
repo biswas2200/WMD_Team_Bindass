@@ -1,0 +1,36 @@
+# CodeRabbit Configuration File
+# Documentation: https://coderabbit.ai/docs
+
+version: "0.1"
+
+# Reviews all pull requests
+reviews:
+  request_strategy: "auto"
+  path_filters:
+    - "!dist/**"
+    - "!node_modules/**"
+    - "!**/*.lock"
+
+# Chat configuration
+chat:
+  auto_reply: true
+
+# Knowledge base for context-aware reviews
+knowledge_base:
+  learnings:
+    - "This project uses Spring Boot for backend and React for frontend."
+    - "Service layer must always return DTOs, not Entities."
+    - "All SQL queries should be verified for SQL injection risks."
+    - "Use the Repository pattern for data access."
+
+# Custom instructions for the AI reviewer
+instructions: |
+  You are an expert code reviewer for the Kodra.ai project.
+  
+  Focus on:
+  1. Security: Identify potential SQL injections, XSS, and insecure endpoints.
+  2. Performance: Watch for N+1 queries in JPA relationships.
+  3. Style: Ensure variable names are descriptive and follow camelCase.
+  
+  If you find a bug, suggest a fix that aligns with our 'Mission' based learning approach.
+  For example: "This looks like a bug. Completing this fix would be a great candidate for a Level 2 Mission."

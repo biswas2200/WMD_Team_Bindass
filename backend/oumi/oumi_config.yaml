@@ -1,0 +1,24 @@
+# Oumi Configuration for Kodra.ai Fine-Tuning
+# Reference: https://github.com/oumi-ai/oumi
+
+model:
+  type: "llama3-8b"
+  name: "kodra-security-expert-v1"
+
+data:
+  train_file: "oumi_kodra_finetune.jsonl"
+  validation_file: "oumi_kodra_val.jsonl"
+
+training:
+  batch_size: 4
+  epochs: 3
+  learning_rate: 2e-5
+  optimizer: "adamw"
+  
+environment:
+  device: "cuda"
+  project_name: "kodra-hackathon"
+
+# Kodra Specific:
+# We are optimizing for 'Helpful & Secure' responses.
+# The model should prioritize security explanations over brevity.

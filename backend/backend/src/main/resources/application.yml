@@ -1,0 +1,30 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: ruvaa-backend
+
+# Firebase Configuration
+# Database Configuration
+  datasource:
+    url: jdbc:postgresql://localhost:5432/kodra
+    username: postgres
+    password: password
+
+jwt:
+  secret: ruvaaSecretKeyForJWTTokenGenerationAndValidation123456789
+  expiration: 86400000 # 24 hours
+
+logging:
+  level:
+    com.ruvaa: DEBUG
+    org.springframework.security: DEBUG
+
+# Python AI Service Configuration
+python:
+  ai:
+    service:
+      url: http://localhost:5000

@@ -1,0 +1,47 @@
+id: kodra-analysis-pipeline
+namespace: com.kodra.automation
+description: "Orchestrates the end-to-end code analysis flow from GitHub to Database"
+
+inputs:
+  - id: repository_url
+    type: STRING
+    description: "The GitHub repository URL to analyze"
+  - id: user_id
+    type: STRING
+    description: "The ID of the user requesting analysis"
+
+tasks:
+  - id: clone_repository
+    type: io.kestra.plugin.git.Clone
+    url: "{{ inputs.repository_url }}"
+    branch: main
+    targetDir: "working_dir"
+
+  - id: run_python_analysis
+    type: io.kestra.plugin.scripts.python.Script
+    inputFiles:
+      analysis_script.py: |
+        import os
+        print("Analyzing codebase for security vulnerabilities...")
+        # Mock analysis logic representing what 'code_analyzer.py' would do
+        print("Found 3 potential SQL injection vectors.")
+        print("Found 1 N+1 query performance issue.")
+    script: |
+      python analysis_script.py
+
+  - id: notify_backend
+    type: io.kestra.plugin.notifications.http.Request
+    url: "http://host.docker.internal:8080/api/webhooks/kestra/complete"
+    method: "POST"
+    contentType: "application/json"
+    body: |
+      {
+        "userId": "{{ inputs.user_id }}",
+        "status": "COMPLETED",
+        "findings": 4
+      }
+
+triggers:
+  - id: webhook_trigger
+    type: io.kestra.core.models.triggers.types.Webhook
+    key: "analyze-repo"

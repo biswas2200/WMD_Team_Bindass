@@ -1,0 +1,79 @@
+server:
+  port: ${PORT:8080}
+  address: 0.0.0.0
+  servlet:
+    context-path: /api
+  compression:
+    enabled: true
+    min-response-size: 1024
+
+spring:
+  application:
+    name: careerconnect-backend
+
+  security:
+    require-ssl: false
+
+  cache:
+    type: simple
+
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+
+# Firebase Configuration
+firebase:
+  enabled: true
+  service-account-key: ${FIREBASE_SERVICE_ACCOUNT_KEY}
+  database-url: ${FIREBASE_DATABASE_URL}
+  project-id: ${FIREBASE_PROJECT_ID}
+
+# Google Gemini AI Configuration
+gemini:
+  api-key: ${GEMINI_API_KEY}
+  base-url: https://generativelanguage.googleapis.com/v1beta
+  model: gemini-1.5-pro
+  max-tokens: 2048
+  temperature: 0.7
+  rate-limit:
+    requests-per-minute: 60
+    burst-capacity: 10
+
+# Security Configuration
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: 86400000
+  refresh-expiration: 604800000
+
+# Rate Limiting
+rate-limiting:
+  enabled: true
+  requests-per-minute: 100
+  burst-capacity: 20
+
+# Monitoring
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+  health:
+    livenessState:
+      enabled: true
+    readinessState:
+      enabled: true
+
+# Logging
+logging:
+  level:
+    com.ruvaa: INFO
+    org.springframework.security: WARN
+    org.springframework.web: INFO
+    com.google.firebase: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
