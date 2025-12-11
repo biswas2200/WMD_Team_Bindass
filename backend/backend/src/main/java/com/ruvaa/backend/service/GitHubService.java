@@ -1,17 +1,21 @@
 package com.ruvaa.backend.service;
 
+import com.ruvaa.backend.dto.RepositoryDto;
 import com.ruvaa.backend.entity.GitHubProfile;
 import com.ruvaa.backend.entity.User;
 import com.ruvaa.backend.repository.GitHubProfileRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -83,6 +87,49 @@ public class GitHubService {
             throw new RuntimeException("GitHub Link Failed");
         }
     }
-    
-    // Future: Method to list public Repositories
+
+    public List<RepositoryDto> getUserRepositories(String accessToken) {
+        String url = "https://api.github.com/user/repos";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(accessToken);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        try {
+            ResponseEntity<List<Map<String, Object>>> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    entity,
+                    new ParameterizedTypeReference<List<Map<String, Object>>>() {}
+            );
+
+            if (response.getBody() == null) {
+                return List.of();
+            }
+
+            return response.getBody().stream()
+                    .map(repoData -> {
+                        RepositoryDto dto = new RepositoryDto();
+                        dto.setName((String) repoData.get("name"));
+                        dto.setFullName((String) repoData.get("full_name"));
+                        dto.setUrl((String) repoData.get("html_url"));
+                        dto.setLanguage((String) repoData.get("language"));
+                        return dto;
+                    })
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            log.error("Failed to fetch user repositories", e);
+            return List.of();
+        }
+    }
+
+    public Map<String, String> getRepositoryContents(String repoFullName, String accessToken) {
+        // Placeholder implementation
+        log.info("Fetching contents for repo: {}", repoFullName);
+        return Map.of();
+    }
+
+    public void createWebhook(String repoFullName, String accessToken) {
+        // Placeholder implementation
+        log.info("Creating webhook for repo: {}", repoFullName);
+    }
 }

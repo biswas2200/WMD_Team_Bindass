@@ -20,7 +20,8 @@
 - [ ] **CodeRabbit**: Implement Webhook handler for PR reviews
 - [ ] **Kestra**: Create workflow for orchestrating code analysis
 - [ ] **Oumi**: Integrate RL fine-tuning dummy/prototype in Python service
-- [ ] **Cline**: Document and verify Cline usage for mentorship
+- [ ] **Cline**: Implement Backend for AI Assistant
+    - [ ] **Cline**: Document and verify Cline usage for mentorship
 - [ ] **Vercel**: Configure frontend for deployment
 
 ## Phase 4: Polish & Demo

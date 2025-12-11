@@ -1,8 +1,5 @@
 package com.ruvaa.backend.model.dto;
 
-import com.ruvaa.backend.model.enums.CollegeTier;
-import com.ruvaa.backend.model.enums.EducationLevel;
-import com.ruvaa.backend.model.enums.WorkPreference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,33 +29,6 @@ public class StudentProfileUpdateRequest {
     
     private String city;
     private String state;
-    
-    private EducationLevel educationLevel;
-    private String institutionName;
-    private CollegeTier collegeTier;
     private String stream;
-    
-    @DecimalMin(value = "0.0", message = "CGPA must be non-negative")
-    @DecimalMax(value = "10.0", message = "CGPA must be at most 10.0")
-    private Double cgpa;
-    
-    @Min(value = 0)
-    @Max(value = 100)
-    private Integer percentage;
-    
-    private Integer graduationYear;
-    
-    private List<String> interestedDomains;
-    private List<String> skillsAssessment;
-    private List<String> preferredLocations;
-    
-    private WorkPreference workPreference;
-    
-    @Min(value = 0, message = "Expected salary must be non-negative")
-    private Double expectedSalaryLPA;
-    
-    private String currentCareerGoal;
-    
-    private List<String> learningStyle;
-    private List<String> preferredLanguages;
+    private String institutionName;
 }

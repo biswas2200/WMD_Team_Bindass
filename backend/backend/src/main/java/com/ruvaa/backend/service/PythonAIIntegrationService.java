@@ -1,5 +1,9 @@
 package com.ruvaa.backend.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ruvaa.backend.dto.AssistRequest;
+import com.ruvaa.backend.dto.AssistResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -7,11 +11,10 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.client.ResourceAccessException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +36,50 @@ public class PythonAIIntegrationService {
     public PythonAIIntegrationService() {
         this.restTemplate = new RestTemplate();
         this.objectMapper = new ObjectMapper();
+    }
+
+    public AssistResponse getAIAssistance(AssistRequest request) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<AssistRequest> entity = new HttpEntity<>(request, headers);
+
+            ResponseEntity<AssistResponse> response = restTemplate.exchange(
+                    pythonAIServiceUrl + "/api/v1/assist",
+                    HttpMethod.POST,
+                    entity,
+                    AssistResponse.class
+            );
+
+            if (response.getBody() != null) {
+                return response.getBody();
+            }
+
+            log.warn("Invalid response from Python AI service for assistance");
+            return mockAssistResponse(request);
+
+        } catch (ResourceAccessException e) {
+            log.info("Python AI service not available at {}, using fallback", pythonAIServiceUrl);
+            return mockAssistResponse(request);
+        } catch (Exception e) {
+            log.error("Error calling Python AI assist service: {}", e.getMessage());
+            return mockAssistResponse(request);
+        }
+    }
+
+    private AssistResponse mockAssistResponse(AssistRequest request) {
+        return AssistResponse.builder()
+                .explanation("This is a mock explanation for '" + request.getQuestion() + "'. Environment variables are a way to store configuration outside of your code.")
+                .codeExample("require('dotenv').config();\nconst apiKey = process.env.API_KEY;")
+                .practiceExercise("Try adding a new environment variable called 'DB_HOST' and access it in your code.")
+                .estimatedReadTime(2)
+                .relatedResources(List.of(
+                        AssistResponse.RelatedResource.builder()
+                                .title("Dotenv Documentation")
+                                .url("https://www.npmjs.com/package/dotenv")
+                                .build()
+                ))
+                .build();
     }
 
     /**

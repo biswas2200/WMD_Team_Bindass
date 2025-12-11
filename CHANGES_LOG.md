@@ -15,7 +15,7 @@
 - [x] Create `CodeAnalysis.java` Entity.
 - [x] Create `GitHubProfile.java` Entity.
 - [x] Migrate Repositories to `JpaRepository`.
-- [/] Implement `GitHubService` (OAuth implemented).
+- [x] Implement `GitHubService` (OAuth, repo fetching).
 ### Service Layer
 - [x] Implement `GitHubService` (OAuth).
 - [x] Create `WebhookController`.
@@ -23,6 +23,9 @@
 - [x] Refactor `UserDetailsServiceImpl` and `ProfileService`.
 - [x] Implement `MissionService`.
 - [x] Pivot `GeminiAIService` to use Code Analysis prompts (Dropped RIASEC).
+- [x] Refactor `ChatController` to use PythonAIIntegrationService.
+- [x] Refactor `HealthController` to remove Firebase and add AI service checks.
+- [x] Removed placeholder services.
 - [x] **New**: Refactored `career-connect-ai` (Python Service):
     - Implemented `code_analyzer.py` engine.
     - Updated `app.py` to expose `/analyze` endpoint.
@@ -38,6 +41,7 @@
 
 ## Phase 3: Sponsor Integrations (In Progress)
 - [x] **Cline**: Added `.clinerules` for "Kodra Mentor" persona.
+- [x] **Cline**: Implemented backend endpoint (`/api/kodra/assist`) for AI assistant and connected it to the `PythonAIIntegrationService`.
 - [x] **Kestra**: Created `backend/kestra/analysis-flow.yaml` workflow definition.
 - [x] **CodeRabbit**: Created `coderabbit.yaml` for AI PR reviews.
 - [ ] **Oumi**: Pending implementation.

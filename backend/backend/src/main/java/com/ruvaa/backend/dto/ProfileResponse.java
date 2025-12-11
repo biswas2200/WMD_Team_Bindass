@@ -9,5 +9,4 @@ public class ProfileResponse {
     private String studentClass;
     private String location;
     private String aspirations;
-    private List<CareerDto> savedCareers;
 }

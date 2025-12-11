@@ -9,5 +9,4 @@ public class ProfileRequest {
     private String studentClass;
     private String location;
     private String aspirations;
-    private List<CareerDto> savedCareers;
 }
