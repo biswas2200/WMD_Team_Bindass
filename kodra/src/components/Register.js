@@ -145,14 +145,14 @@ export default function Register({ onRegister, setPage, showToast }) {
         <img src="/login.jpg" alt="Kodra.ai" style={imageStyle} />
         <div style={imageOverlay}>
           <h2 style={overlayTitle}>Join Kodra.ai</h2>
-          <p style={overlayText}>Start your personalized career journey today.</p>
+          <p style={overlayText}>Start your personalized development journey today.</p>
         </div>
       </div>
 
       {/* Right Form */}
       <div style={formWrapper}>
         <h1 style={formTitle}>Create Account</h1>
-        <p style={formSubtitle}>Sign up to discover your career path</p>
+        <p style={formSubtitle}>Sign up to discover your developer path</p>
 
         <form onSubmit={submit} style={formStyle}>
           {/* Basic Information Section */}
@@ -232,7 +232,7 @@ export default function Register({ onRegister, setPage, showToast }) {
 
           {/* Education Information */}
           <div style={sectionStyle}>
-            <h3 style={sectionHeaderStyle}>Education Details</h3>
+            <h3 style={sectionHeaderStyle}>Highest Education Details</h3>
             <select
               aria-label="educationLevel"
               value={educationLevel}

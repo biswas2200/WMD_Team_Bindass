@@ -96,7 +96,7 @@ export default function EditProfile({ user, profile, setProfile, showToast, dark
       <form onSubmit={submit} style={formGrid}>
         {field('Name','name')}
         {field('Email','email','email')}
-        {field('Grade Level','gradeLevel')}
+        {/* {field('Grade Level','gradeLevel')} */}
         {field('City','city')}
         {field('State','state')}
         {field('Education Level','educationLevel')}
@@ -105,15 +105,15 @@ export default function EditProfile({ user, profile, setProfile, showToast, dark
         {field('Phone','phoneNumber','tel')}
         {field('Age','age','number')}
         {field('Work Preference','workPreference')}
-        {field('Expected Salary (LPA)','expectedSalaryLPA','number')}
-        {field('CGPA','cgpa','number')}
-        {field('Percentage','percentage','number')}
-        {field('Graduation Year','graduationYear','number')}
+        {/* {field('Expected Salary (LPA)','expectedSalaryLPA','number')} */}
+        {/* {field('CGPA','cgpa','number')} */}
+        {/* {field('Percentage','percentage','number')} */}
+        {/* {field('Graduation Year','graduationYear','number')} */}
         {field('Career Goal','currentCareerGoal')}
         {field('Aspirations','aspirations','textarea')}
-        {chipGroup('Interested Domains','interestedDomains',["Technology & Software","Engineering","Healthcare","Business","Arts","Science","Education","Media","Sports","Social Work"])}
-        {chipGroup('Preferred Locations','preferredLocations',["Mumbai","Bangalore","Delhi","Hyderabad","Chennai","Pune","Kolkata","International","Anywhere"])}
-        {chipGroup('Learning Style','learningStyle',["Visual","Auditory","Kinesthetic","Reading/Writing","Collaborative","Independent"])}
+        {/* {chipGroup('Interested Domains','interestedDomains',["Technology & Software","Engineering","Healthcare","Business","Arts","Science","Education","Media","Sports","Social Work"])} */}
+        {/* {chipGroup('Preferred Locations','preferredLocations',["Mumbai","Bangalore","Delhi","Hyderabad","Chennai","Pune","Kolkata","International","Anywhere"])} */}
+        {/* {chipGroup('Learning Style','learningStyle',["Visual","Auditory","Kinesthetic","Reading/Writing","Collaborative","Independent"])} */}
         <div style={{ display:'flex', flexDirection:'column', gap:6, gridColumn:'1 / -1', marginTop:8 }}>
           {boolToggle('Agree To Terms','agreeToTerms')}
           {boolToggle('Agree To Privacy Policy','agreeToPrivacyPolicy')}

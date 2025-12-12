@@ -20,11 +20,28 @@ export default function Navbar({ setPage, onLogout, profile }) {
   }, [i18n.language]);
 
   const navItems = [
-    { key: "profile", label: t('navigation.profile', 'Profile'), icon: "👤" },
-    { key: "dashboard", label: t('navigation.dashboard', 'Dashboard'), icon: "📊" },
-    { key: "missions", label: t('navigation.missions', 'Missions'), icon: "🎯" },
-    { key: "analysis", label: t('navigation.analysis', 'Code Analysis'), icon: "🔍" },
-    { key: "chat", label: t('navigation.chat', 'AI Pair Programmer'), icon: "💬" }
+    { key: "profile", label: t("navigation.profile", "Profile"), icon: "👤" },
+    {
+      key: "dashboard",
+      label: t("navigation.dashboard", "Dashboard"),
+      icon: "📊",
+    },
+    {
+      key: "missions",
+      label: t("navigation.missions", "Missions"),
+      icon: "🎯",
+    },
+    {
+      key: "analysis",
+      label: t("navigation.analysis", "Code Analysis"),
+      icon: "🔍",
+    },
+    { key: "references", label: t("navigation.references", "References"), icon: "🌐" },
+    {
+      key: "chat",
+      label: t("navigation.chat", "AI Pair Programmer"),
+      icon: "💬",
+    },
   ];
 
   const handleNavigation = (page) => {
@@ -66,10 +83,10 @@ export default function Navbar({ setPage, onLogout, profile }) {
           </div>
 
           <div className="nav-user">
-            <div className="nav-lang-badge" title={`Language: ${langInfo.code.toUpperCase()}`}>
+            {/* <div className="nav-lang-badge" title={`Language: ${langInfo.code.toUpperCase()}`}>
               <span className="nav-lang-flag">{langInfo.flag}</span>
               <span className="nav-lang-code">{langInfo.code.toUpperCase()}</span>
-            </div>
+            </div> */}
             <button onClick={onLogout} className="nav-logout" title={t('navigation.logout')}>
               <span className="nav-icon">🚪</span>
               <span className="nav-label">{t('navigation.logout')}</span>

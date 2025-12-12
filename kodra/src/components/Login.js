@@ -119,14 +119,14 @@ export default function Login({ onLogin, setPage, showToast }) {
           <img src="/login.jpg" alt="Kodra.ai" style={imageStyle} />
           <div style={imageOverlayUnified}>
             <h2 style={overlayTitleUnified}>{t('auth.login.welcome', 'Welcome Back')}</h2>
-            <p style={overlayTextUnified}>{t('auth.login.tagline', 'Continue your career journey with us')}</p>
+            <p style={overlayTextUnified}>{t('auth.login.tagline', 'Continue your developer journey with us')}</p>
           </div>
         </div>
 
         {/* Right Form */}
         <div style={formWrapperUnified}>
           <h1 style={formTitleUnified}>{t('auth.login.title', 'Sign In')}</h1>
-          <p style={formSubtitleUnified}>{t('auth.login.subtitle', 'Access your personalized career dashboard')}</p>
+          <p style={formSubtitleUnified}>{t('auth.login.subtitle', 'Access your personalized development dashboard')}</p>
 
   <form onSubmit={submit} style={formStyleUnified}>
           <div style={formRowStyleUnified}>

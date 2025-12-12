@@ -27,7 +27,7 @@ export default function Logo({ size = 'medium', variant = 'full', className = ''
         }}
       >
         <img 
-          src="/logo192.png" 
+          src="kodralogo.png" 
           alt="Kodra.ai" 
           style={{ 
             width: currentSize.width * 0.7, 

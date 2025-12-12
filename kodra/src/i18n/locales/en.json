@@ -18,10 +18,9 @@
   },
   "navigation": {
     "profile": "Profile",
-    "career": "Analysis",
-    "recommendations": "Careers", 
-    "learning": "Learning",
-    "assessment": "Assessment",
+    "dashboard": "Dashboard",
+    "missions": "Missions", 
+    "codeanalysis": "Code Analysis",
     "chat": "AI Chat",
     "colleges": "Colleges",
     "mentor": "Mentors",
