@@ -32,8 +32,18 @@ This document tracks the tasks to complete the backend implementation for Kodra.
     - [x] Implement a mock endpoint to return contextual help.
     - [x] Refactor `AssistController` to use `PythonAIIntegrationService`.
 
-## Blockers
-- None at this time.
+- [x] **Task 7: Implement Kestra Integration (Mock)**
+    - [x] Create `KestraIntegrationService` to interact with Kestra.
+    - [x] Create `MissionGeneratorService` to use the Kestra service.
+    - [x] Implement mock responses for Kestra workflows.
 
-## Notes
-- Test coverage is not part of this scope, but the application must be in a runnable state.
+- [x] **Task 8: Implement CodeRabbit Integration (Mock)**
+    - [x] Create `CodeRabbitService` to interact with CodeRabbit API.
+    - [x] Update `WebhookController` to handle CodeRabbit webhooks.
+    - [x] Implement mock responses for CodeRabbit review results.
+
+- [x] **Task 9: Implement Oumi Integration (Mock)**
+    - [x] Add `evaluateCodeFix` method to `PythonAIIntegrationService`.
+    - [x] Add `evaluateMissionSubmission` method to `MissionService`.
+    - [x] Create `MissionController` with `/submit` endpoint.
+    - [x] Add logging for RL training data collection.

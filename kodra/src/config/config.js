@@ -9,7 +9,7 @@ export const config = {
 
   // Firebase Configuration
   firebase: {
-    apiKey: process.env.REACT_APP_FIREBASE_API_KEY || "AIzaSyCGo2KpKAMGU7b52skjDvAiFd6CE-v7Ohs",
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
     projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID || "kodra-cbcaa",
     databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL || "https://kodra-cbcaa-default-rtdb.asia-southeast1.firebasedatabase.app/",
     storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET || "kodra-cbcaa.appspot.com"
@@ -18,7 +18,7 @@ export const config = {
   // Google Services
   google: {
     mapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-    geminiApiKey: process.env.REACT_APP_GEMINI_API_KEY || "AIzaSyAdwZVfqlTUbxsCEaSZIJM7FMiC7eSajyY"
+    geminiApiKey: process.env.REACT_APP_GEMINI_API_KEY
   },
 
   // Feature Flags

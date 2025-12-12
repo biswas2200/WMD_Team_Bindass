@@ -41,9 +41,15 @@ public class Mission {
     @Column(name = "xp_reward")
     private Integer xpReward;
 
+    @Column(name = "pr_url")
+    private String prUrl;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     
+    @Column(name = "started_at")
+    private LocalDateTime startedAt;
+
     @Column(name = "completed_at")
     private LocalDateTime completedAt;
 

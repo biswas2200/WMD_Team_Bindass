@@ -111,13 +111,13 @@ Response (Concise, Simple English)
 
 **Windows PowerShell:**
 ```powershell
-$env:GEMINI_API_KEY="AIzaSyDVgpAAFvS-9YlqvrcrcbjNSjRi3noGtI0"
+$env:GEMINI_API_KEY="[REDACTED]"
 python -m pytest tests/test_3_career.py tests/test_5_chat.py tests/test_flow_integration.py -v
 ```
 
 **Linux/Mac:**
 ```bash
-export GEMINI_API_KEY="AIzaSyDVgpAAFvS-9YlqvrcrcbjNSjRi3noGtI0"
+export GEMINI_API_KEY="[REDACTED]"
 pytest tests/test_3_career.py tests/test_5_chat.py tests/test_flow_integration.py -v
 ```
 
@@ -125,7 +125,7 @@ pytest tests/test_3_career.py tests/test_5_chat.py tests/test_flow_integration.p
 
 Add to `.env` file:
 ```
-GEMINI_API_KEY=AIzaSyDVgpAAFvS-9YlqvrcrcbjNSjRi3noGtI0
+GEMINI_API_KEY=[REDACTED]
 ```
 
 ## System Status

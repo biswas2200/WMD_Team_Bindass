@@ -1,5 +1,6 @@
 package com.ruvaa.backend.controller;
 
+import com.ruvaa.backend.service.CodeRabbitService;
 import com.ruvaa.backend.service.GitHubService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,7 @@ import java.util.Map;
 public class WebhookController {
 
     private final GitHubService gitHubService;
+    private final CodeRabbitService codeRabbitService;
 
     @PostMapping("/github")
     public ResponseEntity<String> handleGitHubWebhook(
@@ -35,7 +37,14 @@ public class WebhookController {
     @PostMapping("/coderabbit")
     public ResponseEntity<String> handleCodeRabbitWebhook(@RequestBody Map<String, Object> payload) {
         log.info("Received CodeRabbit Webhook");
-        // TODO: Update mission status based on CodeRabbit review
-        return ResponseEntity.ok("Review Processed");
+        try {
+            Map<String, Object> reviewResults = codeRabbitService.parseReviewResults(payload);
+            log.info("CodeRabbit review parsed: {}", reviewResults);
+            // TODO: Use reviewResults to update mission status and user scores.
+            return ResponseEntity.ok("CodeRabbit Review Processed");
+        } catch (Exception e) {
+            log.error("Error processing CodeRabbit webhook: {}", e.getMessage());
+            return ResponseEntity.status(500).body("Error processing webhook");
+        }
     }
 }

@@ -12,9 +12,17 @@ cd "$(dirname "$0")/backend/backend"
 export SUPABASE_DB_URL=jdbc:postgresql://localhost:5432/kodra
 export SUPABASE_DB_USER=postgres
 export SUPABASE_DB_PASSWORD=postgres
-export GEMINI_API_KEY=AIzaSyCGo2KpKAMGU7b52skjDvAiFd6CE-v7Ohs
-export JWT_SECRET=kodraDevSecretKeyForJWTTokenGenerationAndValidation123456789
+# Ensure GEMINI_API_KEY is set in your environment
+if [ -z "$GEMINI_API_KEY" ]; then
+    echo "Warning: GEMINI_API_KEY is not set."
+fi
+# Ensure JWT_SECRET is set in your environment
+if [ -z "$JWT_SECRET" ]; then
+    echo "Warning: JWT_SECRET is not set."
+fi
 export GOOGLE_APPLICATION_CREDENTIALS=./credentials/serviceAccountKey.json
+export GITHUB_CLIENT_ID=your-github-client-id
+export GITHUB_CLIENT_SECRET=your-github-client-secret
 export SERVER_PORT=8000
 
 echo "Environment variables set:"

@@ -43,5 +43,9 @@
 - [x] **Cline**: Added `.clinerules` for "Kodra Mentor" persona.
 - [x] **Cline**: Implemented backend endpoint (`/api/kodra/assist`) for AI assistant and connected it to the `PythonAIIntegrationService`.
 - [x] **Kestra**: Created `backend/kestra/analysis-flow.yaml` workflow definition.
+- [x] **Kestra**: Implemented `KestraIntegrationService` and `MissionGeneratorService` with mock data.
 - [x] **CodeRabbit**: Created `coderabbit.yaml` for AI PR reviews.
-- [ ] **Oumi**: Pending implementation.
+- [x] **CodeRabbit**: Implemented `CodeRabbitService` and integrated it into `WebhookController`.
+- [x] **Oumi**: Implemented `evaluateCodeFix` in `PythonAIIntegrationService` and `evaluateMissionSubmission` in `MissionService`.
+- [x] **Oumi**: Created `MissionController` with `/submit` and `/skip` endpoints.
+- [x] **Oumi**: Added logging for RL training data collection.

@@ -1,7 +1,7 @@
 # Test Results with Gemini API Key
 
 ## API Key Configured
-`AIzaSyDVgpAAFvS-9YlqvrcrcbjNSjRi3noGtI0`
+`[REDACTED]`
 
 ## Test Execution Summary
 
@@ -68,7 +68,7 @@ To run all tests with the API key:
 
 ```powershell
 # Windows PowerShell
-$env:GEMINI_API_KEY="AIzaSyDVgpAAFvS-9YlqvrcrcbjNSjRi3noGtI0"
+$env:GEMINI_API_KEY="[REDACTED]"
 python -m pytest tests/ -v
 ```
 
@@ -76,7 +76,7 @@ Or set it in your environment permanently:
 
 ```powershell
 # Add to .env file
-GEMINI_API_KEY=AIzaSyDVgpAAFvS-9YlqvrcrcbjNSjRi3noGtI0
+GEMINI_API_KEY=[REDACTED]
 ```
 
 ## Test Coverage

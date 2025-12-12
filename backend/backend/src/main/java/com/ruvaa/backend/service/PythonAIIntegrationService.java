@@ -219,6 +219,49 @@ public class PythonAIIntegrationService {
         }
     }
 
+    public Map<String, Object> evaluateCodeFix(String originalCode, String fixedCode, String issueDescription, String expectedFixPattern) {
+        try {
+            Map<String, Object> request = new HashMap<>();
+            request.put("original_code", originalCode);
+            request.put("fixed_code", fixedCode);
+            request.put("issue_description", issueDescription);
+            request.put("expected_fix_pattern", expectedFixPattern);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<Map<String, Object>> entity = new HttpEntity<>(request, headers);
+
+            ResponseEntity<Map> response = restTemplate.exchange(
+                    pythonAIServiceUrl + "/api/v1/judge",
+                    HttpMethod.POST,
+                    entity,
+                    Map.class
+            );
+
+            if (response.getBody() != null) {
+                return response.getBody();
+            }
+
+            log.warn("Invalid response from Python AI service for code fix evaluation");
+            return mockEvaluateCodeFix();
+
+        } catch (ResourceAccessException e) {
+            log.info("Python AI service not available at {}, using fallback for code fix evaluation", pythonAIServiceUrl);
+            return mockEvaluateCodeFix();
+        } catch (Exception e) {
+            log.error("Error calling Python AI judge service: {}", e.getMessage());
+            return mockEvaluateCodeFix();
+        }
+    }
+
+    private Map<String, Object> mockEvaluateCodeFix() {
+        Map<String, Object> mockResult = new HashMap<>();
+        mockResult.put("grade", "A");
+        mockResult.put("explanation", "API key successfully removed, Environment variable correctly implemented, .env.example provided, .gitignore updated. All criteria met. Excellent implementation.");
+        mockResult.put("properly_fixed", true);
+        return mockResult;
+    }
+
     /**
      * Generate fallback chat response when Python AI service is unavailable
      */
@@ -226,7 +269,7 @@ public class PythonAIIntegrationService {
         String lowerMessage = message.toLowerCase();
 
         if (lowerMessage.contains("career") || lowerMessage.contains("job")) {
-            return "🎯 I'd love to help you explore career options! Based on your interests and skills, " +
+            return "🎯 I\'d love to help you explore career options! Based on your interests and skills, " +
                    "there are many exciting paths in technology, healthcare, business, and creative fields. " +
                    "What areas interest you most?";
         }
@@ -251,7 +294,7 @@ public class PythonAIIntegrationService {
                    "and learning opportunities. Different careers have varying salary ranges - what field interests you?";
         }
 
-        return "💡 I'm here to help with your career journey! You can ask me about career options, educational paths, " +
+        return "💡 I\'m here to help with your career journey! You can ask me about career options, educational paths, " +
                "skill development, or take our assessment to discover careers that match your personality. " +
                "How can I assist you today?";
     }

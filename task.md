@@ -17,11 +17,17 @@
 - [ ] **Frontend**: Build Mission Detail & Guidance UI
 
 ## Phase 3: Sponsor Integrations (The "Winning" Features)
-- [ ] **CodeRabbit**: Implement Webhook handler for PR reviews
-- [ ] **Kestra**: Create workflow for orchestrating code analysis
-- [ ] **Oumi**: Integrate RL fine-tuning dummy/prototype in Python service
-- [ ] **Cline**: Implement Backend for AI Assistant
-    - [ ] **Cline**: Document and verify Cline usage for mentorship
+- [x] **CodeRabbit**: Implement Webhook handler for PR reviews
+- [x] **Kestra**: Create workflow for orchestrating code analysis
+    - [x] Create `KestraIntegrationService` in the backend.
+    - [x] Create `MissionGeneratorService` to use the Kestra service.
+- [x] **Oumi**: Integrate RL fine-tuning dummy/prototype in Python service
+    - [x] Implement `evaluateCodeFix` in `PythonAIIntegrationService`.
+    - [x] Implement `evaluateMissionSubmission` in `MissionService`.
+    - [x] Create `MissionController` with `submit` endpoint.
+    - [x] Add logging for RL training data collection.
+- [x] **Cline**: Implement Backend for AI Assistant
+    - [x] **Cline**: Document and verify Cline usage for mentorship
 - [ ] **Vercel**: Configure frontend for deployment
 
 ## Phase 4: Polish & Demo
