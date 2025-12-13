@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class GitHubService {
 
     private final GitHubProfileRepository gitHubProfileRepository;
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
 
     @Value("${github.client.id}")
     private String clientId;
@@ -74,7 +74,7 @@ public class GitHubService {
 
             Optional<GitHubProfile> existing = gitHubProfileRepository.findByUserId(user.getId());
             GitHubProfile profile = existing.orElse(new GitHubProfile());
-            
+
             profile.setUser(user);
             profile.setGithubUsername(login);
             profile.setAccessToken(accessToken);
@@ -125,11 +125,28 @@ public class GitHubService {
     public Map<String, String> getRepositoryContents(String repoFullName, String accessToken) {
         // Placeholder implementation
         log.info("Fetching contents for repo: {}", repoFullName);
+        // TODO: Implement logic to clone repo or use GitHub contents API recursively
         return Map.of();
     }
 
     public void createWebhook(String repoFullName, String accessToken) {
         // Placeholder implementation
         log.info("Creating webhook for repo: {}", repoFullName);
+        // TODO: Implement logic to call GitHub API to create a webhook
+    }
+
+    public Map<String, String> getPullRequestDiff(String owner, String repo, int prNumber, String accessToken) {
+        // Placeholder implementation
+        log.info("Fetching diff for PR #{} in {}/{}", prNumber, owner, repo);
+        // TODO: Implement logic to get PR diff. This might require getting the PR details
+        // first to find the base and head SHAs, then comparing them.
+        return Map.of();
+    }
+
+    public String getFileContent(String owner, String repo, String filePath, String sha, String accessToken) {
+        // Placeholder implementation
+        log.info("Fetching content for file {} at commit {}", filePath, sha);
+        // TODO: Implement logic to get file content at a specific commit SHA.
+        return "";
     }
 }

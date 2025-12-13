@@ -3,6 +3,7 @@ package com.ruvaa.backend.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ruvaa.backend.dto.AssistRequest;
 import com.ruvaa.backend.dto.AssistResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -11,20 +12,19 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
- * Service for integrating with Python AI Career Connect service
- * Provides communication between Spring Boot backend and Python Flask AI service
+ * Service for integrating with the Python AI service.
+ * Provides communication between Spring Boot backend and Python Flask AI service for Kodra.
  */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class PythonAIIntegrationService {
 
     @Value("${python.ai.service.url:http://localhost:5000}")
@@ -33,177 +33,101 @@ public class PythonAIIntegrationService {
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
 
-    public PythonAIIntegrationService() {
-        this.restTemplate = new RestTemplate();
-        this.objectMapper = new ObjectMapper();
-    }
-
+    /**
+     * Gets AI-powered assistance from the Python service.
+     * @param request The assistance request details.
+     * @return The response from the AI service.
+     */
     public AssistResponse getAIAssistance(AssistRequest request) {
-        try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            HttpEntity<AssistRequest> entity = new HttpEntity<>(request, headers);
+        log.debug("Forwarding assistance request to Python AI service: {}", request.getQuestion());
+        String url = pythonAIServiceUrl + "/api/v1/assist";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<AssistRequest> entity = new HttpEntity<>(request, headers);
 
-            ResponseEntity<AssistResponse> response = restTemplate.exchange(
-                    pythonAIServiceUrl + "/api/v1/assist",
-                    HttpMethod.POST,
-                    entity,
-                    AssistResponse.class
-            );
+        ResponseEntity<AssistResponse> response = restTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                entity,
+                AssistResponse.class
+        );
 
-            if (response.getBody() != null) {
-                return response.getBody();
-            }
-
-            log.warn("Invalid response from Python AI service for assistance");
-            return mockAssistResponse(request);
-
-        } catch (ResourceAccessException e) {
-            log.info("Python AI service not available at {}, using fallback", pythonAIServiceUrl);
-            return mockAssistResponse(request);
-        } catch (Exception e) {
-            log.error("Error calling Python AI assist service: {}", e.getMessage());
-            return mockAssistResponse(request);
+        if (response.getBody() == null) {
+            throw new IllegalStateException("Received empty response from Python AI service for assistance");
         }
-    }
-
-    private AssistResponse mockAssistResponse(AssistRequest request) {
-        return AssistResponse.builder()
-                .explanation("This is a mock explanation for '" + request.getQuestion() + "'. Environment variables are a way to store configuration outside of your code.")
-                .codeExample("require('dotenv').config();\nconst apiKey = process.env.API_KEY;")
-                .practiceExercise("Try adding a new environment variable called 'DB_HOST' and access it in your code.")
-                .estimatedReadTime(2)
-                .relatedResources(List.of(
-                        AssistResponse.RelatedResource.builder()
-                                .title("Dotenv Documentation")
-                                .url("https://www.npmjs.com/package/dotenv")
-                                .build()
-                ))
-                .build();
+        return response.getBody();
     }
 
     /**
-     * Send chat message to Python AI service
+     * Sends a chat message to the Python AI service.
+     * @param message The user's message.
+     * @param profileData Relevant user profile data for context.
+     * @return The AI's response message.
      */
     public String sendChatMessage(String message, Object profileData) {
-        try {
-            Map<String, Object> request = new HashMap<>();
-            request.put("message", message);
-            if (profileData != null) {
-                request.put("profile", profileData);
-            }
+        log.debug("Sending chat message to Python AI service: {}", message);
+        String url = pythonAIServiceUrl + "/api/v1/chat";
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            HttpEntity<Map<String, Object>> entity = new HttpEntity<>(request, headers);
-
-            ResponseEntity<Map> response = restTemplate.exchange(
-                pythonAIServiceUrl + "/api/v1/chat",
-                HttpMethod.POST,
-                entity,
-                Map.class
-            );
-
-            if (response.getBody() != null && response.getBody().containsKey("response")) {
-                return (String) response.getBody().get("response");
-            }
-
-            log.warn("Invalid response from Python AI service");
-            return generateFallbackChatResponse(message);
-
-        } catch (ResourceAccessException e) {
-            log.info("Python AI service not available at {}, using fallback", pythonAIServiceUrl);
-            return generateFallbackChatResponse(message);
-        } catch (Exception e) {
-            log.error("Error calling Python AI chat service: {}", e.getMessage());
-            return generateFallbackChatResponse(message);
-        }
-    }
-
-    /**
-     * Get career analysis from Python AI service
-     */
-    public Map<String, Object> getCareerAnalysis(Object profileData) {
-        try {
-            Map<String, Object> request = new HashMap<>();
+        Map<String, Object> request = new HashMap<>();
+        request.put("message", message);
+        if (profileData != null) {
             request.put("profile", profileData);
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            HttpEntity<Map<String, Object>> entity = new HttpEntity<>(request, headers);
-
-            ResponseEntity<Map> response = restTemplate.exchange(
-                pythonAIServiceUrl + "/api/v1/careers/analyze",
-                HttpMethod.POST,
-                entity,
-                Map.class
-            );
-
-            if (response.getBody() != null) {
-                return response.getBody();
-            }
-
-        } catch (ResourceAccessException e) {
-            log.info("Python AI service not available for career analysis");
-        } catch (Exception e) {
-            log.error("Error getting career analysis from Python AI: {}", e.getMessage());
         }
 
-        // Return fallback career analysis
-        Map<String, Object> fallback = new HashMap<>();
-        fallback.put("status", "fallback");
-        fallback.put("topCareers", List.of(
-            Map.of("name", "Software Engineer", "match", 85, "description", "Build software applications"),
-            Map.of("name", "Data Scientist", "match", 78, "description", "Analyze data for insights"),
-            Map.of("name", "Product Manager", "match", 72, "description", "Manage product development")
-        ));
-        fallback.put("message", "Career analysis from fallback service");
-        return fallback;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(request, headers);
+
+        ResponseEntity<Map> response = restTemplate.exchange(
+            url,
+            HttpMethod.POST,
+            entity,
+            Map.class
+        );
+
+        Map<String, Object> responseBody = response.getBody();
+        if (responseBody == null || !responseBody.containsKey("response")) {
+            throw new IllegalStateException("Invalid response from Python AI chat service");
+        }
+        return (String) responseBody.get("response");
     }
 
     /**
-     * Submit assessment to Python AI service
+     * Asks the Python AI service (LLM-as-a-Judge) to evaluate a code fix.
+     * @param originalCode The original code with the issue.
+     * @param fixedCode The user's submitted fixed code.
+     * @param issueDescription A description of the original issue.
+     * @return A map containing the grade and explanation from the AI judge.
      */
-    public Map<String, Object> submitAssessment(Object assessmentData) {
-        try {
-            Map<String, Object> request = new HashMap<>();
-            request.put("assessment", assessmentData);
+    public Map<String, Object> evaluateCodeFix(String originalCode, String fixedCode, String issueDescription) {
+        log.debug("Sending code fix evaluation request to Python AI Judge");
+        String url = pythonAIServiceUrl + "/api/v1/judge";
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            HttpEntity<Map<String, Object>> entity = new HttpEntity<>(request, headers);
+        Map<String, Object> request = new HashMap<>();
+        request.put("original_code", originalCode);
+        request.put("fixed_code", fixedCode);
+        request.put("issue_description", issueDescription);
 
-            ResponseEntity<Map> response = restTemplate.exchange(
-                pythonAIServiceUrl + "/api/v1/assessment/analyze",
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(request, headers);
+
+        ResponseEntity<Map> response = restTemplate.exchange(
+                url,
                 HttpMethod.POST,
                 entity,
                 Map.class
-            );
+        );
 
-            if (response.getBody() != null) {
-                return response.getBody();
-            }
-
-        } catch (ResourceAccessException e) {
-            log.info("Python AI service not available for assessment");
-        } catch (Exception e) {
-            log.error("Error submitting assessment to Python AI: {}", e.getMessage());
+        if (response.getBody() == null) {
+            throw new IllegalStateException("Received empty response from Python AI judge service");
         }
-
-        // Return fallback assessment result
-        Map<String, Object> fallback = new HashMap<>();
-        fallback.put("status", "fallback");
-        fallback.put("score", 75);
-        fallback.put("recommendations", List.of(
-            "Consider technology and engineering careers",
-            "Develop analytical and problem-solving skills",
-            "Explore data science and AI fields"
-        ));
-        return fallback;
+        return response.getBody();
     }
 
     /**
-     * Check if Python AI service is available
+     * Checks if the Python AI service is available and healthy.
+     * @return true if the service is available, false otherwise.
      */
     public boolean isServiceAvailable() {
         try {
@@ -215,87 +139,8 @@ public class PythonAIIntegrationService {
             );
             return response.getStatusCode().is2xxSuccessful();
         } catch (Exception e) {
+            log.warn("Python AI service is not available at {}: {}", pythonAIServiceUrl, e.getMessage());
             return false;
         }
-    }
-
-    public Map<String, Object> evaluateCodeFix(String originalCode, String fixedCode, String issueDescription, String expectedFixPattern) {
-        try {
-            Map<String, Object> request = new HashMap<>();
-            request.put("original_code", originalCode);
-            request.put("fixed_code", fixedCode);
-            request.put("issue_description", issueDescription);
-            request.put("expected_fix_pattern", expectedFixPattern);
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            HttpEntity<Map<String, Object>> entity = new HttpEntity<>(request, headers);
-
-            ResponseEntity<Map> response = restTemplate.exchange(
-                    pythonAIServiceUrl + "/api/v1/judge",
-                    HttpMethod.POST,
-                    entity,
-                    Map.class
-            );
-
-            if (response.getBody() != null) {
-                return response.getBody();
-            }
-
-            log.warn("Invalid response from Python AI service for code fix evaluation");
-            return mockEvaluateCodeFix();
-
-        } catch (ResourceAccessException e) {
-            log.info("Python AI service not available at {}, using fallback for code fix evaluation", pythonAIServiceUrl);
-            return mockEvaluateCodeFix();
-        } catch (Exception e) {
-            log.error("Error calling Python AI judge service: {}", e.getMessage());
-            return mockEvaluateCodeFix();
-        }
-    }
-
-    private Map<String, Object> mockEvaluateCodeFix() {
-        Map<String, Object> mockResult = new HashMap<>();
-        mockResult.put("grade", "A");
-        mockResult.put("explanation", "API key successfully removed, Environment variable correctly implemented, .env.example provided, .gitignore updated. All criteria met. Excellent implementation.");
-        mockResult.put("properly_fixed", true);
-        return mockResult;
-    }
-
-    /**
-     * Generate fallback chat response when Python AI service is unavailable
-     */
-    private String generateFallbackChatResponse(String message) {
-        String lowerMessage = message.toLowerCase();
-
-        if (lowerMessage.contains("career") || lowerMessage.contains("job")) {
-            return "🎯 I\'d love to help you explore career options! Based on your interests and skills, " +
-                   "there are many exciting paths in technology, healthcare, business, and creative fields. " +
-                   "What areas interest you most?";
-        }
-
-        if (lowerMessage.contains("college") || lowerMessage.contains("education")) {
-            return "🎓 Choosing the right educational path is crucial for your career success. Consider factors like " +
-                   "course curriculum, faculty quality, placement records, and location. What field of study interests you?";
-        }
-
-        if (lowerMessage.contains("skill") || lowerMessage.contains("learn")) {
-            return "📚 Continuous learning is the key to career growth! Focus on developing both technical skills " +
-                   "specific to your field and soft skills like communication and leadership. What skills would you like to develop?";
-        }
-
-        if (lowerMessage.contains("assessment") || lowerMessage.contains("test")) {
-            return "📊 Career assessments can provide valuable insights into your personality, interests, and aptitudes. " +
-                   "They help match you with suitable career paths. Would you like to take our comprehensive assessment?";
-        }
-
-        if (lowerMessage.contains("salary") || lowerMessage.contains("money")) {
-            return "💰 Salary is an important consideration, but also think about growth potential, job satisfaction, " +
-                   "and learning opportunities. Different careers have varying salary ranges - what field interests you?";
-        }
-
-        return "💡 I\'m here to help with your career journey! You can ask me about career options, educational paths, " +
-               "skill development, or take our assessment to discover careers that match your personality. " +
-               "How can I assist you today?";
     }
 }

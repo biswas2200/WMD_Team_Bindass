@@ -49,3 +49,13 @@
 - [x] **Oumi**: Implemented `evaluateCodeFix` in `PythonAIIntegrationService` and `evaluateMissionSubmission` in `MissionService`.
 - [x] **Oumi**: Created `MissionController` with `/submit` and `/skip` endpoints.
 - [x] **Oumi**: Added logging for RL training data collection.
+
+### Realizing Integrations (Completed)
+- [x] Created `backend/backend/serviceAccountKey.json` to centralize external API keys and secrets.
+- [x] Updated `backend/backend/.gitignore` to include `serviceAccountKey.json`, ensuring it's not committed.
+- [x] Refactored `KestraIntegrationService.java`: Replaced mock logic with real `RestTemplate` calls for Kestra API communication.
+- [x] Created `backend/backend/src/main/java/com/ruvaa/backend/config/AppConfig.java`: Added a central configuration class for common beans like `RestTemplate` and `ObjectMapper`.
+- [x] Refactored `CodeRabbitService.java`: Replaced mock logic with real `RestTemplate` calls for CodeRabbit API communication.
+- [x] Refactored `PythonAIIntegrationService.java`: Removed legacy career-focused methods and all mock fallback logic, streamlining the service.
+- [x] Refactored `MissionService.java`: Removed mock data in `evaluateMissionSubmission` method, laying the groundwork for real GitHub integration.
+- [x] Refactored `GitHubService.java`: Updated to use constructor injection for `RestTemplate` and added placeholder methods (`getPullRequestDiff`, `getFileContent`) required by `MissionService` for future GitHub API interactions.

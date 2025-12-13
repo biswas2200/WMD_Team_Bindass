@@ -8,10 +8,13 @@ echo "🚀 Starting Kodra Backend on port 8000..."
 # Navigate to backend directory
 cd "$(dirname "$0")/backend/backend"
 
-# Set environment variables
-export SUPABASE_DB_URL=jdbc:postgresql://localhost:5432/kodra
-export SUPABASE_DB_USER=postgres
-export SUPABASE_DB_PASSWORD=postgres
+# Source environment variables from .env file
+if [ -f .env ]; then
+  set -a
+  source .env
+  set +a
+fi
+
 # Ensure GEMINI_API_KEY is set in your environment
 if [ -z "$GEMINI_API_KEY" ]; then
     echo "Warning: GEMINI_API_KEY is not set."
@@ -20,27 +23,22 @@ fi
 if [ -z "$JWT_SECRET" ]; then
     echo "Warning: JWT_SECRET is not set."
 fi
-export GOOGLE_APPLICATION_CREDENTIALS=./credentials/serviceAccountKey.json
-export GITHUB_CLIENT_ID=your-github-client-id
-export GITHUB_CLIENT_SECRET=your-github-client-secret
-export SERVER_PORT=8000
 
 echo "Environment variables set:"
-echo "SUPABASE_DB_URL: $SUPABASE_DB_URL"
 echo "SERVER_PORT: $SERVER_PORT"
 
 # Try different methods to start the backend
 if [ -f "./mvnw" ]; then
     echo "Using Maven wrapper..."
     chmod +x ./mvnw
-    ./mvnw spring-boot:run -Dspring.profiles.active=dev -Dserver.port=8000
+    ./mvnw spring-boot:run -Dspring.profiles.active=dev -Dserver.port=${SERVER_PORT:-8000}
 elif command -v mvn &> /dev/null; then
     echo "Using system Maven..."
-    mvn spring-boot:run -Dspring.profiles.active=dev -Dserver.port=8000
+    mvn spring-boot:run -Dspring.profiles.active=dev -Dserver.port=${SERVER_PORT:-8000}
 elif [ -f "./run-dev.sh" ]; then
     echo "Using run-dev script..."
     chmod +x ./run-dev.sh
-    PORT=8000 ./run-dev.sh
+    PORT=${SERVER_PORT:-8000} ./run-dev.sh
 else
     echo "❌ No suitable method found to run the backend"
     echo "Please ensure Maven is installed and try again"

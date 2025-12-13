@@ -19,6 +19,7 @@ public class MissionService {
 
     private final MissionRepository missionRepository;
     private final PythonAIIntegrationService pythonAIIntegrationService;
+    private final GitHubService gitHubService; // Added for real implementation
 
     public List<Mission> getMissionsForUser(Long userId) {
         return missionRepository.findByUserId(userId);
@@ -60,14 +61,28 @@ public class MissionService {
 
         log.info("Evaluating mission submission for mission ID: {} with PR URL: {}", missionId, prUrl);
 
-        // For now, mocking code content and issue details for the LLM-as-a-Judge
-        String originalCode = "const API_KEY = 'sk-proj-12345';";
-        String fixedCode = "const API_KEY = process.env.API_KEY;";
-        String issueDescription = "Hardcoded API key in config file";
-        String expectedFixPattern = "Use environment variables for secrets.";
+        // STEP 1: Parse PR URL to get owner, repo, and PR number.
+        // (Implementation needed)
+        // Example: "https://github.com/testuser-github/auth-service/pull/12" -> owner: "testuser-github", repo: "auth-service", prNumber: 12
+
+        // STEP 2: Use GitHubService to get the diff for the PR.
+        // This would return the files changed and the patch/diff content.
+        // Map<String, String> diff = gitHubService.getPullRequestDiff(owner, repo, prNumber);
+        
+        // STEP 3: For each changed file, get the original and new content.
+        // String originalCode = gitHubService.getFileContent(owner, repo, filePath, baseSha);
+        // String fixedCode = gitHubService.getFileContent(owner, repo, filePath, headSha);
+
+        // NOTE: The following is a placeholder for the real code fetched from GitHub.
+        // The mock values are removed to make way for the real implementation.
+        String originalCode = ""; // TODO: Fetch from GitHubService using PR base commit
+        String fixedCode = "";    // TODO: Fetch from GitHubService using PR head commit
+        String issueDescription = mission.getDescription();
+
+        log.info("Sending to AI Judge. Original Code is empty (TODO), Fixed Code is empty (TODO).");
 
         Map<String, Object> judgeResult = pythonAIIntegrationService.evaluateCodeFix(
-            originalCode, fixedCode, issueDescription, expectedFixPattern
+            originalCode, fixedCode, issueDescription
         );
 
         // Update mission status based on judgeResult
