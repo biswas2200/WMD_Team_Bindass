@@ -8,8 +8,7 @@ import EditProfile from "./components/EditProfile";
 import Chat from "./components/Chat";
 import Dashboard from "./components/Dashboard";
 import Missions from "./components/Missions";
-// Removed Legacy Imports
-
+import References from "./components/References";
 import LandingPage from "./components/LandingPage";
 import LanguageSelector from "./components/LanguageSelector";
 import "./i18n";
@@ -152,6 +151,7 @@ function App() {
         {page === "dashboard" && <Dashboard profile={profileData} />}
         {page === "missions" && <Missions profile={profileData} />}
         {page === "analysis" && <Dashboard profile={profileData} />}  {/* Reusing Dashboard for now */}
+        {page === "references" && <References />}
         {page === "chat" && <Chat profile={profileData} darkMode={darkMode} />}
       </main>
       {/* Toast Container */}
