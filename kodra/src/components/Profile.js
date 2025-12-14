@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useMemo } from "react";
+import { useTranslation } from 'react-i18next';
 
 import apiService from '../services/api';
 import GitHubConnect from './GitHubConnect';
 export default function Profile({ user, profile, setProfile, darkMode, showToast }) {
+  const { t } = useTranslation();
+
   // Local deletion utility for saved careers (client-side only for now)
   const deleteCareer = (id) => {
     const updated = {
@@ -15,24 +18,25 @@ export default function Profile({ user, profile, setProfile, darkMode, showToast
   };
 
   // Helper render arrays
-  const basicFields = [
-    { label: 'Name', key: 'name' },
-    { label: 'Email', key: 'email' },
+  const basicFields = useMemo(() => [
+    { label: t('profile_details.fields.name'), key: 'name' },
+    { label: t('profile_details.fields.email'), key: 'email' },
     // { label: 'Grade Level', key: 'gradeLevel' },
-    { label: 'City', key: 'city' },
-    { label: 'State', key: 'state' },
-    { label: 'Education Level', key: 'educationLevel' },
-    { label: 'Institution', key: 'institutionName' },
-    { label: 'Stream', key: 'stream' },
-    { label: 'Phone', key: 'phoneNumber' },
-    { label: 'Age', key: 'age' },
-    { label: 'Work Preference', key: 'workPreference' },
+    { label: t('profile_details.fields.city'), key: 'city' },
+    { label: t('profile_details.fields.state'), key: 'state' },
+    { label: t('profile_details.fields.educationLevel'), key: 'educationLevel' },
+    { label: t('profile_details.fields.institution'), key: 'institutionName' },
+    { label: t('profile_details.fields.stream'), key: 'stream' },
+    { label: t('profile_details.fields.phone'), key: 'phoneNumber' },
+    { label: t('profile_details.fields.age'), key: 'age' },
+    { label: t('profile_details.fields.workPreference'), key: 'workPreference' },
     // { label: 'Expected Salary (LPA)', key: 'expectedSalaryLPA' },
     // { label: 'CGPA', key: 'cgpa' },
     // { label: 'Percentage', key: 'percentage' },
     // { label: 'Graduation Year', key: 'graduationYear' },
-    { label: 'Career Goal', key: 'currentCareerGoal' }
-  ];
+    { label: t('profile_details.fields.careerGoal'), key: 'currentCareerGoal' }
+  ], [t]);
+
   const listFields = [
     {
       quote:
@@ -78,12 +82,12 @@ export default function Profile({ user, profile, setProfile, darkMode, showToast
       profile: "An experienced Irish software developer, trainer, and mentor",
     },
   ];
-  const agreementFields = [
-    { label: 'Agreed To Terms', key: 'agreeToTerms' },
-    { label: 'Agreed To Privacy Policy', key: 'agreeToPrivacyPolicy' },
-    { label: 'Onboarding Completed', key: 'onboardingCompleted' },
-    { label: 'Profile Completed', key: 'profileCompleted' }
-  ];
+  const agreementFields = useMemo(() => [
+    { label: t('profile_details.agreement_labels.terms'), key: 'agreeToTerms' },
+    { label: t('profile_details.agreement_labels.privacy'), key: 'agreeToPrivacyPolicy' },
+    { label: t('profile_details.agreement_labels.onboarding'), key: 'onboardingCompleted' },
+    { label: t('profile_details.agreement_labels.profile'), key: 'profileCompleted' }
+  ], [t]);
 
   // CRUD handlers (inside component to access props/state)
   const handleRefresh = async () => {
@@ -108,7 +112,7 @@ export default function Profile({ user, profile, setProfile, darkMode, showToast
         margin: "0 auto",
       }}
     >
-      <h2 style={{ color: "#0077b6" }}>Your Profile</h2>
+      <h2 style={{ color: "#0077b6" }}>{t('profile.title')}</h2>
 
       {/* GitHub Connection Status */}
       <div style={{ marginBottom: 20 }}>
@@ -121,7 +125,7 @@ export default function Profile({ user, profile, setProfile, darkMode, showToast
       {
         <>
           <section style={sectionBox(darkMode)}>
-            <h3 style={sectionTitle}>Basic Details</h3>
+            <h3 style={sectionTitle}>{t('profile_details.basic_details')}</h3>
             <div style={gridTwo}>
               {basicFields.map((f) => (
                 <div key={f.key} style={infoRow}>
@@ -138,7 +142,7 @@ export default function Profile({ user, profile, setProfile, darkMode, showToast
             </div>
           </section>
           <section style={sectionBox(darkMode)}>
-            <h3 style={sectionTitle}>Motivation</h3>
+            <h3 style={sectionTitle}>{t('profile_details.motivation')}</h3>
             {listFields.map((f) => (
               <div key={f.key} style={{ marginBottom: 12, display: "flex", gap: 12, alignItems: "flex-start" }}>
                 <span>
@@ -173,12 +177,12 @@ export default function Profile({ user, profile, setProfile, darkMode, showToast
             )} */}
           </section>
           <section style={sectionBox(darkMode)}>
-            <h3 style={sectionTitle}>Agreements & Status</h3>
+            <h3 style={sectionTitle}>{t('profile_details.agreements')}</h3>
             <div style={gridTwo}>
               {agreementFields.map((f) => (
                 <div key={f.key} style={infoRow}>
                   <span style={labelSpan}>{f.label}:</span>
-                  <span>{profile?.[f.key] ? "Yes" : "No"}</span>
+                  <span>{profile?.[f.key] ? t('profile_details.yes') : t('profile_details.no')}</span>
                 </div>
               ))}
             </div>
@@ -250,8 +254,8 @@ export default function Profile({ user, profile, setProfile, darkMode, showToast
                           –{" "}
                           {run.riasecScores
                             ? Object.entries(run.riasecScores)
-                                .map(([a, p]) => `${a}:${p}%`)
-                                .join(", ")
+                            .map(([a, p]) => `${a}:${p}%`)
+                            .join(", ")
                             : "No scores"}
                         </li>
                       ))}
@@ -364,10 +368,10 @@ export default function Profile({ user, profile, setProfile, darkMode, showToast
               }
               style={btn}
             >
-              Edit Profile
+              {t('profile_details.edit')}
             </button>
             <button onClick={handleRefresh} style={btnAlt}>
-              Refresh
+              {t('profile_details.refresh')}
             </button>
           </div>
         </>
@@ -376,7 +380,7 @@ export default function Profile({ user, profile, setProfile, darkMode, showToast
       {/* Saved Careers */}
       {profile?.savedCareers?.length > 0 && (
         <div style={{ marginTop: 30 }}>
-          <h3 style={{ color: "#0077b6" }}>Saved Careers</h3>
+          <h3 style={{ color: "#0077b6" }}>{t('profile_details.saved_careers')}</h3>
           <div style={{ display: "grid", gap: 12 }}>
             {profile.savedCareers.map((c) => (
               <div
@@ -406,7 +410,7 @@ export default function Profile({ user, profile, setProfile, darkMode, showToast
                   </p>
                 </div>
                 <button onClick={() => deleteCareer(c.id)} style={deleteBtn}>
-                  Delete
+                  {t('profile_details.delete')}
                 </button>
               </div>
             ))}

@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import config from '../config/config';
 
 export default function GlobalSearchBar({ onNavigate, currentPage }) {
+  const { t } = useTranslation();
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
-  
+
   const searchRef = useRef(null);
   const resultsRef = useRef(null);
 
@@ -15,63 +17,15 @@ export default function GlobalSearchBar({ onNavigate, currentPage }) {
   const searchData = {
     pages: [
       { id: 'profile', title: 'Profile', icon: '👤', description: 'View and edit your profile' },
-      { id: 'career', title: 'Career Analysis', icon: '📊', description: 'Get AI-powered career insights' },
-      { id: 'recommendations', title: 'Career Recommendations', icon: '🎯', description: 'Discover matching career paths' },
-      { id: 'learning', title: 'Learning Paths', icon: '📚', description: 'Personalized learning roadmaps' },
-      { id: 'assessment', title: 'Assessment', icon: '📝', description: 'Take skill and personality tests' },
-      { id: 'chat', title: 'AI Chat', icon: '💬', description: 'Get instant career guidance' },
-      { id: 'colleges', title: 'College Finder', icon: '🏛️', description: 'Find the best colleges for you' },
-      { id: 'mentor', title: 'Mentor Booking', icon: '👨‍🏫', description: 'Connect with industry experts' }
+      { id: 'dashboard', title: 'Dashboard', icon: '📊', description: 'Track your progress and stats' },
+      { id: 'missions', title: 'Missions', icon: '🎯', description: 'Complete coding challenges' },
+      { id: 'analysis', title: 'Code Analysis', icon: '💻', description: 'Analyze and optimize your code' },
+      { id: 'references', title: 'References', icon: '📚', description: 'Curated learning resources' },
+      { id: 'chat', title: 'AI Chat', icon: '💬', description: 'Get instant career guidance' }
     ],
-    
-    features: [
-      { id: 'riasec', title: 'RIASEC Assessment', icon: '🧪', description: 'Personality-based career matching', page: 'assessment' },
-      { id: 'skills', title: 'Skills Analysis', icon: '⚡', description: 'Evaluate your technical skills', page: 'assessment' },
-      { id: 'ai-chat', title: 'Career Counselor AI', icon: '🤖', description: '24/7 AI career guidance', page: 'chat' },
-      { id: 'learning-path', title: 'Custom Learning Path', icon: '🛤️', description: 'Build your learning journey', page: 'learning' },
-      { id: 'mentor-session', title: 'Book Mentor Session', icon: '📅', description: 'Schedule 1:1 mentorship', page: 'mentor' },
-      { id: 'college-search', title: 'College Search', icon: '🔍', description: 'Advanced college filtering', page: 'colleges' }
-    ],
-
-    careers: [
-      // Technology
-      { id: 'software-engineer', title: 'Software Engineer', icon: '💻', category: 'Technology', description: 'Build software applications' },
-      { id: 'data-scientist', title: 'Data Scientist', icon: '📊', category: 'Technology', description: 'Analyze data for insights' },
-      { id: 'ai-engineer', title: 'AI Engineer', icon: '🤖', category: 'Technology', description: 'Develop AI solutions' },
-      { id: 'cybersecurity', title: 'Cybersecurity Analyst', icon: '🔒', category: 'Technology', description: 'Protect digital assets' },
-      { id: 'devops-engineer', title: 'DevOps Engineer', icon: '⚙️', category: 'Technology', description: 'Streamline development processes' },
-      
-      // Healthcare
-      { id: 'doctor', title: 'Medical Doctor', icon: '👩‍⚕️', category: 'Healthcare', description: 'Diagnose and treat patients' },
-      { id: 'nurse', title: 'Registered Nurse', icon: '🩺', category: 'Healthcare', description: 'Provide patient care' },
-      { id: 'pharmacist', title: 'Pharmacist', icon: '💊', category: 'Healthcare', description: 'Dispense medications' },
-      
-      // Business
-      { id: 'marketing-manager', title: 'Marketing Manager', icon: '📈', category: 'Business', description: 'Develop marketing strategies' },
-      { id: 'product-manager', title: 'Product Manager', icon: '📱', category: 'Business', description: 'Oversee product development' },
-      { id: 'consultant', title: 'Business Consultant', icon: '💼', category: 'Business', description: 'Advise organizations' },
-      
-      // Creative
-      { id: 'graphic-designer', title: 'Graphic Designer', icon: '🎨', category: 'Creative', description: 'Create visual content' },
-      { id: 'ux-designer', title: 'UX Designer', icon: '📐', category: 'Creative', description: 'Design user experiences' },
-      { id: 'content-writer', title: 'Content Writer', icon: '✍️', category: 'Creative', description: 'Create written content' },
-      
-      // Education
-      { id: 'teacher', title: 'Teacher', icon: '👨‍🏫', category: 'Education', description: 'Educate students' },
-      { id: 'professor', title: 'Professor', icon: '🎓', category: 'Education', description: 'Teach at university level' },
-      
-      // Engineering
-      { id: 'mechanical-engineer', title: 'Mechanical Engineer', icon: '⚙️', category: 'Engineering', description: 'Design mechanical systems' },
-      { id: 'civil-engineer', title: 'Civil Engineer', icon: '🏗️', category: 'Engineering', description: 'Design infrastructure' },
-      { id: 'electrical-engineer', title: 'Electrical Engineer', icon: '⚡', category: 'Engineering', description: 'Work with electrical systems' }
-    ],
-
-    quickActions: [
-      { id: 'take-assessment', title: 'Take Assessment', icon: '🚀', description: 'Start your career assessment now', page: 'assessment' },
-      { id: 'chat-ai', title: 'Ask AI', icon: '💡', description: 'Get instant career advice', page: 'chat' },
-      { id: 'find-mentor', title: 'Find Mentor', icon: '🔍', description: 'Connect with a mentor', page: 'mentor' },
-      { id: 'explore-careers', title: 'Explore Careers', icon: '🌟', description: 'Discover new career paths', page: 'recommendations' }
-    ]
+    features: [],
+    careers: [],
+    quickActions: []
   };
 
   // Perform search
@@ -86,33 +40,33 @@ export default function GlobalSearchBar({ onNavigate, currentPage }) {
 
     // Search pages
     searchData.pages.forEach(page => {
-      if (page.title.toLowerCase().includes(query) || 
-          page.description.toLowerCase().includes(query)) {
+      if (page.title.toLowerCase().includes(query) ||
+        page.description.toLowerCase().includes(query)) {
         searchResults.push({ ...page, type: 'page', score: page.title.toLowerCase().includes(query) ? 10 : 5 });
       }
     });
 
     // Search features
     searchData.features.forEach(feature => {
-      if (feature.title.toLowerCase().includes(query) || 
-          feature.description.toLowerCase().includes(query)) {
+      if (feature.title.toLowerCase().includes(query) ||
+        feature.description.toLowerCase().includes(query)) {
         searchResults.push({ ...feature, type: 'feature', score: feature.title.toLowerCase().includes(query) ? 8 : 4 });
       }
     });
 
     // Search careers
     searchData.careers.forEach(career => {
-      if (career.title.toLowerCase().includes(query) || 
-          career.category.toLowerCase().includes(query) ||
-          career.description.toLowerCase().includes(query)) {
+      if (career.title.toLowerCase().includes(query) ||
+        career.category.toLowerCase().includes(query) ||
+        career.description.toLowerCase().includes(query)) {
         searchResults.push({ ...career, type: 'career', score: career.title.toLowerCase().includes(query) ? 7 : 3 });
       }
     });
 
     // Search quick actions
     searchData.quickActions.forEach(action => {
-      if (action.title.toLowerCase().includes(query) || 
-          action.description.toLowerCase().includes(query)) {
+      if (action.title.toLowerCase().includes(query) ||
+        action.description.toLowerCase().includes(query)) {
         searchResults.push({ ...action, type: 'action', score: 6 });
       }
     });
@@ -130,7 +84,7 @@ export default function GlobalSearchBar({ onNavigate, currentPage }) {
     const value = e.target.value;
     setQuery(value);
     setSelectedIndex(-1);
-    
+
     if (value.length > 0) {
       setLoading(true);
       // Debounce search
@@ -146,11 +100,11 @@ export default function GlobalSearchBar({ onNavigate, currentPage }) {
   // Handle result selection
   const handleResultClick = (result) => {
     const targetPage = result.page || result.id;
-    
+
     if (targetPage && onNavigate) {
       onNavigate(targetPage);
     }
-    
+
     setQuery('');
     setResults([]);
     setIsOpen(false);
@@ -220,7 +174,7 @@ export default function GlobalSearchBar({ onNavigate, currentPage }) {
           <span style={searchIconStyle}>🔍</span>
           <input
             type="text"
-            placeholder="Search careers, features, or pages..."
+            placeholder={t('search.placeholder', 'Search careers, features, or pages...')}
             value={query}
             onChange={handleSearch}
             onFocus={handleFocus}
@@ -229,7 +183,7 @@ export default function GlobalSearchBar({ onNavigate, currentPage }) {
             autoComplete="off"
           />
           {query && (
-            <button 
+            <button
               onClick={() => {
                 setQuery('');
                 setResults([]);
@@ -247,7 +201,7 @@ export default function GlobalSearchBar({ onNavigate, currentPage }) {
           <div ref={resultsRef} style={resultsContainerStyle}>
             {loading && (
               <div style={loadingStyle}>
-                <span>🔄</span> Searching...
+                <span>🔄</span> {t('search_ui.searching', 'Searching...')}
               </div>
             )}
 
@@ -255,8 +209,8 @@ export default function GlobalSearchBar({ onNavigate, currentPage }) {
               <div style={noResultsStyle}>
                 <span style={noResultsIconStyle}>🤷‍♂️</span>
                 <div>
-                  <div style={noResultsTitleStyle}>No results found</div>
-                  <div style={noResultsDescStyle}>Try a different search term</div>
+                  <div style={noResultsTitleStyle}>{t('search_ui.no_results_title', 'No results found')}</div>
+                  <div style={noResultsDescStyle}>{t('search_ui.no_results_desc', 'Try a different search term')}</div>
                 </div>
               </div>
             )}
@@ -264,7 +218,7 @@ export default function GlobalSearchBar({ onNavigate, currentPage }) {
             {!loading && results.length > 0 && (
               <div>
                 <div style={resultsHeaderStyle}>
-                  Search Results ({results.length})
+                  {t('search_ui.results_header', 'Search Results')} ({results.length})
                 </div>
                 {results.map((result, index) => (
                   <div
@@ -305,15 +259,31 @@ export default function GlobalSearchBar({ onNavigate, currentPage }) {
 
             {!query && !loading && (
               <div style={suggestionsStyle}>
-                <div style={suggestionHeaderStyle}>Quick Actions</div>
-                {searchData.quickActions.slice(0, 4).map((action) => (
+                <div style={suggestionHeaderStyle}>{t('search_ui.trending', 'Quick Navigation')}</div>
+                {[
+                  { label: 'Profile', page: 'profile', icon: '👤' },
+                  { label: 'Dashboard', page: 'dashboard', icon: '📊' },
+                  { label: 'Missions', page: 'missions', icon: '🎯' },
+                  { label: 'Code Analysis', page: 'analysis', icon: '💻' },
+                  { label: 'References', page: 'references', icon: '📚' },
+                  { label: 'AI Chat', page: 'chat', icon: '💬' }
+                ].map((item) => (
                   <div
-                    key={action.id}
-                    onClick={() => handleResultClick(action)}
+                    key={item.label}
+                    onClick={() => {
+                      if (onNavigate) {
+                        onNavigate(item.page);
+                        setIsOpen(false);
+                        setQuery('');
+                      }
+                    }}
                     style={suggestionItemStyle}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = '#f1f5f9'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
                   >
-                    <span style={suggestionIconStyle}>{action.icon}</span>
-                    <span style={suggestionTitleStyle}>{action.title}</span>
+                    <span style={suggestionIconStyle}>{item.icon}</span>
+                    <span style={suggestionTitleStyle}>{item.label}</span>
+                    <span style={{ marginLeft: 'auto', fontSize: '14px', color: 'var(--muted)' }}>→</span>
                   </div>
                 ))}
               </div>

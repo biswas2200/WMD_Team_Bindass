@@ -9,41 +9,333 @@
     "delete": "Löschen",
     "search": "Suchen",
     "filter": "Filtern",
-    "clear": "Löschen",
+    "clear": "Leeren",
     "back": "Zurück",
     "next": "Weiter",
     "previous": "Vorherige",
     "submit": "Absenden",
     "refresh": "Aktualisieren"
   },
+  "footer": {
+    "tagline": "Entwickler befähigen, besseren Code durch KI-gesteuerte Erkenntnisse und gamifizierte Missionen zu schreiben.",
+    "features": "Plattform",
+    "resources": "Ressourcen",
+    "copyright": "Mit ❤️ für Entwickler gebaut."
+  },
   "navigation": {
     "profile": "Profil",
-    "career": "Analyse", 
-    "recommendations": "Karrieren",
-    "learning": "Lernen",
-    "assessment": "Bewertung",
-    "chat": "KI Chat",
+    "dashboard": "Dashboard",
+    "missions": "Missionen",
+    "analysis": "Code-Analyse",
+    "references": "Referenzen",
+    "chat": "KI-Chat",
     "colleges": "Hochschulen",
     "mentor": "Mentoren",
+    "blog": "Engineering-Blog",
     "logout": "Abmelden"
   },
   "auth": {
     "login": {
       "title": "Willkommen zurück",
-      "subtitle": "Melden Sie sich an, um Ihre Karriere zu beginnen",
+      "subtitle": "Melden Sie sich an, um Ihre Karrierereise zu beginnen",
       "email": "E-Mail-Adresse",
       "password": "Passwort",
       "signin": "Anmelden",
       "signingin": "Anmeldung...",
-      "noAccount": "Haben Sie kein Konto?",
+      "noAccount": "Kein Konto?",
       "signup": "Hier registrieren",
       "welcome": "Willkommen bei Kodra.ai",
-      "tagline": "Ihre Reise zu einer helleren Zukunft beginnt hier."
+      "tagline": "Ihre Reise in eine hellere Zukunft beginnt hier."
+    },
+    "register": {
+      "title": "Konto erstellen",
+      "subtitle": "Registrieren Sie sich, um Ihren Entwicklerpfad zu entdecken",
+      "header_personal": "Persönliche Informationen",
+      "header_location": "Standort",
+      "header_education": "Bildungsdetails",
+      "header_security": "Kontosicherheit",
+      "name": "Vollständiger Name",
+      "full_name_placeholder": "Vollständiger Name *",
+      "email": "E-Mail-Adresse",
+      "email_placeholder": "E-Mail-Adresse *",
+      "phone": "Handynummer",
+      "phone_placeholder": "Handynummer (10 Ziffern) *",
+      "age": "Alter",
+      "age_placeholder": "Alter *",
+      "city": "Stadt",
+      "city_placeholder": "Stadt *",
+      "state": "Bundesland",
+      "select_state": "Bundesland auswählen *",
+      "education_level": "Bildungsniveau",
+      "select_education": "Bildungsniveau auswählen *",
+      "institution": "Name der Institution",
+      "institution_placeholder": "Name der Institution *",
+      "stream": "Fachrichtung",
+      "stream_placeholder": "Fachrichtung/Studienfach *",
+      "password": "Passwort",
+      "password_placeholder": "Passwort (min. 8 Zeichen) *",
+      "confirmPassword": "Passwort bestätigen",
+      "confirm_password_placeholder": "Passwort bestätigen *",
+      "agree_terms": "Ich stimme den Nutzungsbedingungen zu",
+      "agree_privacy": "Ich stimme der Datenschutzerklärung zu",
+      "signup": "Studentenkonto erstellen",
+      "signingup": "Konto wird erstellt...",
+      "hasAccount": "Bereits ein Konto?",
+      "signin": "Anmelden"
+    }
+  },
+  "onboarding": {
+    "title": "Lernen wir uns kennen",
+    "subtitle": "Helfen Sie uns, Ihre Karrierereise zu personalisieren",
+    "personalInfo": "Persönliche Informationen",
+    "name": "Vollständiger Name",
+    "age": "Alter",
+    "location": "Standort",
+    "selectLocation": "Wählen Sie Ihren Standort",
+    "education": "Bildung",
+    "currentLevel": "Aktuelles Bildungsniveau",
+    "institution": "Name der Institution/Schule",
+    "interests": "Interessen & Ziele",
+    "careerInterests": "Karriereinteressen",
+    "goals": "Ihre Ziele",
+    "complete": "Profil vervollständigen",
+    "completing": "Ihr Profil wird eingerichtet..."
+  },
+  "profile": {
+    "title": "Ihr Profil",
+    "personalInfo": "Persönliche Informationen",
+    "education": "Bildung",
+    "interests": "Interessen",
+    "goals": "Ziele",
+    "editProfile": "Profil bearbeiten",
+    "saveChanges": "Änderungen speichern",
+    "lastUpdated": "Zuletzt aktualisiert"
+  },
+  "career": {
+    "title": "Karriereanalyse",
+    "subtitle": "Entdecken Sie Karrieren, die Ihren Fähigkeiten und Interessen entsprechen",
+    "startAnalysis": "Analyse starten",
+    "analyzing": "Ihr Profil wird analysiert...",
+    "recommendations": "Karriereempfehlungen",
+    "skillGap": "Kompetenzlückenanalyse",
+    "learningPath": "Vorgeschlagener Lernpfad"
+  },
+  "assessment": {
+    "title": "Kompetenzbewertung",
+    "subtitle": "Bewerten Sie Ihre aktuellen Fähigkeiten",
+    "startAssessment": "Bewertung starten",
+    "question": "Frage {{number}} von {{total}}",
+    "next": "Nächste Frage",
+    "previous": "Vorherige Frage",
+    "submit": "Bewertung absenden",
+    "results": "Bewertungsergebnisse",
+    "score": "Ihr Ergebnis"
+  },
+  "chat": {
+    "title": "KI-Karriereberater",
+    "subtitle": "Holen Sie sich personalisierte Karriereberatung",
+    "placeholder": "Fragen Sie mich nach Karrieren, Fähigkeiten oder Bildung...",
+    "send": "Senden",
+    "typing": "KI denkt nach...",
+    "thinking": "🤔 Denkt nach...",
+    "error": "Entschuldigung, ich konnte das nicht verarbeiten. Bitte versuchen Sie es erneut.",
+    "welcome": "Hallo! Ich bin Ihr Karriereassistent. Fragen Sie mich alles über Ihre Karrierereise!",
+    "backend_error": "⚠️ Entschuldigung, ich kann mich derzeit nicht mit dem KI-Backend verbinden."
+  },
+  "colleges": {
+    "title": "Hochschulfinder",
+    "subtitle": "Finden Sie die perfekte Bildungseinrichtung",
+    "searchPlaceholder": "Hochschulen suchen...",
+    "filters": {
+      "location": "Standort",
+      "type": "Hochschultyp",
+      "rating": "Mindestbewertung",
+      "fees": "Gebührenbereich"
+    }
+  },
+  "learning": {
+    "title": "Lernpfade",
+    "subtitle": "Strukturiertes Lernen für Ihre Karriereziele",
+    "createPath": "Lernpfad erstellen",
+    "myPaths": "Meine Lernpfade",
+    "progress": "Fortschritt",
+    "completed": "Abgeschlossen",
+    "inProgress": "In Bearbeitung",
+    "notStarted": "Nicht begonnen"
+  },
+  "mentor": {
+    "title": "Mentoren finden",
+    "subtitle": "Verbinden Sie sich mit Branchenexperten",
+    "book": "Sitzung buchen",
+    "available": "Verfügbar",
+    "rating": "Bewertung",
+    "experience": "{{years}} Jahre Erfahrung",
+    "specialty": "Spezialitäten"
+  },
+  "connection": {
+    "status": "Verbindungsstatus",
+    "online": "Online",
+    "offline": "Offline",
+    "springboot": "Spring Boot",
+    "pythonai": "Python KI",
+    "refresh": "Aktualisieren"
+  },
+  "landing": {
+    "hero": {
+      "title": "Meistern Sie das Programmieren mit",
+      "highlight": "KI-gesteuerten Missionen",
+      "subtitle": "Verbinden Sie Ihr GitHub. Wir analysieren Ihren Code, finden Lücken und generieren personalisierte Programmiermissionen, um Ihnen zu helfen, ein besserer Entwickler zu werden.",
+      "cta": "Analyse starten"
+    },
+    "feature": {
+      "analysis": {
+        "title": "Tiefe Code-Analyse",
+        "desc": "Sofortiges Feedback zu Sicherheitslücken und Leistungsengpässen."
+      },
+      "missions": {
+        "title": "Gamifizierte Missionen",
+        "desc": "Verwandeln Sie Ihre Codeprobleme in interaktive Lernmissionen."
+      },
+      "skills": {
+        "title": "Kompetenzlückenerkennung",
+        "desc": "KI analysiert Ihre Programmiermuster, um genau zu identifizieren, was Sie als Nächstes lernen müssen."
+      },
+      "mentor": {
+        "title": "KI-Pair-Programmierer",
+        "desc": "Erhalten Sie Echtzeit-Anleitung von Ihrem persönlichen KI-Mentor, während Sie programmieren."
+      },
+      "health": {
+        "title": "Repo-Gesundheits-Dashboard",
+        "desc": "Visualisieren Sie die Gesundheit Ihrer Codebasis mit intuitiven Diagrammen."
+      },
+      "career": {
+        "title": "Karrierebereitschaft",
+        "desc": "Erstellen Sie ein Portfolio, um Ihre Ingenieursfähigkeiten zu präsentieren."
+      }
+    },
+    "features": {
+      "title": "Warum Kodra.ai?",
+      "subtitle": "Der intelligenteste Weg, Ihre Fähigkeiten zu verbessern"
+    },
+    "stats": {
+      "lines": "Analysierte Zeilen",
+      "bugs": "Behobene Fehler",
+      "devs": "Entwicklern geholfen",
+      "repos": "Verbundene Repos"
+    },
+    "companies": {
+      "title": "Unterstützte Technologien"
+    },
+    "testimonials": {
+      "title": "Entwicklergeschichten",
+      "subtitle": "Sehen Sie, wie andere ihr Handwerk meistern"
+    },
+    "cta": {
+      "title": "Bereit zum Aufstieg?",
+      "subtitle": "Verbinden Sie noch heute Ihr GitHub-Repository und erhalten Sie Ihre erste Mission.",
+      "button": "Programmieren starten",
+      "notice": "Kostenlos für Open Source • Sofortige Analyse • Sichere Integration"
+    }
+  },
+  "search": {
+    "placeholder": "Suche nach Karrieren, Fähigkeiten, Hochschulen...",
+    "results": "Suchergebnisse",
+    "noResults": "Keine Ergebnisse gefunden",
+    "categories": {
+      "all": "Alle",
+      "careers": "Karrieren",
+      "skills": "Fähigkeiten",
+      "colleges": "Hochschulen",
+      "mentors": "Mentoren"
     }
   },
   "language": {
     "select": "Sprache wählen",
-    "current": "Aktuelle Sprache", 
-    "auto": "Automatische Erkennung nach Standort"
+    "current": "Aktuelle Sprache",
+    "auto": "Automatisch erkennen"
+  },
+  "dashboard": {
+    "welcome": "Willkommen, {{name}}!",
+    "title": "Repo-Gesundheits-Dashboard",
+    "connect_repo": "Verbinden Sie ein Repository, um Ihre Code-Analysestatistiken zu sehen.",
+    "analysis_intro": "Hier ist die Analyse Ihrer Repositorys.",
+    "security_rating": "Sicherheitsbewertung",
+    "no_critical_vulns": "Keine kritischen Schwachstellen gefunden",
+    "code_quality": "Codequalität",
+    "maintainability_high": "Wartbarkeitsindex ist hoch",
+    "open_missions": "Offene Missionen",
+    "pending_tasks": "Ausstehende Aufgaben"
+  },
+  "missions": {
+    "title": "Missionen",
+    "no_missions": "Keine Missionen verfügbar.",
+    "select_mission": "Wählen Sie eine Mission aus, um die Details zu sehen."
+  },
+  "references": {
+    "title": "Wissenszentrum",
+    "subtitle": "Ressourcen zur Beherrschung Ihrer Ingenieursfähigkeiten.",
+    "articles": "Artikel & Konzepte",
+    "platforms": "Lernplattformen",
+    "topics": {
+      "dsa": "Datenstrukturen & Algorithmen (DSA)",
+      "dsa_desc": "Meistern Sie die fundamentalen Bausteine effizienter Software.",
+      "dbms": "Datenbankmanagementsysteme (DBMS)",
+      "dbms_desc": "Lernen Sie, Daten zu speichern und zu verwalten.",
+      "oops": "Objektorientierte Programmierung (Java)",
+      "oops_desc": "Verstehen Sie Klassen, Objekte und Vererbung.",
+      "os": "Betriebssysteme",
+      "os_desc": "Erkunden Sie die Software, die Computerhardware und Ressourcen verwaltet.",
+      "cn": "Computernetzwerke",
+      "cn_desc": "Tauchen Sie ein in die Welt der Netzwerke und Protokolle.",
+      "ml": "Maschinelles Lernen",
+      "ml_desc": "Lernen Sie Algorithmen kennen, die Computern die Fähigkeit geben zu lernen."
+    }
+  },
+  "profile_details": {
+    "basic_details": "Grundlegende Details",
+    "motivation": "Motivation",
+    "agreements": "Vereinbarungen & Status",
+    "edit": "Profil bearbeiten",
+    "refresh": "Aktualisieren",
+    "saved_careers": "Gespeicherte Karrieren",
+    "delete": "Löschen",
+    "yes": "Ja",
+    "no": "Nein",
+    "fields": {
+      "name": "Name",
+      "email": "E-Mail",
+      "city": "Stadt",
+      "state": "Bundesland",
+      "educationLevel": "Bildungsniveau",
+      "institution": "Institution",
+      "stream": "Fachrichtung",
+      "phone": "Telefon",
+      "age": "Alter",
+      "workPreference": "Arbeitspräferenz",
+      "careerGoal": "Karriereziel",
+      "aspirations": "Ambitionen"
+    },
+    "agreement_labels": {
+      "terms": "Bedingungen zugestimmt",
+      "privacy": "Datenschutzrichtlinie zugestimmt",
+      "onboarding": "Onboarding abgeschlossen",
+      "profile": "Profil abgeschlossen"
+    },
+    "github": {
+      "connect": "GitHub verbinden",
+      "connected": "GitHub verbunden"
+    },
+    "learning_path": {
+      "title": "Lernpfad & Fortschritt",
+      "step": "Schritt",
+      "show_all": "Alle Karrieren anzeigen"
+    },
+    "search_ui": {
+      "quick_actions": "Schnellaktionen",
+      "searching": "Suchen...",
+      "no_results_title": "Keine Ergebnisse gefunden",
+      "no_results_desc": "Versuchen Sie einen anderen Begriff",
+      "results_header": "Suchergebnisse"
+    }
   }
 }

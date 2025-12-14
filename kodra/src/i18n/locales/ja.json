@@ -16,34 +16,326 @@
     "submit": "送信",
     "refresh": "更新"
   },
+  "footer": {
+    "tagline": "AIによる洞察とゲーム化されたミッションを通じて、開発者がより良いコードを書けるように支援します。",
+    "features": "プラットフォーム",
+    "resources": "リソース",
+    "copyright": "開発者のために❤️を込めて作られました。"
+  },
   "navigation": {
     "profile": "プロフィール",
-    "career": "分析",
-    "recommendations": "キャリア",
-    "learning": "学習",
-    "assessment": "評価",
+    "dashboard": "ダッシュボード",
+    "missions": "ミッション",
+    "analysis": "コード分析",
+    "references": "リファレンス",
     "chat": "AIチャット",
-    "colleges": "大学",
+    "colleges": "カレッジ",
     "mentor": "メンター",
+    "blog": "エンジニアリングブログ",
     "logout": "ログアウト"
   },
   "auth": {
     "login": {
       "title": "お帰りなさい",
-      "subtitle": "キャリアの旅を始めるためにサインインしてください",
+      "subtitle": "サインインしてキャリアの旅を始めましょう",
       "email": "メールアドレス",
       "password": "パスワード",
       "signin": "サインイン",
       "signingin": "サインイン中...",
-      "noAccount": "アカウントをお持ちでない方は？",
-      "signup": "こちらでサインアップ",
-      "welcome": "CareerConnectへようこそ",
-      "tagline": "より明るい未来への旅がここから始まります。"
+      "noAccount": "アカウントをお持ちでないですか？",
+      "signup": "こちらで登録",
+      "welcome": "Kodra.aiへようこそ",
+      "tagline": "明るい未来への旅はここから始まります。"
+    },
+    "register": {
+      "title": "アカウント作成",
+      "subtitle": "登録して開発者の道を見つけましょう",
+      "header_personal": "個人情報",
+      "header_location": "場所",
+      "header_education": "教育の詳細",
+      "header_security": "アカウントセキュリティ",
+      "name": "氏名",
+      "full_name_placeholder": "氏名 *",
+      "email": "メールアドレス",
+      "email_placeholder": "メールアドレス *",
+      "phone": "携帯番号",
+      "phone_placeholder": "携帯番号（10桁）*",
+      "age": "年齢",
+      "age_placeholder": "年齢 *",
+      "city": "市区町村",
+      "city_placeholder": "市区町村 *",
+      "state": "都道府県",
+      "select_state": "都道府県を選択 *",
+      "education_level": "教育レベル",
+      "select_education": "教育レベルを選択 *",
+      "institution": "機関名",
+      "institution_placeholder": "機関名 *",
+      "stream": "専攻",
+      "stream_placeholder": "専攻/研究分野 *",
+      "password": "パスワード",
+      "password_placeholder": "パスワード（8文字以上）*",
+      "confirmPassword": "パスワード確認",
+      "confirm_password_placeholder": "パスワード確認 *",
+      "agree_terms": "利用規約に同意します",
+      "agree_privacy": "プライバシーポリシーに同意します",
+      "signup": "学生アカウント作成",
+      "signingup": "アカウント作成中...",
+      "hasAccount": "すでにアカウントをお持ちですか？",
+      "signin": "サインイン"
+    }
+  },
+  "onboarding": {
+    "title": "あなたについて教えてください",
+    "subtitle": "あなたのキャリアの旅をパーソナライズするのを手伝ってください",
+    "personalInfo": "個人情報",
+    "name": "氏名",
+    "age": "年齢",
+    "location": "場所",
+    "selectLocation": "場所を選択してください",
+    "education": "教育",
+    "currentLevel": "現在の教育レベル",
+    "institution": "機関/学校名",
+    "interests": "興味と目標",
+    "careerInterests": "キャリアの興味",
+    "goals": "あなたの目標",
+    "complete": "プロフィール完了",
+    "completing": "プロフィールを設定中..."
+  },
+  "profile": {
+    "title": "あなたのプロフィール",
+    "personalInfo": "個人情報",
+    "education": "教育",
+    "interests": "興味",
+    "goals": "目標",
+    "editProfile": "プロフィール編集",
+    "saveChanges": "変更を保存",
+    "lastUpdated": "最終更新"
+  },
+  "career": {
+    "title": "キャリア分析",
+    "subtitle": "あなたのスキルと興味に合った仕事を見つける",
+    "startAnalysis": "分析を開始",
+    "analyzing": "プロフィールを分析中...",
+    "recommendations": "キャリアの推奨",
+    "skillGap": "スキルギャップ分析",
+    "learningPath": "推奨される学習パス"
+  },
+  "assessment": {
+    "title": "スキル評価",
+    "subtitle": "現在のスキルを評価する",
+    "startAssessment": "評価を開始",
+    "question": "質問 {{number}} / {{total}}",
+    "next": "次の質問",
+    "previous": "前の質問",
+    "submit": "評価を送信",
+    "results": "評価結果",
+    "score": "あなたのスコア"
+  },
+  "chat": {
+    "title": "AIキャリアアドバイザー",
+    "subtitle": "パーソナライズされたキャリアガイダンスを取得",
+    "placeholder": "キャリア、スキル、教育について私に聞いてください...",
+    "send": "送信",
+    "typing": "AIが考えています...",
+    "thinking": "🤔 思考中...",
+    "error": "申し訳ありませんが、処理できませんでした。もう一度お試しください。",
+    "welcome": "こんにちは！私はあなたのキャリアアシスタントです。キャリアの旅について何でも聞いてください！",
+    "backend_error": "⚠️ 申し訳ありませんが、現在AIバックエンドに接続できません。"
+  },
+  "colleges": {
+    "title": "カレッジファインダー",
+    "subtitle": "完璧な教育機関を見つける",
+    "searchPlaceholder": "カレッジを検索...",
+    "filters": {
+      "location": "場所",
+      "type": "カレッジタイプ",
+      "rating": "最低評価",
+      "fees": "料金範囲"
+    }
+  },
+  "learning": {
+    "title": "学習パス",
+    "subtitle": "キャリア目標のための構造化された学習",
+    "createPath": "学習パスを作成",
+    "myPaths": "私の学習パス",
+    "progress": "進捗",
+    "completed": "完了",
+    "inProgress": "進行中",
+    "notStarted": "未開始"
+  },
+  "mentor": {
+    "title": "メンターを探す",
+    "subtitle": "業界の専門家とつながる",
+    "book": "セッションを予約",
+    "available": "利用可能",
+    "rating": "評価",
+    "experience": "{{years}}年の経験",
+    "specialty": "専門分野"
+  },
+  "connection": {
+    "status": "接続ステータス",
+    "online": "オンライン",
+    "offline": "オフライン",
+    "springboot": "Spring Boot",
+    "pythonai": "Python AI",
+    "refresh": "更新"
+  },
+  "landing": {
+    "hero": {
+      "title": "コーディングをマスターする",
+      "highlight": "AI駆動ミッションで",
+      "subtitle": "GitHubを接続してください。コードを分析し、ギャップを見つけ、より良い開発者になるためのパーソナライズされたコーディングミッションを生成します。",
+      "cta": "分析を開始"
+    },
+    "feature": {
+      "analysis": {
+        "title": "詳細なコード分析",
+        "desc": "セキュリティの脆弱性とパフォーマンスのボトルネックに関する即時フィードバック。"
+      },
+      "missions": {
+        "title": "ゲーム化されたミッション",
+        "desc": "コードの問題をインタラクティブな学習ミッションに変えます。"
+      },
+      "skills": {
+        "title": "スキルギャップの特定",
+        "desc": "AIがコーディングパターンを分析し、次に何を学ぶべきかを特定します。"
+      },
+      "mentor": {
+        "title": "AIペアプログラマー",
+        "desc": "コーディング中にパーソナルAIメンターからリアルタイムのガイダンスを受け取ります。"
+      },
+      "health": {
+        "title": "リポジトリ健全性ダッシュボード",
+        "desc": "直感的なチャートでコードベースの健全性を可視化します。"
+      },
+      "career": {
+        "title": "キャリア準備",
+        "desc": "エンジニアリングスキルをアピールするためのポートフォリオを作成します。"
+      }
+    },
+    "features": {
+      "title": "なぜKodra.aiなのか？",
+      "subtitle": "スキルをレベルアップする最もスマートな方法"
+    },
+    "stats": {
+      "lines": "分析された行",
+      "bugs": "修正されたバグ",
+      "devs": "支援された開発者",
+      "repos": "接続されたリポジトリ"
+    },
+    "companies": {
+      "title": "サポートされている技術"
+    },
+    "testimonials": {
+      "title": "開発者ストーリー",
+      "subtitle": "他の人がどのようにスキルを習得しているかを見る"
+    },
+    "cta": {
+      "title": "レベルアップする準備はできましたか？",
+      "subtitle": "今すぐGitHubリポジトリを接続して、最初のミッションを取得してください。",
+      "button": "コーディングを開始",
+      "notice": "オープンソースは無料 • 即時分析 • 安全な統合"
+    }
+  },
+  "search": {
+    "placeholder": "キャリア、スキル、カレッジを検索...",
+    "results": "検索結果",
+    "noResults": "結果が見つかりません",
+    "categories": {
+      "all": "すべて",
+      "careers": "キャリア",
+      "skills": "スキル",
+      "colleges": "カレッジ",
+      "mentors": "メンター"
     }
   },
   "language": {
     "select": "言語を選択",
     "current": "現在の言語",
-    "auto": "位置情報から自動検出"
+    "auto": "場所から自動検出"
+  },
+  "dashboard": {
+    "welcome": "ようこそ、{{name}}！",
+    "title": "リポジトリ健全性ダッシュボード",
+    "connect_repo": "リポジトリを接続して、コード分析統計を確認してください。",
+    "analysis_intro": "これがあなたのリポジトリの分析です。",
+    "security_rating": "セキュリティ評価",
+    "no_critical_vulns": "重大な脆弱性は見つかりませんでした",
+    "code_quality": "コード品質",
+    "maintainability_high": "保守性インデックスは高いです",
+    "open_missions": "オープンミッション",
+    "pending_tasks": "保留中のタスク"
+  },
+  "missions": {
+    "title": "ミッション",
+    "no_missions": "利用可能なミッションはありません。",
+    "select_mission": "詳細を表示するにはミッションを選択してください。"
+  },
+  "references": {
+    "title": "ナレッジセンター",
+    "subtitle": "エンジニアリングスキルを習得するためのリソース。",
+    "articles": "記事と概念",
+    "platforms": "学習プラットフォーム",
+    "topics": {
+      "dsa": "データ構造とアルゴリズム (DSA)",
+      "dsa_desc": "効率的なソフトウェアの基本的な構成要素を習得します。",
+      "dbms": "データベース管理システム (DBMS)",
+      "dbms_desc": "データを保存および管理する方法を学びます。",
+      "oops": "オブジェクト指向プログラミング (Java)",
+      "oops_desc": "クラス、オブジェクト、継承を理解します。",
+      "os": "オペレーティングシステム",
+      "os_desc": "コンピュータハードウェアとリソースを管理するソフトウェアを探索します。",
+      "cn": "コンピュータネットワーク",
+      "cn_desc": "ネットワークとプロトコルの世界に飛び込みます。",
+      "ml": "機械学習",
+      "ml_desc": "コンピュータに学習能力を与えるアルゴリズムについて学びます。"
+    }
+  },
+  "profile_details": {
+    "basic_details": "基本詳細",
+    "motivation": "動機",
+    "agreements": "同意とステータス",
+    "edit": "プロフィール編集",
+    "refresh": "更新",
+    "saved_careers": "保存されたキャリア",
+    "delete": "削除",
+    "yes": "はい",
+    "no": "いいえ",
+    "fields": {
+      "name": "名前",
+      "email": "メール",
+      "city": "市区町村",
+      "state": "都道府県",
+      "educationLevel": "教育レベル",
+      "institution": "機関",
+      "stream": "専攻",
+      "phone": "電話",
+      "age": "年齢",
+      "workPreference": "仕事の好み",
+      "careerGoal": "キャリア目標",
+      "aspirations": "抱負"
+    },
+    "agreement_labels": {
+      "terms": "規約に同意",
+      "privacy": "プライバシーポリシーに同意",
+      "onboarding": "オンボーディング完了",
+      "profile": "プロフィール完了"
+    },
+    "github": {
+      "connect": "GitHub接続",
+      "connected": "GitHub接続済み"
+    },
+    "learning_path": {
+      "title": "学習パスと進捗",
+      "step": "ステップ",
+      "show_all": "すべてのキャリアを表示"
+    },
+    "search_ui": {
+      "quick_actions": "クイックアクション",
+      "searching": "検索中...",
+      "no_results_title": "結果が見つかりません",
+      "no_results_desc": "別の用語を試してください",
+      "results_header": "検索結果"
+    }
   }
 }

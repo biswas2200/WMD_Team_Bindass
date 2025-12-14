@@ -16,14 +16,22 @@
     "submit": "Submit",
     "refresh": "Refresh"
   },
+  "footer": {
+    "tagline": "Empowering developers to write better code through AI-driven insights and gamified missions.",
+    "features": "Platform",
+    "resources": "Resources",
+    "copyright": "Built with ❤️ for Developers."
+  },
   "navigation": {
     "profile": "Profile",
     "dashboard": "Dashboard",
-    "missions": "Missions", 
-    "codeanalysis": "Code Analysis",
+    "missions": "Missions",
+    "analysis": "Code Analysis",
+    "references": "References",
     "chat": "AI Chat",
     "colleges": "Colleges",
     "mentor": "Mentors",
+    "blog": "Engineering Blog",
     "logout": "Logout"
   },
   "auth": {
@@ -40,16 +48,40 @@
       "tagline": "Your journey to a brighter future starts here."
     },
     "register": {
-      "title": "Join Kodra.ai",
-      "subtitle": "Create your account to get started",
+      "title": "Create Account",
+      "subtitle": "Sign up to discover your developer path",
+      "header_personal": "Personal Information",
+      "header_location": "Location",
+      "header_education": "Highest Education Details",
+      "header_security": "Account Security",
       "name": "Full Name",
-      "email": "Email Address", 
+      "full_name_placeholder": "Full Name *",
+      "email": "Email Address",
+      "email_placeholder": "Email Address *",
+      "phone": "Mobile Number",
+      "phone_placeholder": "Mobile Number (10 digits) *",
+      "age": "Age",
+      "age_placeholder": "Age *",
+      "city": "City",
+      "city_placeholder": "City *",
+      "state": "State",
+      "select_state": "Select State *",
+      "education_level": "Education Level",
+      "select_education": "Select Education Level *",
+      "institution": "Institution Name",
+      "institution_placeholder": "Institution Name *",
+      "stream": "Stream",
+      "stream_placeholder": "Stream/Field of Study *",
       "password": "Password",
+      "password_placeholder": "Password (min 8 chars with special chars) *",
       "confirmPassword": "Confirm Password",
-      "signup": "Create Account",
-      "signingup": "Creating account...",
+      "confirm_password_placeholder": "Confirm Password *",
+      "agree_terms": "I agree to the Terms of Service",
+      "agree_privacy": "I agree to the Privacy Policy",
+      "signup": "Create Student Account",
+      "signingup": "Creating Account...",
       "hasAccount": "Already have an account?",
-      "signin": "Sign in here"
+      "signin": "Sign in"
     }
   },
   "onboarding": {
@@ -105,7 +137,10 @@
     "placeholder": "Ask me about careers, skills, or education...",
     "send": "Send",
     "typing": "AI is thinking...",
-    "error": "Sorry, I couldn't process that. Please try again."
+    "thinking": "🤔 Thinking...",
+    "error": "Sorry, I couldn't process that. Please try again.",
+    "welcome": "Hi! I'm your career assistant. Ask me anything about your career journey!",
+    "backend_error": "⚠️ Sorry, I can't connect to the AI backend right now. Please check that the Python AI service is running on port 5000."
   },
   "colleges": {
     "title": "College Finder",
@@ -147,35 +182,59 @@
   },
   "landing": {
     "hero": {
-      "title": "Shape Your Future with AI-Powered Career Guidance",
-      "subtitle": "Discover your dream career path with personalized recommendations, skill assessments, and expert mentorship.",
-      "getStarted": "Get Started Free",
-      "learnMore": "Learn More"
+      "title": "Master Coding with",
+      "highlight": "AI-Driven Missions",
+      "subtitle": "Connect your GitHub. We analyze your code, find gaps, and generate personalized coding missions to help you become a better developer.",
+      "cta": "Start Analyzing"
     },
-    "features": {
-      "title": "Why Choose Kodra.ai?",
-      "ai": {
-        "title": "AI-Powered Analysis",
-        "description": "Advanced algorithms analyze your skills, interests, and goals to provide personalized career recommendations."
+    "feature": {
+      "analysis": {
+        "title": "Deep Code Analysis",
+        "desc": "Instant feedback on security vulnerabilities, performance bottlenecks, and logic errors in your GitHub repos."
       },
-      "assessment": {
-        "title": "Comprehensive Assessments", 
-        "description": "Take detailed assessments to understand your strengths, weaknesses, and career compatibility."
+      "missions": {
+        "title": "Gamified Missions",
+        "desc": "Turn your code issues into interactive learning missions. Fix bugs and earn XP to level up your skills."
       },
-      "learning": {
-        "title": "Personalized Learning",
-        "description": "Get customized learning paths and resources to develop skills for your target career."
+      "skills": {
+        "title": "Skill Gap Detection",
+        "desc": "AI analyzes your coding patterns to identify exactly what concepts you need to learn next."
       },
-      "mentorship": {
-        "title": "Expert Mentorship",
-        "description": "Connect with industry professionals and get guidance from experienced mentors."
+      "mentor": {
+        "title": "AI Pair Programmer",
+        "desc": "Get real-time guidance and code explanations from your personal AI mentor while you code."
+      },
+      "health": {
+        "title": "Repo Health Dashboard",
+        "desc": "Visualize your codebase health with intuitive charts tracking maintainability and complexity over time."
+      },
+      "career": {
+        "title": "Career Readiness",
+        "desc": "Build a portfolio of verified fixes and improvements to showcase your real-world engineering skills."
       }
     },
+    "features": {
+      "title": "Why Kodra.ai?",
+      "subtitle": "The smartest way to level up your engineering skills"
+    },
     "stats": {
-      "users": "Active Users",
-      "careers": "Career Paths",
-      "success": "Success Rate",
-      "mentors": "Expert Mentors"
+      "lines": "Lines Analyzed",
+      "bugs": "Bugs Fixed",
+      "devs": "Developers Helped",
+      "repos": "Connected Repos"
+    },
+    "companies": {
+      "title": "Supported Technologies"
+    },
+    "testimonials": {
+      "title": "Developer Stories",
+      "subtitle": "See how others are mastering their craft"
+    },
+    "cta": {
+      "title": "Ready to Level Up?",
+      "subtitle": "Connect your GitHub repository and get your first mission today.",
+      "button": "Start Coding",
+      "notice": "Free for Open Source • Instant Analysis • Secure Integration"
     }
   },
   "search": {
@@ -184,7 +243,7 @@
     "noResults": "No results found",
     "categories": {
       "all": "All",
-      "careers": "Careers", 
+      "careers": "Careers",
       "skills": "Skills",
       "colleges": "Colleges",
       "mentors": "Mentors"
@@ -194,5 +253,137 @@
     "select": "Select Language",
     "current": "Current Language",
     "auto": "Auto-detect from location"
+  },
+  "dashboard": {
+    "welcome": "Welcome, {{name}}!",
+    "title": "Repo Health Dashboard",
+    "connect_repo": "Connect a repository to see your code analysis stats, security vulnerabilities, and quality metrics.",
+    "analysis_intro": "Here's an analysis of your repositories, showing security vulnerabilities, and quality metrics.",
+    "security_rating": "Security Rating",
+    "no_critical_vulns": "No critical vulnerabilities found",
+    "code_quality": "Code Quality",
+    "maintainability_high": "Maintainability index is high",
+    "open_missions": "Open Missions",
+    "pending_tasks": "Pending refactoring tasks"
+  },
+  "missions": {
+    "title": "Missions Hub",
+    "no_missions": "No missions available.",
+    "select_mission": "Select a mission to see the details.",
+    "tabs": {
+      "daily": "Daily Quests",
+      "path": "My Path",
+      "topics": "Explore Topics"
+    },
+    "levels": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "actions": {
+      "start": "Start Mission",
+      "complete": "Mark Complete",
+      "locked": "Locked"
+    },
+    "stats": {
+      "streak": "Day Streak",
+      "xp": "XP Earned"
+    }
+  },
+  "analysis_tool": {
+    "title": "Code Analysis & Editor",
+    "subtitle": "Write optimum code for your missions",
+    "editor_placeholder": "// Write your solution here...\n\nfunction solve(arr) {\n  // Your logic here\n  return arr;\n}",
+    "actions": {
+      "run": "Run Code",
+      "analyze_complexity": "Analyze Complexity",
+      "clear": "Clear Editor",
+      "submit": "Submit Solution",
+      "analyzing": "Analyzing..."
+    },
+    "tabs": {
+      "test_results": "Test Results",
+      "complexity": "Complexity Analysis",
+      "static": "Static Analysis",
+      "ai_feedback": "AI Coach"
+    },
+    "report": {
+      "passed": "Passed",
+      "failed": "Failed",
+      "input": "Input",
+      "expected": "Expected",
+      "actual": "Actual",
+      "time_complexity": "Time Complexity",
+      "space_complexity": "Space Complexity",
+      "suggestions": "Optimization Suggestions"
+    }
+  },
+  "references": {
+    "title": "Knowledge Hub",
+    "subtitle": "Curated resources to master your engineering skills.",
+    "articles": "Articles & Concepts",
+    "platforms": "Learning Platforms",
+    "topics": {
+      "dsa": "Data Structures & Algorithms (DSA)",
+      "dsa_desc": "Master the fundamental building blocks of efficient software.",
+      "dbms": "Database Management Systems (DBMS)",
+      "dbms_desc": "Learn how to store, manipulate, and define data.",
+      "oops": "Object-Oriented Programming (Java)",
+      "oops_desc": "Understand classes, objects, inheritance, and polymorphism.",
+      "os": "Operating Systems",
+      "os_desc": "Explore the software that manages computer hardware and resources.",
+      "cn": "Computer Networking",
+      "cn_desc": "Dive into the world of networks, protocols, and communication.",
+      "ml": "Machine Learning",
+      "ml_desc": "Learn about algorithms that give computers the ability to learn."
+    }
+  },
+  "profile_details": {
+    "basic_details": "Basic Details",
+    "motivation": "Motivation",
+    "agreements": "Agreements & Status",
+    "edit": "Edit Profile",
+    "refresh": "Refresh",
+    "saved_careers": "Saved Careers",
+    "delete": "Delete",
+    "yes": "Yes",
+    "no": "No",
+    "fields": {
+      "name": "Name",
+      "email": "Email",
+      "city": "City",
+      "state": "State",
+      "educationLevel": "Education Level",
+      "institution": "Institution",
+      "stream": "Stream",
+      "phone": "Phone",
+      "age": "Age",
+      "workPreference": "Work Preference",
+      "careerGoal": "Career Goal",
+      "aspirations": "Aspirations"
+    },
+    "agreement_labels": {
+      "terms": "Agreed To Terms",
+      "privacy": "Agreed To Privacy Policy",
+      "onboarding": "Onboarding Completed",
+      "profile": "Profile Completed"
+    },
+    "github": {
+      "connect": "Connect GitHub",
+      "connected": "GitHub Connected"
+    },
+    "learning_path": {
+      "title": "Learning Path & Progress",
+      "step": "Step",
+      "show_all": "Show all careers"
+    },
+    "search_ui": {
+      "quick_actions": "Quick Actions",
+      "searching": "Searching...",
+      "no_results_title": "No results found",
+      "no_results_desc": "Try a different search term",
+      "results_header": "Search Results",
+      "trending": "Quick Navigation"
+    }
   }
 }
