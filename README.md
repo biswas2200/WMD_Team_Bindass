@@ -4,7 +4,6 @@ Welcome to **Kodra.ai**, a fully integrated, production-ready GitHub code analys
 
 ## 🖥 Platform Demo
 
-[![Watch the Kodra.ai demo](https://img.youtube.com/vi/SRnXmLy0TYM/maxresdefault.jpg)](https://www.youtube.com/watch?v=SRnXmLy0TYM)
 
 ## ✨ Features
 
@@ -21,7 +20,6 @@ Welcome to **Kodra.ai**, a fully integrated, production-ready GitHub code analys
 
 Kodra.ai is built on a distributed microservices architecture, ensuring scalability, fault tolerance, and independent service management.
 
-<img width="511" height="452" alt="image" src="https://github.com/user-attachments/assets/af0b3330-50b1-42c1-9423-a086f2d50fc2" />
 
 
 
