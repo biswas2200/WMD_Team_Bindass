@@ -2,15 +2,15 @@ import React, { useState, useEffect } from "react";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Navbar from "./components/Navbar";
-import Onboarding from "./components/Onboarding";
 import Profile from "./components/Profile";
 import EditProfile from "./components/EditProfile";
 import Chat from "./components/Chat";
-import Dashboard from "./components/Dashboard";
-import Missions from "./components/Missions";
-import References from "./components/References";
+import CodeHealthDashboard from "./components/CodeHealthDashboard";
+import MissionsList from "./components/MissionsList";
+import MissionDetail from "./components/MissionDetail";
 import LandingPage from "./components/LandingPage";
 import LanguageSelector from "./components/LanguageSelector";
+import GitHubCallback from "./components/GitHubCallback";
 import "./i18n";
 import "./global.css";
 
@@ -19,12 +19,12 @@ function App() {
   const [darkMode, setDarkMode] = useState(() => JSON.parse(localStorage.getItem("ka_dark")) ?? false);
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem("ka_user")) || null);
   const [profileData, setProfileData] = useState(() => JSON.parse(localStorage.getItem("ka_profile")) || null);
-  const [toasts, setToasts] = useState([]);
+  const [selectedMission, setSelectedMission] = useState(null);
 
+  // A simple toast implementation for now
   const showToast = (msg, type = 'info', ttl = 3000) => {
-    const id = Date.now() + Math.random();
-    setToasts(t => [...t, { id, msg, type }]);
-    setTimeout(() => setToasts(t => t.filter(x => x.id !== id)), ttl);
+    // This is a placeholder. A real implementation would use a toast library.
+    console.log(`Toast: [${type}] ${msg}`);
   };
 
   useEffect(() => {
@@ -44,45 +44,35 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // Check for GitHub OAuth code
     const params = new URLSearchParams(window.location.search);
-    const code = params.get("code");
-
-    if (code && user) {
-      // Avoid double processing
-      if (window.githubProcessing) return;
-      window.githubProcessing = true;
-
-      // Clear code from URL immediately to prevent re-trigger
-      window.history.replaceState({}, document.title, window.location.pathname);
-
-      showToast("Linking GitHub account...", "info");
-
-      // Call backend to exchange code
-      import("./services/api").then(({ default: api }) => {
-        api.linkGitHub(user.id, code)
-          .then(res => {
-            showToast("GitHub Connected Successfully!", "success");
-            // Update profile with new connection status
-            saveProfile({ ...profileData, githubProfile: res.data });
-          })
-          .catch(err => {
-            console.error("GitHub Link Error:", err);
-            showToast("Failed to link GitHub: " + err.message, "error");
-          })
-          .finally(() => {
-            window.githubProcessing = false;
-          });
-      });
+    if (params.has("code")) {
+      setPage("github-callback");
     }
-  }, [user]); // Depends on user being logged in
+  }, []);
 
   const handleLogin = (u) => {
-    console.log("✅ User logged in:", u);
-    setUser(u);
-    localStorage.setItem("ka_user", JSON.stringify(u));
-    // Requirement: after login always go to profile page
-    setPage("dashboard"); // Changed from profile to dashboard
+    console.log("✅ User logged in. Raw user object:", u);
+
+    // Log GitHub user data if available
+    if (u.profile && u.profile.githubProfile) {
+      console.log("GitHub User Data:", {
+        username: u.profile.githubProfile.username,
+        email: u.email, // Assuming the email is on the main user object
+        // Note: Password is not available through GitHub OAuth
+      });
+    }
+
+    const userOnly = { ...u };
+    delete userOnly.profile;
+    setUser(userOnly);
+    localStorage.setItem("ka_user", JSON.stringify(userOnly));
+
+    if (u.profile) {
+      setProfileData(u.profile);
+      localStorage.setItem("ka_profile", JSON.stringify(u.profile));
+    }
+
+    setPage("dashboard");
     showToast(`Welcome back ${u.name || ''}`, 'success');
   };
 
@@ -90,9 +80,10 @@ function App() {
     console.log("✅ User registered:", u);
     setUser(u);
     localStorage.setItem("ka_user", JSON.stringify(u));
-    // Requirement: after sign up go to onboarding page
-    setPage("onboarding");
-    showToast('Registration successful. Please complete onboarding.', 'success');
+    // In a real app, you might want an onboarding flow.
+    // For now, just go to the dashboard.
+    setPage("dashboard");
+    showToast('Registration successful!', 'success');
   };
 
   const handleLogout = () => {
@@ -109,6 +100,11 @@ function App() {
     setPage("dashboard");
     showToast('Profile saved', 'success');
   };
+  
+  const handleSelectMission = (mission) => {
+    setSelectedMission(mission);
+    setPage("missionDetail");
+  }
 
   return (
     <div className="ka-app">
@@ -120,14 +116,14 @@ function App() {
       {/* Professional Theme Toggle */}
       {page !== "landing" && (
         <button
-          className={`ka-theme-toggle ${darkMode ? 'ka-theme-toggle--dark' : 'ka-theme-toggle--light'}`}
-          onClick={() => setDarkMode(s => !s)}
+          className={`ka-theme-toggle ${
+            darkMode ? "ka-theme-toggle--dark" : "ka-theme-toggle--light"
+          }`}
+          onClick={() => setDarkMode((s) => !s)}
           title="Toggle theme"
           aria-label="Toggle dark/light theme"
         >
-          <div className="ka-theme-toggle__icon">
-            {darkMode ? "🌙" : "🌞"}
-          </div>
+          <div className="ka-theme-toggle__icon">{darkMode ? "🌙" : "🌞"}</div>
         </button>
       )}
 
@@ -139,50 +135,75 @@ function App() {
       )}
 
       {/* Main Application Container */}
-      <main className={`ka-main ${page === "landing" ? 'ka-main--landing' : 'ka-main--app'}`}>
-        {page === "landing" && <LandingPage onNavigate={setPage} darkMode={darkMode} setDarkMode={setDarkMode} />}
-        {page === "login" && <Login onLogin={handleLogin} setPage={setPage} showToast={showToast} />}
-        {page === "register" && <Register onRegister={handleRegister} setPage={setPage} showToast={showToast} />}
-        {page === "onboarding" && <Onboarding initial={profileData} onComplete={saveProfile} showToast={showToast} setPage={setPage} />}
-        {page === "profile" && <Profile user={user} profile={profileData} setProfile={saveProfile} darkMode={darkMode} showToast={showToast} />}
-        {page === "editProfile" && <EditProfile user={user} profile={profileData} setProfile={saveProfile} darkMode={darkMode} showToast={showToast} setPage={setPage} />}
-
+      <main
+        className={`ka-main ${
+          page === "landing" ? "ka-main--landing" : "ka-main--app"
+        }`}
+      >
+        {page === "landing" && (
+          <LandingPage
+            onNavigate={setPage}
+            darkMode={darkMode}
+            setDarkMode={setDarkMode}
+          />
+        )}
+        {page === "login" && (
+          <Login
+            onLogin={handleLogin}
+            setPage={setPage}
+            showToast={showToast}
+          />
+        )}
+        {page === "register" && (
+          <Register
+            onRegister={handleRegister}
+            setPage={setPage}
+            showToast={showToast}
+          />
+        )}
+        {page === "profile" && (
+          <Profile
+            user={user}
+            profile={profileData}
+            setProfile={saveProfile}
+            darkMode={darkMode}
+            showToast={showToast}
+          />
+        )}
+        {page === "editProfile" && (
+          <EditProfile
+            user={user}
+            profile={profileData}
+            setProfile={saveProfile}
+            darkMode={darkMode}
+            showToast={showToast}
+            setPage={setPage}
+          />
+        )}
+        {page === "github-callback" && (
+          <GitHubCallback
+            onLogin={handleLogin}
+            setPage={setPage}
+            showToast={showToast}
+          />
+        )}
         {/* NEW KODRA ROUTES */}
-        {page === "dashboard" && <Dashboard profile={profileData} />}
-        {page === "missions" && <Missions profile={profileData} />}
-        {page === "analysis" && <Dashboard profile={profileData} />}  {/* Reusing Dashboard for now */}
-        {page === "references" && <References />}
+        {page === "dashboard" && <CodeHealthDashboard profile={profileData} />}
+        {page === "missions" && (
+          <MissionsList
+            profile={profileData}
+            onSelectMission={handleSelectMission}
+          />
+        )}
+        {page === "missionDetail" && (
+          <MissionDetail mission={selectedMission} />
+        )}
+        {page === "analysis" && <CodeHealthDashboard profile={profileData} />}{" "}
+        {/* Reusing Dashboard for now */}
         {page === "chat" && <Chat profile={profileData} darkMode={darkMode} />}
       </main>
-      {/* Toast Container */}
-      <div style={toastContainerStyle} aria-live="polite" aria-atomic="true">
-        {toasts.map(t => (
-          <div key={t.id} style={{ ...toastStyle, borderLeft: `4px solid ${t.type === 'error' ? '#dc2626' : t.type === 'success' ? '#16a34a' : '#0ea5e9'}` }}>
-            <span style={{ fontWeight: 600 }}>{t.type.toUpperCase()}: </span>{t.msg}
-          </div>
-        ))}
-      </div>
     </div>
   );
 }
 
 export default App;
-
-const toastContainerStyle = {
-  position: 'fixed',
-  top: 16,
-  right: 16,
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 8,
-  zIndex: 9999
-};
-const toastStyle = {
-  background: '#ffffff',
-  color: '#0f172a',
-  padding: '10px 14px',
-  borderRadius: 8,
-  boxShadow: '0 4px 12px rgba(0,0,0,0.12)',
-  fontSize: 14,
-  maxWidth: 320
-};

@@ -88,6 +88,39 @@ class ApiService {
     }
   }
 
+  async loginWithGitHub(code) {
+    try {
+      const response = await this.apiFetch(`/auth/github/callback?code=${code}`, {
+        method: 'GET', // Or POST, depending on the backend implementation
+        headers: { 'Accept': 'application/json' },
+      });
+      const data = await response.json();
+      if (data.token) localStorage.setItem('authToken', data.token);
+      console.log('✅ GitHub Login successful:', data);
+      return data;
+    } catch (error) {
+        console.error('❌ GitHub Login API error:', error.message);
+        console.warn("⚠️ GitHub Login API unreachable. Switching to MOCK MODE.");
+        const mockUser = {
+            user: {
+              id: 998,
+              name: 'GitHub User',
+              email: 'github.user@example.com',
+              role: 'STUDENT'
+            },
+            token: 'mock-jwt-token-github-456',
+            profile: {
+              id: 998,
+              githubProfile: { username: 'github-user', avatarUrl: 'https://github.com/github.png' },
+              skillsAssessment: [{ skill: 'JavaScript', rating: 9 }, { skill: 'Python', rating: 6 }],
+              riasecScores: { realistic: 70, investigative: 90, artistic: 40, social: 30, enterprising: 50, conventional: 60 }
+            }
+        };
+        localStorage.setItem('authToken', mockUser.token);
+        return mockUser;
+    }
+  }
+
   async getCurrentUser(email) {
     if (!email) throw new Error('Email required to fetch current user in mock mode');
     const resp = await this.apiFetch(`/auth/me?email=${encodeURIComponent(email)}`, {

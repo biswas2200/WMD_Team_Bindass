@@ -1,10 +1,25 @@
 import React from 'react';
+import GitHubConnect from './GitHubConnect';
 
 export default function Dashboard({ profile }) {
+    const githubUsername = profile?.githubProfile?.username;
+
     return (
         <div style={{ padding: '40px', maxWidth: '1200px', margin: '0 auto' }}>
-            <h1>Repo Health Dashboard</h1>
-            <p>Connect a repository to see your code analysis stats, security vulnerabilities, and quality metrics.</p>
+            {githubUsername ? (
+                <h1>Welcome, {githubUsername}!</h1>
+            ) : (
+                <h1>Repo Health Dashboard</h1>
+            )}
+            
+            {githubUsername ? (
+                 <p>Here's an analysis of your repositories, showing security vulnerabilities, and quality metrics.</p>
+            ) : (
+                <div>
+                    <p>Connect a repository to see your code analysis stats, security vulnerabilities, and quality metrics.</p>
+                    <GitHubConnect connected={false} />
+                </div>
+            )}
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px', marginTop: '40px' }}>
                 <div style={cardStyle}>

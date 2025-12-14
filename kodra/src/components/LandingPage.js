@@ -129,7 +129,7 @@ export default function LandingPage({ onNavigate, darkMode, setDarkMode }) {
             onClick={() => onNavigate('login')}
             style={navLoginButtonStyle}
           >
-            {t('auth.login', 'Sign In')}
+            Login
           </button>
         </div>
       </nav>
@@ -151,12 +151,12 @@ export default function LandingPage({ onNavigate, darkMode, setDarkMode }) {
               >
                 🚀 {t('landing.hero.cta', 'Start Analyzing')}
               </button>
-              <button
+              {/* <button
                 onClick={() => onNavigate('login')}
                 style={secondaryButtonStyle}
               >
                 👤 {t('auth.login', 'Sign In')}
-              </button>
+              </button> */}
             </div>
 
             {/* Quick Stats */}

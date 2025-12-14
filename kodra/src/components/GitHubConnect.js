@@ -1,7 +1,7 @@
 import React from 'react';
 
 const GitHubConnect = ({ onConnect, connected = false, githubUsername }) => {
-    const CLIENT_ID = process.env.REACT_APP_GITHUB_CLIENT_ID || 'Ov23liy5ZfHjgE892y06'; // Fallback or env
+    const CLIENT_ID = process.env.REACT_APP_GITHUB_CLIENT_ID || 'Ov23limNpjuZg3xiJqyH'; // Fallback or env
     const REDIRECT_URI = window.location.origin; // Redirects back to same page
 
     const handleConnect = () => {
