@@ -81,9 +81,18 @@ public class MissionService {
 
         log.info("Sending to AI Judge. Original Code is empty (TODO), Fixed Code is empty (TODO).");
 
-        Map<String, Object> judgeResult = pythonAIIntegrationService.evaluateCodeFix(
-            originalCode, fixedCode, issueDescription
-        );
+        Map<String, Object> judgeResult;
+        try {
+            judgeResult = pythonAIIntegrationService.evaluateCodeFix(
+                originalCode, fixedCode, issueDescription
+            );
+        } catch (Exception e) {
+            log.warn("AI Service unavailable for judging, using fallback: {}", e.getMessage());
+            judgeResult = Map.of(
+                "properly_fixed", false,
+                "reason", "AI Service Unavailable - Please try again later"
+            );
+        }
 
         // Update mission status based on judgeResult
         if ((Boolean) judgeResult.getOrDefault("properly_fixed", false)) {

@@ -2,604 +2,198 @@
 // Fully updated to work with deployed Spring Boot backend
 
 // Environment-based configuration
-const SPRING_BOOT_BASE_URL = process.env.REACT_APP_API_BASE || 'http://localhost:8080/api';
-const PYTHON_AI_BASE_URL = process.env.REACT_APP_AI_BASE || '';
+const SPRING_BOOT_BASE_URL = 'http://localhost:8081/api';
 
 class ApiService {
   constructor() {
     this.baseUrl = SPRING_BOOT_BASE_URL;
     console.log('🚀 Kodra.ai API Service initialized');
     console.log('📡 Spring Boot Backend:', this.baseUrl);
-    if (PYTHON_AI_BASE_URL) console.log('🤖 Python AI Backend:', PYTHON_AI_BASE_URL);
+  }
+
+  getAuthHeaders() {
+    const token = localStorage.getItem('authToken');
+    return token ? { 'Authorization': `Bearer ${token}` } : {};
   }
 
   async apiFetch(endpoint, options = {}) {
-    const fullUrl = `${this.baseUrl}${endpoint}`;
-    console.log('📤 API Request:', options.method || 'GET', fullUrl);
-    const response = await fetch(fullUrl, options);
-    if (!response.ok) {
-      const text = await response.text().catch(() => '');
-      throw new Error(`HTTP ${response.status}: ${response.statusText} - ${text}`);
-    }
-    return response;
-  }
-  // ---------------- Authentication ----------------
-  async login(credentials) {
-    try {
-      const response = await this.apiFetch('/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(credentials),
-      });
+    // Ensure endpoint starts with /
+    const safeEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+    const fullUrl = `${this.baseUrl}${safeEndpoint}`;
 
-      const data = await response.json();
-      if (data.token) localStorage.setItem('authToken', data.token);
-      console.log('✅ Login successful:', data);
-      // Fetch user + profile if available (mock /auth/me uses email query)
-      if (data.user && data.user.email) {
-        const token = localStorage.getItem('authToken');
+    // Merge headers with Auth
+    const headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      ...this.getAuthHeaders(),
+      ...options.headers
+    };
+
+    console.log(`📤 API Request: ${options.method || 'GET'} ${fullUrl}`);
+
+    try {
+      const response = await fetch(fullUrl, { ...options, headers });
+
+      if (!response.ok) {
+        const text = await response.text();
+        let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
         try {
-          const meResp = await this.apiFetch(`/auth/me?email=${encodeURIComponent(data.user.email)}`, {
-            method: 'GET',
-            headers: { 'Accept': 'application/json', 'Authorization': token ? `Bearer ${token}` : undefined }
-          });
-          const meData = await meResp.json();
-          data.profile = meData.profile || {};
+          const jsonError = JSON.parse(text);
+          errorMessage = jsonError.message || jsonError.error || errorMessage;
         } catch (e) {
-          console.warn('⚠️ Unable to fetch /auth/me profile via email query:', e.message);
-          // Attempt bearer-only resolution if first attempt failed
-          if (token) {
-            try {
-              const bearerResp = await this.apiFetch('/auth/me', {
-                method: 'GET',
-                headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` }
-              });
-              const bearerData = await bearerResp.json();
-              data.profile = bearerData.profile || data.profile || {};
-            } catch (e2) {
-              console.warn('⚠️ Bearer token /auth/me fallback failed:', e2.message);
-            }
-          }
+          // If not JSON, use text
+          if (text) errorMessage = text;
         }
+        throw new Error(errorMessage);
       }
-      return data;
+
+      // Return 204 No Content as null
+      if (response.status === 204) return null;
+
+      return response.json();
     } catch (error) {
-      console.error('❌ Login API error:', error.message);
-
-      // MOCK MODE FALLBACK
-      console.warn("⚠️ Backend unreachable. Switching to MOCK MODE.");
-      const mockUser = {
-        user: {
-          id: 999,
-          name: 'Demo Student',
-          email: credentials.email,
-          role: 'STUDENT'
-        },
-        token: 'mock-jwt-token-123',
-        profile: {
-          id: 999,
-          githubProfile: { username: 'demo-user', avatarUrl: 'https://github.com/ghost.png' },
-          skillsAssessment: [{ skill: 'Java', rating: 8 }, { skill: 'React', rating: 7 }],
-          riasecScores: { realistic: 60, investigative: 80, artistic: 50, social: 40, enterprising: 30, conventional: 70 }
-        }
-      };
-      localStorage.setItem('authToken', mockUser.token);
-      return mockUser;
-    }
-  }
-
-  async loginWithGitHub(code) {
-    try {
-      const response = await this.apiFetch(`/auth/github/callback?code=${code}`, {
-        method: 'GET', // Or POST, depending on the backend implementation
-        headers: { 'Accept': 'application/json' },
-      });
-      const data = await response.json();
-      if (data.token) localStorage.setItem('authToken', data.token);
-      console.log('✅ GitHub Login successful:', data);
-      return data;
-    } catch (error) {
-        console.error('❌ GitHub Login API error:', error.message);
-        console.warn("⚠️ GitHub Login API unreachable. Switching to MOCK MODE.");
-        const mockUser = {
-            user: {
-              id: 998,
-              name: 'GitHub User',
-              email: 'github.user@example.com',
-              role: 'STUDENT'
-            },
-            token: 'mock-jwt-token-github-456',
-            profile: {
-              id: 998,
-              githubProfile: { username: 'github-user', avatarUrl: 'https://github.com/github.png' },
-              skillsAssessment: [{ skill: 'JavaScript', rating: 9 }, { skill: 'Python', rating: 6 }],
-              riasecScores: { realistic: 70, investigative: 90, artistic: 40, social: 30, enterprising: 50, conventional: 60 }
-            }
-        };
-        localStorage.setItem('authToken', mockUser.token);
-        return mockUser;
-    }
-  }
-
-  async getCurrentUser(email) {
-    if (!email) throw new Error('Email required to fetch current user in mock mode');
-    const resp = await this.apiFetch(`/auth/me?email=${encodeURIComponent(email)}`, {
-      method: 'GET',
-      headers: { 'Accept': 'application/json' }
-    });
-    return resp.json();
-  }
-
-  // GitHub Integration
-  async linkGitHub(userId, code) {
-    const response = await this.apiFetch(`/github/link?userId=${userId}&code=${code}`, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-      }
-    });
-    return response.json();
-  }
-  async register(userData) {
-    try {
-      const response = await this.apiFetch('/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(userData),
-      });
-
-      const result = await response.json();
-      console.log("✅ Registration successful:", result);
-      return result;
-    } catch (error) {
-      console.error("❌ Registration API error:", error.message);
+      console.error(`❌ API Error [${options.method || 'GET'} ${endpoint}]:`, error.message);
       throw error;
     }
+  }
+
+  // ---------------- Authentication ----------------
+  async login(credentials) {
+    return this.apiFetch('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify(credentials)
+    }).then(data => {
+      if (data.token) {
+        localStorage.setItem('authToken', data.token);
+        // Store basic user info if present
+        if (data.username) {
+          localStorage.setItem('ka_user', JSON.stringify({ name: data.username, ...data }));
+        }
+      }
+      return data;
+    });
+  }
+
+  async register(userData) {
+    return this.apiFetch('/auth/register', {
+      method: 'POST',
+      body: JSON.stringify(userData)
+    });
   }
 
   async studentRegister(studentData) {
-    try {
-      const response = await this.apiFetch('/students/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(studentData),
-      });
-
-      const result = await response.json();
-      console.log("✅ Student Registration Response:", result);
-
-      // Extract token if available in the response
-      if (result.data && result.data.token) {
-        localStorage.setItem('authToken', result.data.token);
-      }
-
-      return result;
-    } catch (error) {
-      console.error("❌ Student Registration API error:", error.message);
-      throw error;
-    }
+    // Mapping "studentRegister" to normal register for now, 
+    // or if you have a specific student endpoint, use it.
+    // Based on docs, /auth/register is the main entry.
+    return this.register(studentData);
   }
 
-  async updateStudentProfile(studentId, profileData) {
-    try {
-      const response = await this.apiFetch(`/students/${studentId}/profile`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-        },
-        body: JSON.stringify(profileData),
-      });
-
-      const result = await response.json();
-      console.log("✅ Profile Update Response:", result);
-      return result;
-    } catch (error) {
-      console.error("❌ Profile Update API error:", error.message);
-      throw error;
-    }
+  async getCurrentUser() {
+    return this.apiFetch('/users/profile');
   }
 
-  // ----------- Student Profile CRUD (Mock Mode) -----------
-  async createStudentProfile(studentId, profileData = {}) {
-    const response = await this.apiFetch(`/students/${studentId}/profile`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('authToken') || ''}`
-      },
-      body: JSON.stringify(profileData)
-    });
-    return response.json();
-  }
-
-  async replaceStudentProfile(studentId, profileData = {}) {
-    const response = await this.apiFetch(`/students/${studentId}/profile/replace`, {
+  async updateStudentProfile(userId, profileData) {
+    // Assuming userId is ignored if using /users/profile which uses token
+    return this.apiFetch('/users/profile', {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('authToken') || ''}`
-      },
       body: JSON.stringify(profileData)
     });
-    return response.json();
   }
 
-  async patchStudentProfile(studentId, partialProfile = {}) {
-    const response = await this.apiFetch(`/students/${studentId}/profile`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('authToken') || ''}`
-      },
-      body: JSON.stringify(partialProfile)
+  // Alias for GitHubCallback.js (which expects this method name)
+  async getStudentCombined(userId) {
+    // We defer to the standard profile endpoint
+    return this.apiFetch(`/users/profile`);
+  }
+
+  // ---------------- GitHub Integration ----------------
+  async linkGitHub(userId, code) {
+    // The backend expects query params: ?userId=...&code=...
+    return this.apiFetch(`/github/link?userId=${userId}&code=${code}`, {
+      method: 'POST'
     });
-    return response.json();
   }
 
-  async deleteStudentProfile(studentId) {
-    const response = await this.apiFetch(`/students/${studentId}/profile`, {
-      method: 'DELETE',
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('authToken') || ''}`
-      }
-    });
-    return response.json();
-  }
+  // Adapter method for GitHubCallback.js
+  async loginWithGitHub(code) {
+    // Check if user is already logged in (Linking Flow)
+    const userId = localStorage.getItem('studentId');
 
-  async getStudentProfile(studentId) {
-    const response = await this.apiFetch(`/students/${studentId}/profile`, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('authToken') || ''}`
-      }
-    });
-    return response.json();
-  }
-
-  // Combined student retrieval (basic + profile) using new backend endpoint
-  async getStudentCombined(studentId) {
-    const response = await this.apiFetch(`/students/${studentId}`, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('authToken') || ''}`
-      }
-    });
-    return response.json();
-  }
-
-  // ----- Assessment History (Mock Mode) -----
-  async addAssessmentRun(studentId, runPayload) {
-    const response = await this.apiFetch(`/students/${studentId}/assessments`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('authToken') || ''}`
-      },
-      body: JSON.stringify(runPayload || {})
-    });
-    return response.json();
-  }
-  async listAssessmentRuns(studentId) {
-    const response = await this.apiFetch(`/students/${studentId}/assessments`, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('authToken') || ''}`
-      }
-    });
-    return response.json();
-  }
-
-  async listStudentProfiles() {
-    const response = await this.apiFetch('/students/profiles', {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('authToken') || ''}`
-      }
-    });
-    return response.json();
-  }
-
-  // ---------------- Python AI APIs ----------------
-
-  async sendChatMessage(message, profileData = null) {
-    if (!PYTHON_AI_BASE_URL) throw new Error("Python AI backend URL not set");
-
-    const endpoint = `${PYTHON_AI_BASE_URL}/api/v1/chat`;
-    console.log("📤 API Request: POST", endpoint);
-
-    try {
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ message, profile: profileData }),
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Chat API failed: ${response.status} - ${errorText}`);
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error("❌ Chat API error:", error.message);
-      throw error;
+    if (userId) {
+      console.log("🔗 Linking GitHub to existing user:", userId);
+      return this.linkGitHub(userId, code)
+        .then(profile => {
+          // Transform to LoginResponse format expected by GitHubCallback
+          return {
+            user: { id: userId, name: localStorage.getItem('studentEmail') }, // Minimal mock
+            profile: profile, // The actual GitHub profile
+            token: localStorage.getItem('authToken'),
+            type: 'Bearer',
+            isLinking: true // Flag for UI if needed
+          };
+        });
     }
+
+    // Future: Implement actual GitHub Login (Auth) here if backend supports it
+    // For now, throw helpful error
+    throw new Error("Please log in with email/password first, then Connect GitHub from Dashboard.");
+  }
+
+  // ---------------- Missions ----------------
+  async getMissions(userId) {
+    return this.apiFetch(`/kodra/missions/${userId}`);
+  }
+
+  async startMission(missionId) {
+    return this.apiFetch(`/kodra/missions/${missionId}/start`, {
+      method: 'POST'
+    });
+  }
+
+  // ---------------- Chat & AI Assistant (via Gateway) ----------------
+  async sendChatMessage(message, profileData = null) {
+    // Routes to Backend -> Python Service
+    return this.apiFetch('/chat/message', {
+      method: 'POST',
+      body: JSON.stringify({ message })
+      // Note: Backend adds profile/user context via token/DB lookup
+    });
   }
 
   async getCareerAnalysis(profileData) {
-    if (!PYTHON_AI_BASE_URL) throw new Error("Python AI backend URL not set");
-
-    const endpoint = `${PYTHON_AI_BASE_URL}/api/v1/careers/analyze`;
-
-    try {
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(profileData),
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Career analysis failed: ${response.status} - ${errorText}`);
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error("❌ Career analysis API error:", error.message);
-      throw error;
-    }
+    // This maps to "Assist" or a specific analysis endpoint.
+    // If "Assist" is the generic Q&A:
+    return this.apiFetch('/kodra/assist', {
+      method: 'POST',
+      body: JSON.stringify({
+        question: "Analyze my career profile",
+        context: {
+          programmingLanguage: "N/A",
+          fileContent: JSON.stringify(profileData)
+        }
+      })
+    });
   }
 
-  // ---------------- Kodra.ai APIs ----------------
-
-  async getCareerRecommendations(profileData) {
-    const endpoint = `${SPRING_BOOT_BASE_URL}/careers/recommendations`;
-
-    try {
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('authToken') || ''}`,
-        },
-        body: JSON.stringify(profileData),
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Career recommendations failed: ${response.status} - ${errorText}`);
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error("❌ Career recommendations API error:", error.message);
-      throw error;
-    }
-  }
-
-  async getColleges(filters = {}) {
-    const params = new URLSearchParams(filters);
-    const endpoint = `${SPRING_BOOT_BASE_URL}/colleges?${params}`;
-
-    try {
-      const response = await fetch(endpoint, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('authToken') || ''}`,
-        },
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Get colleges failed: ${response.status} - ${errorText}`);
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error("❌ Get colleges API error:", error.message);
-      throw error;
-    }
+  // ---------------- Kodra Specifics ----------------
+  async getColleges() {
+    // Placeholder or implement if backend has it
+    return [];
   }
 
   async getMentors() {
-    const endpoint = `${SPRING_BOOT_BASE_URL}/mentors`;
-
-    try {
-      const response = await fetch(endpoint, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('authToken') || ''}`,
-        },
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Get mentors failed: ${response.status} - ${errorText}`);
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error("❌ Get mentors API error:", error.message);
-      throw error;
-    }
-  }
-
-  async bookMentorSession(bookingData) {
-    const endpoint = `${SPRING_BOOT_BASE_URL}/mentors/book`;
-
-    try {
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('authToken') || ''}`,
-        },
-        body: JSON.stringify(bookingData),
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Book mentor failed: ${response.status} - ${errorText}`);
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error("❌ Book mentor API error:", error.message);
-      throw error;
-    }
-  }
-
-  // --- Mentor Extended APIs (Mock Mode) ---
-  async getMentor(mentorId) {
-    const endpoint = `${SPRING_BOOT_BASE_URL}/mentors/${mentorId}`;
-    const response = await fetch(endpoint, {
-      method: 'GET',
-      headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('authToken') || ''}` }
-    });
-    if (!response.ok) {
-      throw new Error(`Get mentor failed: ${response.status}`);
-    }
-    return response.json();
-  }
-
-  async getMentorAvailability(mentorId) {
-    const endpoint = `${SPRING_BOOT_BASE_URL}/mentors/${mentorId}/availability`;
-    const response = await fetch(endpoint, {
-      method: 'GET',
-      headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('authToken') || ''}` }
-    });
-    if (!response.ok) throw new Error(`Get availability failed: ${response.status}`);
-    return response.json();
-  }
-
-  async createMentorBooking(mentorId, { date, studentId, studentEmail }) {
-    const endpoint = `${SPRING_BOOT_BASE_URL}/mentors/${mentorId}/bookings`;
-    const payload = { date, studentId, studentEmail };
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('authToken') || ''}`,
-      },
-      body: JSON.stringify(payload)
-    });
-    if (!response.ok) {
-      const text = await response.text();
-      throw new Error(`Create mentor booking failed: ${response.status} - ${text}`);
-    }
-    return response.json();
-  }
-
-  async listMentorBookings(mentorId) {
-    const endpoint = `${SPRING_BOOT_BASE_URL}/mentors/${mentorId}/bookings`;
-    const response = await fetch(endpoint, {
-      method: 'GET',
-      headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('authToken') || ''}` }
-    });
-    if (!response.ok) throw new Error(`List mentor bookings failed: ${response.status}`);
-    return response.json();
-  }
-
-  async listStudentBookings(studentId) {
-    const endpoint = `${SPRING_BOOT_BASE_URL}/mentors/students/${studentId}/bookings`;
-    const response = await fetch(endpoint, {
-      method: 'GET',
-      headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('authToken') || ''}` }
-    });
-    if (!response.ok) throw new Error(`List student bookings failed: ${response.status}`);
-    return response.json();
-  }
-  // Booking detail
-  async getBookingDetail(bookingId) {
-    const endpoint = `${SPRING_BOOT_BASE_URL}/mentors/bookings/${bookingId}`;
-    const response = await fetch(endpoint, {
-      method: 'GET',
-      headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('authToken') || ''}` }
-    });
-    if (!response.ok) throw new Error(`Get booking detail failed: ${response.status}`);
-    return response.json();
-  }
-
-  async submitAssessment(assessmentData) {
-    const endpoint = `${SPRING_BOOT_BASE_URL}/assessments/submit`;
-
-    try {
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('authToken') || ''}`,
-        },
-        body: JSON.stringify(assessmentData),
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Assessment submission failed: ${response.status} - ${errorText}`);
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error("❌ Assessment API error:", error.message);
-      throw error;
-    }
+    // Placeholder
+    return [];
   }
 
   // ---------------- Health Checks ----------------
-
-  async checkSpringBootHealth() {
-    const endpoint = `${SPRING_BOOT_BASE_URL}/actuator/health`; // actuator endpoint
+  async checkBackendHealth() {
     try {
-      const response = await fetch(endpoint, { method: 'GET' });
-      return response.ok;
-    } catch (error) {
-      console.error("❌ Spring Boot Backend: Disconnected -", error.message);
+      await this.apiFetch('/chat/health'); // Using chat health as it checks AI too
+      return true;
+    } catch (e) {
       return false;
     }
-  }
-
-  async checkPythonAIHealth() {
-    if (!PYTHON_AI_BASE_URL) return false;
-    try {
-      const response = await fetch(`${PYTHON_AI_BASE_URL}/health`, { method: 'GET' });
-      return response.ok;
-    } catch (error) {
-      console.error("❌ Python AI Backend: Disconnected -", error.message);
-      return false;
-    }
-  }
-
-  async checkAllServices() {
-    console.log("🔍 Checking all backend services...");
-    const [springBoot, pythonAI] = await Promise.all([
-      this.checkSpringBootHealth(),
-      this.checkPythonAIHealth()
-    ]);
-
-    const status = { springBoot, pythonAI, allHealthy: springBoot && pythonAI };
-    console.log("📊 Backend Status Summary:", status);
-    return status;
   }
 }
 

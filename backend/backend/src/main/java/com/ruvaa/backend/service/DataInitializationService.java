@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-@ConditionalOnProperty(name = "firebase.enabled", havingValue = "true", matchIfMissing = false)
 public class DataInitializationService implements CommandLineRunner {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MissionGeneratorService missionGeneratorService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -29,7 +29,9 @@ public class DataInitializationService implements CommandLineRunner {
             demoUser.setName("Demo User");
             demoUser.setEmail("demo@ruvaa.com");
             demoUser.setLocation("Srinagar, J&K");
-            userRepository.save(demoUser);
+            User savedUser = userRepository.save(demoUser);
+            
+            missionGeneratorService.generateMissionsForUser(savedUser, java.util.Collections.emptyList());
         }
     }
 }

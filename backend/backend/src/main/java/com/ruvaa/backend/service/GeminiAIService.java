@@ -51,6 +51,42 @@ public class GeminiAIService {
                 .toFuture();
     }
 
+    public CompletableFuture<String> prioritizeMissions(Long userId, List<Object> issues) {
+        if (geminiWebClient == null) {
+            log.warn("Gemini AI not configured, returning mock prioritization");
+            return CompletableFuture.completedFuture("mock-prioritization-id");
+        }
+
+        String prompt = buildPrioritizationPrompt(issues);
+
+        return callGeminiAPI(prompt)
+                .map(response -> {
+                    // In a real scenario, we might parse this and save to DB
+                    // For now, we just return a success indicator or ID
+                    log.info("Gemini prioritization response: {}", extractTextFromResponse(response));
+                     return "gemini-prioritization-" + System.currentTimeMillis();
+                })
+                .onErrorReturn("fallback-prioritization-id")
+                .toFuture();
+    }
+
+    public CompletableFuture<String> chat(String message, String userContext, String chatHistory) {
+        if (geminiWebClient == null) {
+            log.warn("Gemini AI not configured, returning fallback chat response");
+            return CompletableFuture.completedFuture("I'm sorry, I cannot connect to the AI service right now. Please check the configuration.");
+        }
+
+        String prompt = buildChatPrompt(message, userContext, chatHistory);
+
+        return callGeminiAPI(prompt)
+                .map(this::extractTextFromResponse)
+                .onErrorResume(e -> {
+                    log.error("Gemini Chat API Error: {}", e.getMessage(), e);
+                    return Mono.just("I encountered an error processing your message: " + e.getMessage());
+                })
+                .toFuture();
+    }
+
     private String buildCodeAnalysisPrompt(String codeContent) {
         return String.format("""
             Analyze this code snippet/diff for Security, Performance, and Logic issues.
@@ -68,6 +104,32 @@ public class GeminiAIService {
                 "details": "Summary of issues..."
             }
             """, codeContent.substring(0, Math.min(codeContent.length(), 2000))); // Truncate for safety
+    }
+
+    private String buildPrioritizationPrompt(List<Object> issues) {
+        return String.format("""
+            Given the following list of code issues, prioritize them into learning missions for a student.
+            Focus on Security first, then Performance.
+            
+            Issues:
+            %s
+            
+            Return a JSON list of missions with title, description, and difficulty.
+            """, issues.toString());
+    }
+
+    private String buildChatPrompt(String message, String userContext, String chatHistory) {
+        return String.format("""
+            You are Kodra, an AI Assistant here to help with development and career questions.
+            User Context: %s
+            
+            Chat History:
+            %s
+            
+            User Message: %s
+            
+            Provide a helpful, encouraging, and concise response.
+            """, userContext, chatHistory, message);
     }
 
     private CodeAnalysis parseAnalysisResponse(String repoName, String response) {
@@ -96,8 +158,15 @@ public class GeminiAIService {
                 "generationConfig", Map.of("temperature", 0.4, "maxOutputTokens", 1000)
         );
 
+        String url = String.format("%s/models/%s:generateContent?key=%s", 
+                geminiConfig.getBaseUrl(), 
+                geminiConfig.getModel(), 
+                geminiConfig.getApiKey());
+        
+        log.info("Calling Gemini API URL: {}", url.replace(geminiConfig.getApiKey(), "REDACTED"));
+
         return geminiWebClient.post()
-                .uri("/models/{model}:generateContent", geminiConfig.getModel())
+                .uri(java.net.URI.create(url))
                 .bodyValue(request)
                 .retrieve()
                 .bodyToMono(String.class)

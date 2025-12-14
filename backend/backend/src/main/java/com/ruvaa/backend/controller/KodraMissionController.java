@@ -8,34 +8,46 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/kodra/missions")
+@RequestMapping("/kodra/missions")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
-public class MissionController {
+public class KodraMissionController {
 
     private final MissionService missionService;
 
+    @PostConstruct
+    public void init() {
+        log.info("KodraMissionController initialized and mapped to /api/kodra/missions");
+    }
+
+    @GetMapping("/ping")
+    public ResponseEntity<String> ping() {
+        log.info("Ping received");
+        return ResponseEntity.ok("pong");
+    }
+
     @GetMapping("/{userId}")
     public ResponseEntity<ApiResponse<List<Mission>>> getMissions(@PathVariable Long userId) {
+        log.info("Fetching missions for user: {}", userId);
         List<Mission> missions = missionService.getMissionsForUser(userId);
         return ResponseEntity.ok(ApiResponse.success("Missions retrieved successfully", missions));
     }
 
     @GetMapping("/{userId}/{missionId}")
     public ResponseEntity<ApiResponse<Mission>> getMissionDetail(@PathVariable Long userId, @PathVariable Long missionId) {
-        Mission mission = missionService.getMission(missionId); // Assuming MissionService has getMission method
+        Mission mission = missionService.getMission(missionId);
         return ResponseEntity.ok(ApiResponse.success("Mission detail retrieved successfully", mission));
     }
 
     @PostMapping("/{missionId}/start")
     public ResponseEntity<ApiResponse<Map<String, Object>>> startMission(@PathVariable Long missionId) {
-        // Assuming MissionService has a startMission method
         missionService.startMission(missionId);
         return ResponseEntity.ok(ApiResponse.success("Mission started", Map.of("success", true, "startedAt", LocalDateTime.now())));
     }

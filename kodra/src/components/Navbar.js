@@ -2,12 +2,30 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from 'react-i18next';
 import GlobalSearchBar from "./GlobalSearchBar";
 import Logo from "./Logo";
+import ApiService from "../services/api";
 
 export default function Navbar({ setPage, onLogout, profile }) {
   const { t, i18n } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [langInfo, setLangInfo] = useState({ flag: '🌐', code: (i18n.language || 'en').split('-')[0] });
+  const [backendStatus, setBackendStatus] = useState('checking'); // checking, up, down
   const displayName = profile?.name || profile?.fullName || "Guest";
+
+  useEffect(() => {
+    const checkHealth = async () => {
+      try {
+        const isUp = await ApiService.checkBackendHealth();
+        setBackendStatus(isUp ? 'up' : 'down');
+      } catch (e) {
+        setBackendStatus('down');
+      }
+    };
+
+    checkHealth();
+    const interval = setInterval(checkHealth, 30000); // Check every 30s
+    return () => clearInterval(interval);
+  }, []);
+
   // Update language badge when language changes
   useEffect(() => {
     const code = (i18n.language || 'en').split('-')[0];
@@ -66,6 +84,9 @@ export default function Navbar({ setPage, onLogout, profile }) {
           <GlobalSearchBar onNavigate={handleNavigation} />
         </div>
 
+
+
+        // ... inside return ...
         {/* Desktop Navigation */}
         <div className="nav-desktop">
           <div className="nav-links">
@@ -83,6 +104,15 @@ export default function Navbar({ setPage, onLogout, profile }) {
           </div>
 
           <div className="nav-user">
+            {/* Health Indicator */}
+            <div
+              className={`health-badge ${backendStatus}`}
+              title={backendStatus === 'up' ? "Backend Online" : "Backend Offline/Starting..."}
+            >
+              <span className="health-dot"></span>
+              {backendStatus === 'down' && <span className="health-text">Offline</span>}
+            </div>
+
             {/* <div className="nav-lang-badge" title={`Language: ${langInfo.code.toUpperCase()}`}>
               <span className="nav-lang-flag">{langInfo.flag}</span>
               <span className="nav-lang-code">{langInfo.code.toUpperCase()}</span>
@@ -317,6 +347,47 @@ export default function Navbar({ setPage, onLogout, profile }) {
         .profile-avatar:hover {
           transform: scale(1.1);
           border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .health-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+            font-size: 12px;
+            font-weight: 600;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+        
+        .health-badge.up {
+            border-color: #4caf50;
+            background: rgba(76, 175, 80, 0.2);
+        }
+        
+        .health-badge.down {
+            border-color: #f44336;
+            background: rgba(244, 67, 54, 0.2);
+        }
+
+        .health-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #ccc;
+        }
+
+        .health-badge.up .health-dot {
+            background-color: #4caf50;
+            box-shadow: 0 0 8px #4caf50;
+        }
+
+        .health-badge.down .health-dot {
+            background-color: #f44336;
+            box-shadow: 0 0 8px #f44336;
         }
 
         /* Mobile Navigation */

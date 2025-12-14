@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
 
 @Data
@@ -17,29 +16,20 @@ public class CodeAnalysis {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne 
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "repo_name")
-    private String repoName;
+    private String repoName; // Added for MissionService compatibility
 
-    @Column(name = "logic_score")
-    private Integer logicScore;
-
-    @Column(name = "security_score")
-    private Integer securityScore;
-
-    @Column(name = "performance_score")
-    private Integer performanceScore;
-    
-    @Column(name = "best_practices_score")
-    private Integer bestPracticesScore;
+    private int logicScore;
+    private int securityScore;
+    private int performanceScore;
+    private int bestPracticesScore; // Added for GeminiAIService
 
     @Column(columnDefinition = "TEXT")
-    private String details_json; // Store full analysis blob
+    private String details_json; // Renamed from criticalIssuesJson to match GeminiAIService
 
-    @Column(name = "analyzed_at")
     private LocalDateTime analyzedAt;
 
     @PrePersist

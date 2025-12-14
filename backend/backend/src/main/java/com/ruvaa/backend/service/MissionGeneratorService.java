@@ -16,16 +16,23 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MissionGeneratorService {
 
-    private final KestraIntegrationService kestraIntegrationService;
+    private final GeminiAIService geminiAIService;
     private final MissionRepository missionRepository;
 
     public List<Mission> generateMissionsForUser(User user, List<CodeAnalysis> analysisResults) {
         log.info("Generating missions for user: {}", user.getId());
 
         // In a real implementation, we would extract the issues from the analysisResults
-        // and send them to Kestra. For now, we'll send an empty list.
+        // and send them to Gemini. For now, we'll send an empty list.
         List<Object> issues = Collections.emptyList();
-        String executionId = kestraIntegrationService.triggerMissionPrioritizer(user.getId(), issues);
+        
+        try {
+            // Call Gemini to prioritize missions
+            String resultId = geminiAIService.prioritizeMissions(user.getId(), issues).join();
+            log.info("Mission prioritization completed with ID: {}", resultId);
+        } catch (Exception e) {
+            log.error("Failed to prioritize missions with Gemini", e);
+        }
 
         // We would then poll for the result and create missions based on the prioritized list.
         // For now, we'll just create a mock mission.

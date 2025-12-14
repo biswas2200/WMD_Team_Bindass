@@ -23,6 +23,7 @@ public class ProfileController {
             ProfileResponse profile = profileService.getProfile(username);
             return ResponseEntity.ok(profile);
         } catch (Exception e) {
+            org.slf4j.LoggerFactory.getLogger(ProfileController.class).error("Error getting profile", e);
             return ResponseEntity.badRequest().build();
         }
     }

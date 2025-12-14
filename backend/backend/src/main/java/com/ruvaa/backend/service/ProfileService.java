@@ -15,14 +15,14 @@ public class ProfileService {
 
     private final UserRepository userRepository;
 
-    public ProfileResponse getProfile(String email) {
-        User user = userRepository.findByEmail(email)
+    public ProfileResponse getProfile(String username) {
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return mapToResponse(user);
     }
 
-    public ProfileResponse updateProfile(String email, ProfileRequest request) {
-        User user = userRepository.findByEmail(email)
+    public ProfileResponse updateProfile(String username, ProfileRequest request) {
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         
         if (request.getName() != null) user.setName(request.getName());

@@ -15,3 +15,4 @@ sqlalchemy
 flask-sqlalchemy
 google-generativeai
 oumi
+kestra-client

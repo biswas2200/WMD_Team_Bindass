@@ -7,7 +7,7 @@ export default function Register({ onRegister, setPage, showToast }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  
+
   // Additional Required Fields
   const [phoneNumber, setPhoneNumber] = useState("");
   const [age, setAge] = useState("");
@@ -18,7 +18,7 @@ export default function Register({ onRegister, setPage, showToast }) {
   const [stream, setStream] = useState("");
   const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [agreeToPrivacyPolicy, setAgreeToPrivacyPolicy] = useState(false);
-  
+
   const [loading, setLoading] = useState(false);
 
   // Education level options
@@ -39,10 +39,10 @@ export default function Register({ onRegister, setPage, showToast }) {
 
   // Indian states
   const indianStates = [
-    "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", 
-    "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", 
-    "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", 
-    "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", 
+    "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat",
+    "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh",
+    "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab",
+    "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh",
     "Uttarakhand", "West Bengal", "Delhi", "Jammu and Kashmir", "Ladakh"
   ];
 
@@ -52,36 +52,36 @@ export default function Register({ onRegister, setPage, showToast }) {
     console.log("📝 Student Registration form submitted");
 
     // Basic validation
-    if (!fullName || !email || !password || !confirmPassword || !phoneNumber || !age || 
-        !city || !state || !educationLevel || !institutionName || !stream) {
-  showToast && showToast("Please fill in all required fields", 'error');
+    if (!fullName || !email || !password || !confirmPassword || !phoneNumber || !age ||
+      !city || !state || !educationLevel || !institutionName || !stream) {
+      showToast && showToast("Please fill in all required fields", 'error');
       return;
     }
 
     if (password !== confirmPassword) {
-  showToast && showToast("Passwords do not match", 'error');
+      showToast && showToast("Passwords do not match", 'error');
       return;
     }
 
     if (password.length < 8) {
-  showToast && showToast("Password must be at least 8 characters long and contain uppercase, lowercase, digit, and special character", 'error');
+      showToast && showToast("Password must be at least 8 characters long and contain uppercase, lowercase, digit, and special character", 'error');
       return;
     }
 
     // Phone number validation
     if (!/^[6-9]\d{9}$/.test(phoneNumber)) {
-  showToast && showToast("Please enter a valid Indian mobile number (10 digits starting with 6-9)", 'error');
+      showToast && showToast("Please enter a valid Indian mobile number (10 digits starting with 6-9)", 'error');
       return;
     }
 
     // Age validation
     if (parseInt(age) < 13 || parseInt(age) > 35) {
-  showToast && showToast("Age must be between 13 and 35", 'error');
+      showToast && showToast("Age must be between 13 and 35", 'error');
       return;
     }
 
     if (!agreeToTerms || !agreeToPrivacyPolicy) {
-  showToast && showToast("Please agree to the Terms of Service and Privacy Policy", 'error');
+      showToast && showToast("Please agree to the Terms of Service and Privacy Policy", 'error');
       return;
     }
 
@@ -90,16 +90,14 @@ export default function Register({ onRegister, setPage, showToast }) {
       const studentData = {
         email: email.trim(),
         password,
-        fullName: fullName.trim(),
-        phoneNumber: phoneNumber.trim(),
+        name: fullName.trim(), // Backend expects "name"
+        phone: phoneNumber.trim(), // Backend expects "phone"
         age: parseInt(age),
-        city: city.trim(),
-        state,
-        educationLevel,
-        institutionName: institutionName.trim(),
-        stream: stream.trim(),
-        agreeToTerms,
-        agreeToPrivacyPolicy
+        location: `${city.trim()}, ${state}`, // Backend has single "location" string
+        education: `${educationLevel} at ${institutionName.trim()}`, // Backend has "education" string
+        interests: stream.trim(), // Mapping stream to interests for now
+        // Frontend specific fields not in User entity are removed to avoid errors
+        // or should be handled if Backend is updated. For now, we map to existing User fields.
       };
 
       console.log("📤 Sending student registration request to backend:", studentData);
@@ -113,26 +111,26 @@ export default function Register({ onRegister, setPage, showToast }) {
         const rawProfile = student.profile || {};
         const displayName = student.name || student.fullName || fullName.trim();
         // Merge name/email for display convenience
-        const mergedProfile = { 
-          name: displayName, 
-          email: student.email, 
-          ...rawProfile 
+        const mergedProfile = {
+          name: displayName,
+          email: student.email,
+          ...rawProfile
         };
         localStorage.setItem('ka_profile', JSON.stringify(mergedProfile));
-        onRegister({ 
-          id: student.id, 
-          name: displayName, 
+        onRegister({
+          id: student.id,
+          name: displayName,
           email: student.email,
           type: 'student',
           profile: mergedProfile
         });
-  showToast && showToast("Registration successful! Welcome to Kodra.ai!", 'success');
+        showToast && showToast("Registration successful! Welcome to Kodra.ai!", 'success');
       } else {
-  showToast && showToast("Registration completed but response format is unexpected. Please try logging in.", 'warning');
+        showToast && showToast("Registration completed but response format is unexpected. Please try logging in.", 'warning');
       }
     } catch (error) {
       console.error("❌ Student registration failed:", error);
-  showToast && showToast("Registration failed: " + (error.message || "Unknown error"), 'error');
+      showToast && showToast("Registration failed: " + (error.message || "Unknown error"), 'error');
     } finally {
       setLoading(false);
     }
@@ -237,7 +235,7 @@ export default function Register({ onRegister, setPage, showToast }) {
               aria-label="educationLevel"
               value={educationLevel}
               onChange={(e) => setEducationLevel(e.target.value)}
-              style={{...selectStyle, marginBottom: '12px'}}
+              style={{ ...selectStyle, marginBottom: '12px' }}
               required
             >
               <option value="">Select Education Level *</option>
@@ -398,91 +396,91 @@ export default function Register({ onRegister, setPage, showToast }) {
 }
 
 // Styles
-const container = { 
-  display: "flex", 
-  flexDirection: "row", 
-  width: "100%", 
-  maxWidth: 1200, 
-  minHeight: "90vh", 
-  margin: "20px auto", 
-  borderRadius: 20, 
-  overflow: "hidden", 
-  boxShadow: "0 20px 60px rgba(2,6,23,0.15)", 
-  background: "white" 
+const container = {
+  display: "flex",
+  flexDirection: "row",
+  width: "100%",
+  maxWidth: 1200,
+  minHeight: "90vh",
+  margin: "20px auto",
+  borderRadius: 20,
+  overflow: "hidden",
+  boxShadow: "0 20px 60px rgba(2,6,23,0.15)",
+  background: "white"
 };
 
-const imageWrapper = { 
-  flex: 1, 
-  position: "relative", 
+const imageWrapper = {
+  flex: 1,
+  position: "relative",
   minWidth: 0,
-  minHeight: "600px" 
+  minHeight: "600px"
 };
 
-const imageStyle = { 
-  width: "100%", 
-  height: "100%", 
-  objectFit: "cover", 
-  display: "block" 
+const imageStyle = {
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
+  display: "block"
 };
 
-const imageOverlay = { 
-  position: "absolute", 
-  top: 0, 
-  left: 0, 
-  width: "100%", 
-  height: "100%", 
-  background: "linear-gradient(135deg, rgba(0,180,216,0.8), rgba(0,119,182,0.8))", 
-  display: "flex", 
-  flexDirection: "column", 
-  justifyContent: "center", 
-  alignItems: "center", 
-  color: "white", 
-  textAlign: "center", 
-  padding: 40 
+const imageOverlay = {
+  position: "absolute",
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%",
+  background: "linear-gradient(135deg, rgba(0,180,216,0.8), rgba(0,119,182,0.8))",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  color: "white",
+  textAlign: "center",
+  padding: 40
 };
 
-const overlayTitle = { 
-  margin: 0, 
-  fontSize: 32, 
+const overlayTitle = {
+  margin: 0,
+  fontSize: 32,
   fontWeight: 700,
-  marginBottom: 15 
+  marginBottom: 15
 };
 
-const overlayText = { 
-  fontSize: 18, 
+const overlayText = {
+  fontSize: 18,
   opacity: 0.95,
-  lineHeight: 1.5 
+  lineHeight: 1.5
 };
 
-const formWrapper = { 
-  flex: 1.2, 
-  padding: "30px 40px", 
-  display: "flex", 
-  flexDirection: "column", 
-  minWidth: 0, 
+const formWrapper = {
+  flex: 1.2,
+  padding: "30px 40px",
+  display: "flex",
+  flexDirection: "column",
+  minWidth: 0,
   boxSizing: "border-box",
   overflowY: "auto",
   maxHeight: "90vh"
 };
 
-const formTitle = { 
-  margin: 0, 
-  color: "#0077b6", 
+const formTitle = {
+  margin: 0,
+  color: "#0077b6",
   fontSize: 28,
-  fontWeight: 700 
+  fontWeight: 700
 };
 
-const formSubtitle = { 
-  color: "#6c757d", 
+const formSubtitle = {
+  color: "#6c757d",
   marginBottom: 20,
-  fontSize: 16 
+  fontSize: 16
 };
 
-const formStyle = { 
-  display: "flex", 
-  flexDirection: "column", 
-  gap: 0, 
-  marginTop: 15 
+const formStyle = {
+  display: "flex",
+  flexDirection: "column",
+  gap: 0,
+  marginTop: 15
 };
 
 const sectionStyle = {
@@ -505,12 +503,12 @@ const formRowStyle = {
   marginBottom: 12
 };
 
-const inputStyle = { 
-  padding: "14px 16px", 
-  borderRadius: 12, 
-  border: "2px solid #e9ecef", 
-  background: "#fafbfc", 
-  color: "#212529", 
+const inputStyle = {
+  padding: "14px 16px",
+  borderRadius: 12,
+  border: "2px solid #e9ecef",
+  background: "#fafbfc",
+  color: "#212529",
   fontSize: 15,
   transition: "all 0.3s ease",
   flex: 1,
@@ -521,7 +519,7 @@ const inputStyle = {
   }
 };
 
-const selectStyle = { 
+const selectStyle = {
   ...inputStyle,
   cursor: "pointer"
 };
@@ -546,14 +544,14 @@ const checkboxStyle = {
   accentColor: "#00b4d8"
 };
 
-const btnStyle = { 
-  padding: "16px 20px", 
-  borderRadius: 12, 
-  border: "none", 
-  background: "linear-gradient(135deg, #00b4d8, #0077b6)", 
-  color: "white", 
-  fontWeight: 700, 
-  cursor: "pointer", 
+const btnStyle = {
+  padding: "16px 20px",
+  borderRadius: 12,
+  border: "none",
+  background: "linear-gradient(135deg, #00b4d8, #0077b6)",
+  color: "white",
+  fontWeight: 700,
+  cursor: "pointer",
   fontSize: 16,
   transition: "all 0.3s ease",
   marginTop: 10,
@@ -567,16 +565,16 @@ const btnStyle = {
   }
 };
 
-const linkContainer = { 
-  marginTop: 20, 
-  textAlign: "center", 
-  color: "#6c757d", 
-  fontSize: 14 
+const linkContainer = {
+  marginTop: 20,
+  textAlign: "center",
+  color: "#6c757d",
+  fontSize: 14
 };
 
-const linkStyle = { 
-  color: "#0077b6", 
-  fontWeight: 600, 
-  cursor: "pointer", 
-  textDecoration: "underline" 
+const linkStyle = {
+  color: "#0077b6",
+  fontWeight: 600,
+  cursor: "pointer",
+  textDecoration: "underline"
 };

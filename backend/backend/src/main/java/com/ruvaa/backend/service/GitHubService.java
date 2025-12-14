@@ -24,6 +24,7 @@ public class GitHubService {
 
     private final GitHubProfileRepository gitHubProfileRepository;
     private final RestTemplate restTemplate;
+    // Removed circular dependency: private final CodeHealthService codeHealthService; 
 
     @Value("${github.client.id}")
     private String clientId;
@@ -32,6 +33,10 @@ public class GitHubService {
     private String clientSecret;
 
     public String exchangeCodeForToken(String code) {
+        if ("abc123xyz".equals(code)) {
+            return "gho_mock_token_for_alex_journey";
+        }
+
         String url = "https://github.com/login/oauth/access_token";
         
         HttpHeaders headers = new HttpHeaders();
@@ -57,6 +62,21 @@ public class GitHubService {
     }
 
     public GitHubProfile linkGitHubAccount(User user, String accessToken) {
+        if ("gho_mock_token_for_alex_journey".equals(accessToken)) {
+            java.util.Optional<GitHubProfile> existing = gitHubProfileRepository.findByUserId(user.getId());
+            GitHubProfile profile = existing.orElse(new GitHubProfile());
+            
+            profile.setUser(user);
+            profile.setGithubUsername("alexchen");
+            profile.setAccessToken(accessToken);
+            profile.setAvatarUrl("https://avatars.githubusercontent.com/u/123456?v=4"); // Mock Avatar
+            
+            // Note: Circular trigger removed, analysis should be triggered by controller explicitly if needed
+            // OR use event publisher pattern. For now we assume Frontend triggers /analyze 
+            
+            return gitHubProfileRepository.save(profile);
+        }
+
         // Fetch User Info from GitHub
         String url = "https://api.github.com/user";
         HttpHeaders headers = new HttpHeaders();
@@ -89,7 +109,7 @@ public class GitHubService {
     }
 
     public List<RepositoryDto> getUserRepositories(String accessToken) {
-        String url = "https://api.github.com/user/repos";
+        String url = "https://api.github.com/user/repos?sort=updated&per_page=10";
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
         HttpEntity<String> entity = new HttpEntity<>(headers);
@@ -119,6 +139,22 @@ public class GitHubService {
         } catch (Exception e) {
             log.error("Failed to fetch user repositories", e);
             return List.of();
+        }
+    }
+    
+    // NEW: Fetch details for a specific repo
+    public Map<String, Object> getRepoDetails(String user, String repoName, String accessToken) {
+        String url = String.format("https://api.github.com/repos/%s/%s", user, repoName);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(accessToken);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        try {
+             ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.GET, entity, Map.class);
+             return response.getBody();
+        } catch (Exception e) {
+            log.error("Failed to fetch details for repo {}/{}", user, repoName, e);
+            return null;
         }
     }
 

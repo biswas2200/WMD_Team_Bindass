@@ -72,6 +72,11 @@ public class PythonAIIntegrationService {
         request.put("message", message);
         if (profileData != null) {
             request.put("profile", profileData);
+            if (profileData instanceof com.ruvaa.backend.entity.User) {
+                request.put("session_id", ((com.ruvaa.backend.entity.User) profileData).getId().toString());
+            } else if (profileData instanceof Map && ((Map) profileData).containsKey("id")) {
+                request.put("session_id", ((Map) profileData).get("id").toString());
+            }
         }
 
         HttpHeaders headers = new HttpHeaders();

@@ -34,8 +34,13 @@ export default function Login({ onLogin, setPage, showToast }) {
 
     setLoading(true);
     try {
-      console.log("📤 Sending login request to backend for:", email);
-      const response = await ApiService.login({ email, password });
+      // Backend expects { email, password } based on AuthController/LoginRequest
+      const credentials = {
+        email: email.trim(),
+        password: password.trim()
+      };
+      console.log("📤 Sending login request:", { email: credentials.email }); // Don't log password
+      const response = await ApiService.login(credentials);
       console.log("✅ Login successful:", response);
 
       // Handle the login response with token and user data

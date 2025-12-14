@@ -5,7 +5,7 @@ import ApiService from "../services/api";
 
 export default function Chat({ profile, darkMode }) {
   const [messages, setMessages] = useState([
-    { from: "bot", text: "Hi! I'm your career assistant. Ask me anything about your career journey!" },
+    { from: "bot", text: "Hi! I'm your developer assistant. Ask me anything about code or your career journey!" },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -29,7 +29,7 @@ export default function Chat({ profile, darkMode }) {
       console.log("✅ Chat response received:", response);
 
       // Extract AI response from backend wrapper
-      let aiResponse = response.data?.response || response.response || response.message || "I'm here to help with your career questions!";
+      let aiResponse = response.data?.response || response.response || response.message || response.text || "I'm here to help you with your development and career questions!";
 
       // Clean up response: remove literal \n and ensure proper line breaks for markdown
       aiResponse = aiResponse

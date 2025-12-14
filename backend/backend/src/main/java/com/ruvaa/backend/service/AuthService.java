@@ -42,6 +42,17 @@ public class AuthService {
             throw new RuntimeException("Email already exists");
         }
 
+        // Fix: Auto-generate username from email if not provided to satisfy DB constraint
+        if (user.getUsername() == null || user.getUsername().trim().isEmpty()) {
+            user.setUsername(user.getEmail());
+        }
+
+        // Ensure username is also unique (though email is unique, safe to check)
+        if (userRepository.existsByUsername(user.getUsername())) {
+             // Fallback: append timestamp if email-as-username somehow clashes (unlikely given email unique)
+             user.setUsername(user.getEmail() + "_" + System.currentTimeMillis());
+        }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         
         // ensure default timestamps

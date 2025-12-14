@@ -7,13 +7,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/github")
+@RequestMapping("/github")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*") // Allow frontend access
 public class GitHubController {
 
     private final GitHubService gitHubService;
     private final com.ruvaa.backend.repository.UserRepository userRepository;
+    private final com.ruvaa.backend.service.MissionGeneratorService missionGeneratorService;
 
     @PostMapping("/link")
     public ResponseEntity<GitHubProfile> linkGitHubAccount(@RequestParam Long userId, @RequestParam String code) {
@@ -29,6 +30,10 @@ public class GitHubController {
 
         // 3. Link Account
         GitHubProfile profile = gitHubService.linkGitHubAccount(user, accessToken);
+        
+        // 4. Trigger Mission Generation (Kodra Analysis)
+        missionGeneratorService.generateMissionsForUser(user, java.util.Collections.emptyList());
+        
         return ResponseEntity.ok(profile);
     }
 }

@@ -31,6 +31,7 @@ public class ChatController {
     private final ChatMessageRepository chatMessageRepository;
     private final UserRepository userRepository;
     private final PythonAIIntegrationService pythonAIIntegrationService;
+    private final com.ruvaa.backend.service.GeminiAIService geminiAIService;
 
     @PostMapping("/message")
     public ResponseEntity<SimpleChatResponse> sendMessage(@Valid @RequestBody ChatRequest request,
@@ -41,9 +42,27 @@ public class ChatController {
 
             String aiResponse;
             try {
-                aiResponse = pythonAIIntegrationService.sendChatMessage(request.getMessage(), user);
+                // Legacy: pythonAIIntegrationService.sendChatMessage(request.getMessage(), user);
+                // New: Use Gemini AI directly with Context
+                String userContext = user != null ? "User: " + user.getName() + ", Interests: " + user.getInterests() : "Anonymous User";
+                
+                // Build Chat History (Last 10 messages)
+                String chatHistory = "";
+                if (user != null) {
+                    List<ChatMessage> history = chatMessageRepository.findByUserIdOrderByCreatedAtAsc(user.getId());
+                    // Keep only last 10 to avoid token limits
+                    if (history.size() > 10) {
+                        history = history.subList(history.size() - 10, history.size());
+                    }
+                    chatHistory = history.stream()
+                        .map(msg -> (Boolean.TRUE.equals(msg.getIsFromUser()) ? "User: " : "Kodra: ") + msg.getMessage())
+                        .collect(Collectors.joining("\n"));
+                }
+
+                aiResponse = geminiAIService.chat(request.getMessage(), userContext, chatHistory).join();
             } catch (Exception e) {
-                aiResponse = "Thanks for your message: \"" + request.getMessage() + "\". I'm here to help with your career questions. Could you tell me more about your interests or goals?";
+                log.error("AI Service failed: {}", e.getMessage());
+                aiResponse = "I'm having trouble connecting to my brain right now. Please try again later.";
             }
 
             if (user != null) {

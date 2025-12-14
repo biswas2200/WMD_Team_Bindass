@@ -25,6 +25,10 @@ import java.time.Duration;
 public class GeminiConfig {
 
     private String apiKey;
+    
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey != null ? apiKey.trim() : null;
+    }
     private String baseUrl;
     private String model;
     private Integer maxTokens;

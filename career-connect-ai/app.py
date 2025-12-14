@@ -153,7 +153,108 @@ def judge():
     else:
         grade = "F"
 
-    return jsonify({"grade": grade, "reasons": reasons}), 200
+# ---------- API V1 Endpoints for Backend Integration ----------
+from services.chat_service import ChatService
+from core.gemini_client import GeminiClient
+import asyncio
+
+chat_service = ChatService()
+gemini_client = GeminiClient()
+
+@app.route('/api/v1/assist', methods=['POST'])
+def api_v1_assist():
+    """
+    Endpoint for specific code assistance/Q&A.
+    Input: { "question": "...", "codeContext": "...", "language": "..." }
+    """
+    data = request.json or {}
+    question = data.get("question", "")
+    
+    # Handle Java AssistRequest DTO structure (nested context)
+    context = data.get("context", {})
+    if isinstance(context, dict):
+        code_context = context.get("fileContent", "") or context.get("selectedCode", "")
+        language = context.get("programmingLanguage", "java")
+    else:
+        # Fallback for flat structure if used elsewhere
+        code_context = data.get("codeContext", "")
+        language = data.get("language", "java")
+    
+    # Construct a prompt for Gemini
+    prompt = f"""
+    You are an expert coding assistant for {language}.
+    
+    User Question: {question}
+    
+    Code Context:
+    ```{language}
+    {code_context}
+    ```
+    
+    Please provide:
+    1. A clear explanation.
+    2. A code example fixing or improving the code.
+    3. A brief practice exercise if applicable.
+    """
+    
+    try:
+        # Use GeminiClient to get response
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        response_text = loop.run_until_complete(
+            gemini_client.generate_content(prompt)
+        )
+        
+        # Parse or format response
+        # We'll just return the text description and code logic
+        # For a structured AssistResponse, ideally we'd ask for JSON or parse it.
+        # For now, we wrap the text.
+        
+        return jsonify({
+            "explanation": response_text,
+            "codeExample": "", # Extracted code could go here
+            "practiceExercise": "Try implementing valid error handling based on the explanation.",
+            "estimatedReadTime": 5,
+            "relatedResources": []
+        })
+    except Exception as e:
+        print(f"Error in /api/v1/assist: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/v1/chat', methods=['POST'])
+def api_v1_chat():
+    """
+    Endpoint for conversational chat.
+    Input: { "message": "...", "profile": { ... }, "session_id": "..." }
+    """
+    data = request.json or {}
+    message = data.get("message", "")
+    profile = data.get("profile", {})
+    session_id = data.get("session_id", str(profile.get("id", "default")))
+    
+    try:
+        response_data = chat_service.process_chat_message(
+            message=message,
+            session_id=session_id,
+            student_profile=profile
+        )
+        # Backend expects simple { "response": "..." } wrapper or similar?
+        # PythonAIIntegrationService expects { "response": "..." }
+        return jsonify({
+            "response": response_data.get("ai_response", ""),
+            "context": response_data
+        })
+    except Exception as e:
+        print(f"Error in /api/v1/chat: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/v1/judge', methods=['POST'])
+def api_v1_judge():
+    """
+    Wrapper for existing judge logic to match /api/v1 path.
+    """
+    return judge()
+
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
