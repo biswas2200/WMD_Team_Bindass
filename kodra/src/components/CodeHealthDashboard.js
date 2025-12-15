@@ -6,6 +6,25 @@ import apiService from '../services/api'; // Import shared API service
 export default function Dashboard({ profile }) {
     const { t } = useTranslation();
     const githubUsername = profile?.githubProfile?.username;
+    const [repos, setRepos] = React.useState([]);
+    const [loading, setLoading] = React.useState(false);
+
+    const handleAnalyze = (repoName) => {
+        alert(`Analyzing ${repoName}... (This is a mock action)`);
+    };
+
+    React.useEffect(() => {
+        if (githubUsername) {
+            setLoading(true);
+            // Simulate fetching repos
+            setTimeout(() => {
+                setRepos([
+                    { id: 1, name: 'example-repo', html_url: '#', description: 'Sample repository', language: 'JavaScript', stargazers_count: 5, forks_count: 2, updated_at: new Date().toISOString() }
+                ]);
+                setLoading(false);
+            }, 1000);
+        }
+    }, [githubUsername]);
 
     return (
         <div style={{ padding: '40px', maxWidth: '1200px', margin: '0 auto' }}>
