@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import ApiService from "../services/api";
 
 export default function Register({ onRegister, setPage, showToast }) {
+  const { t } = useTranslation();
   // Basic Information
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -142,26 +144,26 @@ export default function Register({ onRegister, setPage, showToast }) {
       <div style={imageWrapper}>
         <img src="/login.jpg" alt="Kodra.ai" style={imageStyle} />
         <div style={imageOverlay}>
-          <h2 style={overlayTitle}>Join Kodra.ai</h2>
-          <p style={overlayText}>Start your personalized development journey today.</p>
+          <h2 style={overlayTitle}>{t('auth.register.title', 'Join Kodra.ai')}</h2>
+          <p style={overlayText}>{t('auth.register.subtitle', 'Start your personalized development journey today.')}</p>
         </div>
       </div>
 
       {/* Right Form */}
       <div style={formWrapper}>
-        <h1 style={formTitle}>Create Account</h1>
-        <p style={formSubtitle}>Sign up to discover your developer path</p>
+        <h1 style={formTitle}>{t('auth.register.title', 'Create Account')}</h1>
+        <p style={formSubtitle}>{t('auth.register.subtitle', 'Sign up to discover your developer path')}</p>
 
         <form onSubmit={submit} style={formStyle}>
           {/* Basic Information Section */}
           <div style={sectionStyle}>
-            <h3 style={sectionHeaderStyle}>Personal Information</h3>
+            <h3 style={sectionHeaderStyle}>{t('auth.register.header_personal', 'Personal Information')}</h3>
             <div style={formRowStyle}>
               <input
                 aria-label="fullName"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                placeholder="Full Name *"
+                placeholder={t('auth.register.full_name_placeholder', 'Full Name *')}
                 style={inputStyle}
                 required
               />
@@ -170,7 +172,7 @@ export default function Register({ onRegister, setPage, showToast }) {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email Address *"
+                placeholder={t('auth.register.email_placeholder', 'Email Address *')}
                 style={inputStyle}
                 required
               />
@@ -181,7 +183,7 @@ export default function Register({ onRegister, setPage, showToast }) {
                 type="tel"
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
-                placeholder="Mobile Number (10 digits) *"
+                placeholder={t('auth.register.phone_placeholder', 'Mobile Number (10 digits) *')}
                 style={inputStyle}
                 maxLength="10"
                 pattern="[6-9][0-9]{9}"
@@ -192,7 +194,7 @@ export default function Register({ onRegister, setPage, showToast }) {
                 type="number"
                 value={age}
                 onChange={(e) => setAge(e.target.value)}
-                placeholder="Age *"
+                placeholder={t('auth.register.age_placeholder', 'Age *')}
                 style={inputStyle}
                 min="13"
                 max="35"
@@ -203,13 +205,13 @@ export default function Register({ onRegister, setPage, showToast }) {
 
           {/* Location Information */}
           <div style={sectionStyle}>
-            <h3 style={sectionHeaderStyle}>Location</h3>
+            <h3 style={sectionHeaderStyle}>{t('auth.register.header_location', 'Location')}</h3>
             <div style={formRowStyle}>
               <input
                 aria-label="city"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
-                placeholder="City *"
+                placeholder={t('auth.register.city_placeholder', 'City *')}
                 style={inputStyle}
                 required
               />
@@ -220,7 +222,7 @@ export default function Register({ onRegister, setPage, showToast }) {
                 style={selectStyle}
                 required
               >
-                <option value="">Select State *</option>
+                <option value="">{t('auth.register.select_state', 'Select State *')}</option>
                 {indianStates.map(stateName => (
                   <option key={stateName} value={stateName}>{stateName}</option>
                 ))}
@@ -230,7 +232,7 @@ export default function Register({ onRegister, setPage, showToast }) {
 
           {/* Education Information */}
           <div style={sectionStyle}>
-            <h3 style={sectionHeaderStyle}>Highest Education Details</h3>
+            <h3 style={sectionHeaderStyle}>{t('auth.register.header_education', 'Highest Education Details')}</h3>
             <select
               aria-label="educationLevel"
               value={educationLevel}
@@ -238,7 +240,7 @@ export default function Register({ onRegister, setPage, showToast }) {
               style={{ ...selectStyle, marginBottom: '12px' }}
               required
             >
-              <option value="">Select Education Level *</option>
+              <option value="">{t('auth.register.select_education', 'Select Education Level *')}</option>
               {educationLevels.map(level => (
                 <option key={level.value} value={level.value}>{level.label}</option>
               ))}
@@ -248,7 +250,7 @@ export default function Register({ onRegister, setPage, showToast }) {
                 aria-label="institutionName"
                 value={institutionName}
                 onChange={(e) => setInstitutionName(e.target.value)}
-                placeholder="Institution Name *"
+                placeholder={t('auth.register.institution_placeholder', 'Institution Name *')}
                 style={inputStyle}
                 required
               />
@@ -256,7 +258,7 @@ export default function Register({ onRegister, setPage, showToast }) {
                 aria-label="stream"
                 value={stream}
                 onChange={(e) => setStream(e.target.value)}
-                placeholder="Stream/Field of Study *"
+                placeholder={t('auth.register.stream_placeholder', 'Stream/Field of Study *')}
                 style={inputStyle}
                 required
               />
@@ -265,12 +267,12 @@ export default function Register({ onRegister, setPage, showToast }) {
 
           {/* Security Section */}
           <div style={sectionStyle}>
-            <h3 style={sectionHeaderStyle}>Account Security</h3>
+            <h3 style={sectionHeaderStyle}>{t('auth.register.header_security', 'Account Security')}</h3>
             <input
               aria-label="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password (min 8 chars with special chars) *"
+              placeholder={t('auth.register.password_placeholder', 'Password (min 8 chars with special chars) *')}
               type="password"
               style={inputStyle}
               required
@@ -279,7 +281,7 @@ export default function Register({ onRegister, setPage, showToast }) {
               aria-label="confirm-password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="Confirm Password *"
+              placeholder={t('auth.register.confirm_password_placeholder', 'Confirm Password *')}
               type="password"
               style={inputStyle}
               required
@@ -296,7 +298,7 @@ export default function Register({ onRegister, setPage, showToast }) {
                 style={checkboxStyle}
                 required
               />
-              I agree to the <span style={linkStyle}>Terms of Service</span>
+              {t('auth.register.agree_terms', 'I agree to the Terms of Service')}
             </label>
             <label style={checkboxLabelStyle}>
               <input
@@ -306,19 +308,19 @@ export default function Register({ onRegister, setPage, showToast }) {
                 style={checkboxStyle}
                 required
               />
-              I agree to the <span style={linkStyle}>Privacy Policy</span>
+              {t('auth.register.agree_privacy', 'I agree to the Privacy Policy')}
             </label>
           </div>
 
           <button type="submit" style={btnStyle} disabled={loading}>
-            {loading ? "Creating Account..." : "Create Student Account"}
+            {loading ? t('auth.register.signingup', "Creating Account...") : t('auth.register.signup', "Create Student Account")}
           </button>
         </form>
 
         <div style={linkContainer}>
-          Already have an account?{" "}
+          {t('auth.register.hasAccount', 'Already have an account?')} {" "}
           <span style={linkStyle} onClick={() => setPage("login")}>
-            Sign in
+            {t('auth.register.signin', 'Sign in')}
           </span>
         </div>
       </div>

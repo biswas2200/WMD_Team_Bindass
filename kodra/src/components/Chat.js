@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
+import { useTranslation } from "react-i18next";
 import ApiService from "../services/api";
 
 export default function Chat({ profile, darkMode }) {
+  const { t } = useTranslation();
   const [messages, setMessages] = useState([
-    { from: "bot", text: "Hi! I'm your developer assistant. Ask me anything about code or your career journey!" },
+    { from: "bot", text: t('chat.welcome', "Hi! I'm your career assistant. Ask me anything about your career journey!") },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -13,12 +15,22 @@ export default function Chat({ profile, darkMode }) {
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
 
+  // Update initial message when language changes
+  useEffect(() => {
+    setMessages(prev => {
+      if (prev.length === 1 && prev[0].from === 'bot') {
+        return [{ from: "bot", text: t('chat.welcome', "Hi! I'm your career assistant. Ask me anything about your career journey!") }];
+      }
+      return prev;
+    });
+  }, [t]);
+
   const send = async () => {
     if (!input.trim() || loading) return;
 
     const userMessage = input;
     const userMsg = { from: "user", text: userMessage };
-    setMessages((m) => [...m, userMsg, { from: "bot", text: "🤔 Thinking..." }]);
+    setMessages((m) => [...m, userMsg, { from: "bot", text: t('chat.thinking', "🤔 Thinking...") }]);
     setInput("");
     setLoading(true);
 
@@ -55,7 +67,7 @@ export default function Chat({ profile, darkMode }) {
         const newArr = [...m];
         newArr[newArr.length - 1] = {
           from: "bot",
-          text: "⚠️ Sorry, I can't connect to the AI backend right now. Please check that the Python AI service is running on port 5000. Error: " + error.message,
+          text: t('chat.backend_error', "⚠️ Sorry, I can't connect to the AI backend right now.") + " Error: " + error.message,
         };
         return newArr;
       });
@@ -242,7 +254,7 @@ export default function Chat({ profile, darkMode }) {
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Type a message..."
+          placeholder={t('chat.placeholder', "Type a message...")}
           style={{
             flex: 1, // input takes most of the width
             padding: 14,
@@ -270,7 +282,7 @@ export default function Chat({ profile, darkMode }) {
             transition: "all 0.3s ease",
           }}
         >
-          {loading ? "..." : "Send"}
+          {loading ? "..." : t('chat.send', "Send")}
         </button>
       </div>
 

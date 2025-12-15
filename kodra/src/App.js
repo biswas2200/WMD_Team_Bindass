@@ -4,6 +4,7 @@ import Register from "./components/Register";
 import Navbar from "./components/Navbar";
 import Profile from "./components/Profile";
 import EditProfile from "./components/EditProfile";
+import References from "./components/References";
 import Chat from "./components/Chat";
 import CodeHealthDashboard from "./components/CodeHealthDashboard";
 import MissionsList from "./components/MissionsList";
@@ -11,6 +12,7 @@ import MissionDetail from "./components/MissionDetail";
 import LandingPage from "./components/LandingPage";
 import LanguageSelector from "./components/LanguageSelector";
 import GitHubCallback from "./components/GitHubCallback";
+import CodeAnalysis from "./components/CodeAnalysis";
 import "./i18n";
 import "./global.css";
 
@@ -100,7 +102,7 @@ function App() {
     setPage("dashboard");
     showToast('Profile saved', 'success');
   };
-  
+
   const handleSelectMission = (mission) => {
     setSelectedMission(mission);
     setPage("missionDetail");
@@ -116,9 +118,8 @@ function App() {
       {/* Professional Theme Toggle */}
       {page !== "landing" && (
         <button
-          className={`ka-theme-toggle ${
-            darkMode ? "ka-theme-toggle--dark" : "ka-theme-toggle--light"
-          }`}
+          className={`ka-theme-toggle ${darkMode ? "ka-theme-toggle--dark" : "ka-theme-toggle--light"
+            }`}
           onClick={() => setDarkMode((s) => !s)}
           title="Toggle theme"
           aria-label="Toggle dark/light theme"
@@ -136,9 +137,8 @@ function App() {
 
       {/* Main Application Container */}
       <main
-        className={`ka-main ${
-          page === "landing" ? "ka-main--landing" : "ka-main--app"
-        }`}
+        className={`ka-main ${page === "landing" ? "ka-main--landing" : "ka-main--app"
+          }`}
       >
         {page === "landing" && (
           <LandingPage
@@ -198,8 +198,9 @@ function App() {
         {page === "missionDetail" && (
           <MissionDetail mission={selectedMission} />
         )}
-        {page === "analysis" && <CodeHealthDashboard profile={profileData} />}{" "}
+        {page === "analysis" && <CodeAnalysis />}
         {/* Reusing Dashboard for now */}
+        {page === "references" && <References />}
         {page === "chat" && <Chat profile={profileData} darkMode={darkMode} />}
       </main>
     </div>

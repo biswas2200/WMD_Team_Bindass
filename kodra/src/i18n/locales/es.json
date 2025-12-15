@@ -2,7 +2,7 @@
   "common": {
     "loading": "Cargando...",
     "error": "Error",
-    "success": "Éxito", 
+    "success": "Éxito",
     "cancel": "Cancelar",
     "save": "Guardar",
     "edit": "Editar",
@@ -16,24 +16,31 @@
     "submit": "Enviar",
     "refresh": "Actualizar"
   },
+  "footer": {
+    "tagline": "Empoderando a los desarrolladores para escribir mejor código a través de ideas impulsadas por IA y misiones gamificadas.",
+    "features": "Plataforma",
+    "resources": "Recursos",
+    "copyright": "Construido con ❤️ para desarrolladores."
+  },
   "navigation": {
     "profile": "Perfil",
-    "career": "Análisis", 
-    "recommendations": "Carreras",
-    "learning": "Aprendizaje",
-    "assessment": "Evaluación",
-    "chat": "IA Chat",
-    "colleges": "Universidades", 
+    "dashboard": "Tablero",
+    "missions": "Misiones",
+    "analysis": "Análisis de Código",
+    "references": "Referencias",
+    "chat": "Chat IA",
+    "colleges": "Universidades",
     "mentor": "Mentores",
-    "logout": "Cerrar sesión"
+    "blog": "Blog de Ingeniería",
+    "logout": "Cerrar Sesión"
   },
   "auth": {
     "login": {
-      "title": "Bienvenido de vuelta",
+      "title": "Bienvenido de nuevo",
       "subtitle": "Inicia sesión para comenzar tu viaje profesional",
-      "email": "Dirección de correo",
+      "email": "Correo Electrónico",
       "password": "Contraseña",
-      "signin": "Iniciar sesión",
+      "signin": "Iniciar Sesión",
       "signingin": "Iniciando sesión...",
       "noAccount": "¿No tienes una cuenta?",
       "signup": "Regístrate aquí",
@@ -41,159 +48,294 @@
       "tagline": "Tu viaje hacia un futuro más brillante comienza aquí."
     },
     "register": {
-      "title": "Únete a Kodra.ai",
-      "subtitle": "Crea tu cuenta para comenzar",
-      "name": "Nombre completo",
-      "email": "Dirección de correo",
-      "password": "Contraseña", 
-      "confirmPassword": "Confirmar contraseña",
-      "signup": "Crear cuenta",
-      "signingup": "Creando cuenta...",
+      "title": "Crear Cuenta",
+      "subtitle": "Regístrate para descubrir tu camino como desarrollador",
+      "header_personal": "Información Personal",
+      "header_location": "Ubicación",
+      "header_education": "Detalles de Educación",
+      "header_security": "Seguridad de la Cuenta",
+      "name": "Nombre Completo",
+      "full_name_placeholder": "Nombre Completo *",
+      "email": "Correo Electrónico",
+      "email_placeholder": "Correo Electrónico *",
+      "phone": "Número de Móvil",
+      "phone_placeholder": "Número de Móvil (10 dígitos) *",
+      "age": "Edad",
+      "age_placeholder": "Edad *",
+      "city": "Ciudad",
+      "city_placeholder": "Ciudad *",
+      "state": "Estado",
+      "select_state": "Seleccionar Estado *",
+      "education_level": "Nivel Educativo",
+      "select_education": "Seleccionar Nivel Educativo *",
+      "institution": "Nombre de la Institución",
+      "institution_placeholder": "Nombre de la Institución *",
+      "stream": "Rama",
+      "stream_placeholder": "Rama/Campo de Estudio *",
+      "password": "Contraseña",
+      "password_placeholder": "Contraseña (min 8 caracteres) *",
+      "confirmPassword": "Confirmar Contraseña",
+      "confirm_password_placeholder": "Confirmar Contraseña *",
+      "agree_terms": "Acepto los Términos de Servicio",
+      "agree_privacy": "Acepto la Política de Privacidad",
+      "signup": "Crear Cuenta de Estudiante",
+      "signingup": "Creando Cuenta...",
       "hasAccount": "¿Ya tienes una cuenta?",
-      "signin": "Inicia sesión aquí"
+      "signin": "Iniciar sesión"
     }
   },
   "onboarding": {
     "title": "Conozcámonos",
     "subtitle": "Ayúdanos a personalizar tu viaje profesional",
-    "personalInfo": "Información personal",
-    "name": "Nombre completo",
+    "personalInfo": "Información Personal",
+    "name": "Nombre Completo",
     "age": "Edad",
     "location": "Ubicación",
     "selectLocation": "Selecciona tu ubicación",
-    "education": "Educación", 
-    "currentLevel": "Nivel educativo actual",
-    "institution": "Nombre de institución/escuela",
-    "interests": "Intereses y objetivos",
-    "careerInterests": "Intereses profesionales",
-    "goals": "Tus objetivos", 
-    "complete": "Completar perfil",
+    "education": "Educación",
+    "currentLevel": "Nivel Educativo Actual",
+    "institution": "Nombre de la Institución/Escuela",
+    "interests": "Intereses y Metas",
+    "careerInterests": "Intereses Profesionales",
+    "goals": "Tus Metas",
+    "complete": "Completar Perfil",
     "completing": "Configurando tu perfil..."
   },
   "profile": {
-    "title": "Tu perfil",
-    "personalInfo": "Información personal",
+    "title": "Tu Perfil",
+    "personalInfo": "Información Personal",
     "education": "Educación",
     "interests": "Intereses",
-    "goals": "Objetivos",
-    "editProfile": "Editar perfil",
-    "saveChanges": "Guardar cambios",
+    "goals": "Metas",
+    "editProfile": "Editar Perfil",
+    "saveChanges": "Guardar Cambios",
     "lastUpdated": "Última actualización"
   },
   "career": {
-    "title": "Análisis de carrera",
+    "title": "Análisis de Carrera",
     "subtitle": "Descubre carreras que coincidan con tus habilidades e intereses",
-    "startAnalysis": "Iniciar análisis de carrera",
+    "startAnalysis": "Iniciar Análisis de Carrera",
     "analyzing": "Analizando tu perfil...",
-    "recommendations": "Recomendaciones de carrera", 
-    "skillGap": "Análisis de brechas de habilidades",
-    "learningPath": "Ruta de aprendizaje sugerida"
+    "recommendations": "Recomendaciones de Carrera",
+    "skillGap": "Análisis de Brecha de Habilidades",
+    "learningPath": "Ruta de Aprendizaje Sugerida"
   },
   "assessment": {
-    "title": "Evaluación de habilidades",
-    "subtitle": "Evalúa tus habilidades actuales y descubre áreas de crecimiento",
-    "startAssessment": "Iniciar evaluación",
-    "question": "Pregunta {{number}} de {{total}}",
-    "next": "Siguiente pregunta",
-    "previous": "Pregunta anterior", 
-    "submit": "Enviar evaluación",
-    "results": "Resultados de la evaluación",
-    "score": "Tu puntuación"
+    "title": "Evaluación de Habilidades",
+    "subtitle": "Evalúa tus habilidades actuales",
+    "startAssessment": "Iniciar Evaluación",
+    "question": "Pregunta {{number}} / {{total}}",
+    "next": "Siguiente Pregunta",
+    "previous": "Pregunta Anterior",
+    "submit": "Enviar Evaluación",
+    "results": "Resultados de la Evaluación",
+    "score": "Tu Puntuación"
   },
   "chat": {
-    "title": "Consejero profesional IA",
+    "title": "Asesor de Carrera IA",
     "subtitle": "Obtén orientación profesional personalizada",
     "placeholder": "Pregúntame sobre carreras, habilidades o educación...",
     "send": "Enviar",
-    "typing": "La IA está pensando...",
-    "error": "Lo siento, no pude procesar eso. Por favor, inténtalo de nuevo."
+    "typing": "IA está pensando...",
+    "thinking": "🤔 Pensando...",
+    "error": "Lo siento, no pude procesar eso. Por favor, inténtalo de nuevo.",
+    "welcome": "¡Hola! Soy tu asistente de carrera. ¡Pregúntame cualquier cosa sobre tu viaje profesional!",
+    "backend_error": "⚠️ Lo siento, no puedo conectarme al backend de IA en este momento."
   },
   "colleges": {
-    "title": "Buscador de universidades",
+    "title": "Buscador de Universidades",
     "subtitle": "Encuentra la institución educativa perfecta",
     "searchPlaceholder": "Buscar universidades...",
     "filters": {
       "location": "Ubicación",
-      "type": "Tipo de universidad",
-      "rating": "Calificación mínima", 
-      "fees": "Rango de tarifas"
+      "type": "Tipo de Universidad",
+      "rating": "Calificación Mínima",
+      "fees": "Rango de Tarifas"
     }
   },
   "learning": {
-    "title": "Rutas de aprendizaje",
-    "subtitle": "Aprendizaje estructurado para tus objetivos profesionales",
-    "createPath": "Crear ruta de aprendizaje",
-    "myPaths": "Mis rutas de aprendizaje",
+    "title": "Rutas de Aprendizaje",
+    "subtitle": "Aprendizaje estructurado para tus metas profesionales",
+    "createPath": "Crear Ruta de Aprendizaje",
+    "myPaths": "Mis Rutas de Aprendizaje",
     "progress": "Progreso",
     "completed": "Completado",
-    "inProgress": "En progreso",
-    "notStarted": "No iniciado"
+    "inProgress": "En Progreso",
+    "notStarted": "No Iniciado"
   },
   "mentor": {
-    "title": "Encontrar mentores",
+    "title": "Encontrar Mentores",
     "subtitle": "Conecta con expertos de la industria",
-    "book": "Reservar sesión",
+    "book": "Reservar Sesión",
     "available": "Disponible",
     "rating": "Calificación",
     "experience": "{{years}} años de experiencia",
     "specialty": "Especialidades"
   },
   "connection": {
-    "status": "Estado de conexión",
-    "online": "En línea",
-    "offline": "Desconectado", 
+    "status": "Estado de Conexión",
+    "online": "En Línea",
+    "offline": "Desconectado",
     "springboot": "Spring Boot",
     "pythonai": "Python IA",
     "refresh": "Actualizar"
   },
   "landing": {
     "hero": {
-      "title": "Forma tu futuro con orientación profesional impulsada por IA",
-      "subtitle": "Descubre tu carrera profesional soñada con recomendaciones personalizadas, evaluaciones de habilidades y mentoría experta.",
-      "getStarted": "Comenzar gratis",
-      "learnMore": "Saber más"
+      "title": "Domina la Programación con",
+      "highlight": "Misiones Impulsadas por IA",
+      "subtitle": "Conecta tu GitHub. Analizamos tu código, encontramos brechas y generamos misiones de programación personalizadas para ayudarte a ser un mejor desarrollador.",
+      "cta": "Iniciar Análisis"
     },
-    "features": {
-      "title": "¿Por qué elegir Kodra.ai?",
-      "ai": {
-        "title": "Análisis impulsado por IA",
-        "description": "Algoritmos avanzados analizan tus habilidades, intereses y objetivos para proporcionar recomendaciones profesionales personalizadas."
+    "feature": {
+      "analysis": {
+        "title": "Análisis de Código Profundo",
+        "desc": "Comentarios instantáneos sobre vulnerabilidades de seguridad y problemas de rendimiento."
       },
-      "assessment": {
-        "title": "Evaluaciones integrales",
-        "description": "Realiza evaluaciones detalladas para entender tus fortalezas, debilidades y compatibilidad profesional."
+      "missions": {
+        "title": "Misiones Gamificadas",
+        "desc": "Convierte tus problemas de código en misiones de aprendizaje interactivas."
       },
-      "learning": {
-        "title": "Aprendizaje personalizado",
-        "description": "Obtén rutas de aprendizaje y recursos personalizados para desarrollar habilidades para tu carrera objetivo."
+      "skills": {
+        "title": "Detección de Brecha de Habilidades",
+        "desc": "La IA analiza tus patrones de programación para identificar exactamente qué necesitas aprender a continuación."
       },
-      "mentorship": {
-        "title": "Mentoría experta",
-        "description": "Conecta con profesionales de la industria y obtén orientación de mentores experimentados."
+      "mentor": {
+        "title": "Programador de Pares IA",
+        "desc": "Obtén orientación en tiempo real de tu mentor personal de IA mientras programas."
+      },
+      "health": {
+        "title": "Tablero de Salud del Repo",
+        "desc": "Visualiza la salud de tu base de código con gráficos intuitivos."
+      },
+      "career": {
+        "title": "Preparación Profesional",
+        "desc": "Construye una cartera para mostrar tus habilidades de ingeniería."
       }
     },
+    "features": {
+      "title": "¿Por qué Kodra.ai?",
+      "subtitle": "La forma más inteligente de mejorar tus habilidades"
+    },
     "stats": {
-      "users": "Usuarios activos",
-      "careers": "Carreras profesionales", 
-      "success": "Tasa de éxito",
-      "mentors": "Mentores expertos"
+      "lines": "Líneas Analizadas",
+      "bugs": "Errores Corregidos",
+      "devs": "Desarrolladores Ayudados",
+      "repos": "Repos Conectados"
+    },
+    "companies": {
+      "title": "Tecnologías Compatibles"
+    },
+    "testimonials": {
+      "title": "Historias de Desarrolladores",
+      "subtitle": "Mira cómo otros están dominando su oficio"
+    },
+    "cta": {
+      "title": "¿Listo para Subir de Nivel?",
+      "subtitle": "Conecta tu repositorio de GitHub y obtén tu primera misión hoy.",
+      "button": "Empezar a Programar",
+      "notice": "Gratis para Código Abierto • Análisis Instantáneo • Integración Segura"
     }
   },
   "search": {
     "placeholder": "Buscar carreras, habilidades, universidades...",
-    "results": "Resultados de búsqueda",
+    "results": "Resultados de Búsqueda",
     "noResults": "No se encontraron resultados",
     "categories": {
       "all": "Todos",
       "careers": "Carreras",
       "skills": "Habilidades",
-      "colleges": "Universidades", 
+      "colleges": "Universidades",
       "mentors": "Mentores"
     }
   },
   "language": {
-    "select": "Seleccionar idioma",
-    "current": "Idioma actual",
-    "auto": "Detectar automáticamente por ubicación"
+    "select": "Seleccionar Idioma",
+    "current": "Idioma Actual",
+    "auto": "Detectar automáticamente desde la ubicación"
+  },
+  "dashboard": {
+    "welcome": "¡Bienvenido, {{name}}!",
+    "title": "Tablero de Salud del Repo",
+    "connect_repo": "Conecta un repositorio para ver tus estadísticas de análisis de código.",
+    "analysis_intro": "Aquí está el análisis de tus repositorios.",
+    "security_rating": "Calificación de Seguridad",
+    "no_critical_vulns": "No se encontraron vulnerabilidades críticas",
+    "code_quality": "Calidad del Código",
+    "maintainability_high": "El índice de mantenibilidad es alto",
+    "open_missions": "Misiones Abiertas",
+    "pending_tasks": "Tareas pendientes"
+  },
+  "missions": {
+    "title": "Misiones",
+    "no_missions": "No hay misiones disponibles.",
+    "select_mission": "Selecciona una misión para ver los detalles."
+  },
+  "references": {
+    "title": "Centro de Conocimiento",
+    "subtitle": "Recursos para dominar tus habilidades de ingeniería.",
+    "articles": "Artículos y Conceptos",
+    "platforms": "Plataformas de Aprendizaje",
+    "topics": {
+      "dsa": "Estructuras de Datos y Algoritmos (DSA)",
+      "dsa_desc": "Domina los bloques de construcción fundamentales del software eficiente.",
+      "dbms": "Sistemas de Gestión de Bases de Datos (DBMS)",
+      "dbms_desc": "Aprende a almacenar y gestionar datos.",
+      "oops": "Programación Orientada a Objetos (Java)",
+      "oops_desc": "Comprende clases, objetos y herencia.",
+      "os": "Sistemas Operativos",
+      "os_desc": "Explora el software que gestiona el hardware y los recursos de la computadora.",
+      "cn": "Redes de Computadoras",
+      "cn_desc": "Sumérgete en el mundo de las redes y protocolos.",
+      "ml": "Aprendizaje Automático",
+      "ml_desc": "Aprende sobre algoritmos que dan a las computadoras la capacidad de aprender."
+    }
+  },
+  "profile_details": {
+    "basic_details": "Detalles Básicos",
+    "motivation": "Motivación",
+    "agreements": "Acuerdos y Estado",
+    "edit": "Editar Perfil",
+    "refresh": "Actualizar",
+    "saved_careers": "Carreras Guardadas",
+    "delete": "Eliminar",
+    "yes": "Sí",
+    "no": "No",
+    "fields": {
+      "name": "Nombre",
+      "email": "Correo",
+      "city": "Ciudad",
+      "state": "Estado",
+      "educationLevel": "Nivel Educativo",
+      "institution": "Institución",
+      "stream": "Rama",
+      "phone": "Teléfono",
+      "age": "Edad",
+      "workPreference": "Preferencia de Trabajo",
+      "careerGoal": "Meta Profesional",
+      "aspirations": "Aspiraciones"
+    },
+    "agreement_labels": {
+      "terms": "Aceptó los Términos",
+      "privacy": "Aceptó la Política de Privacidad",
+      "onboarding": "Incorporación Completada",
+      "profile": "Perfil Completado"
+    },
+    "github": {
+      "connect": "Conectar GitHub",
+      "connected": "GitHub Conectado"
+    },
+    "learning_path": {
+      "title": "Ruta de Aprendizaje y Progreso",
+      "step": "Paso",
+      "show_all": "Mostrar todas las carreras"
+    },
+    "search_ui": {
+      "quick_actions": "Acciones Rápidas",
+      "searching": "Buscando...",
+      "no_results_title": "No se encontraron resultados",
+      "no_results_desc": "Prueba un término diferente",
+      "results_header": "Resultados de Búsqueda"
+    }
   }
 }

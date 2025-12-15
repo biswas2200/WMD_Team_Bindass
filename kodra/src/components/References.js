@@ -1,185 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
+import { useTranslation } from 'react-i18next';
 import "./../global.css"; // Ensure we have access to global styles
-
-const referencesData = [
-  {
-    id: "dsa",
-    title: "Data Structures & Algorithms (DSA)",
-    icon: "🧩",
-    description:
-      "Master the fundamental building blocks of efficient software.",
-    articles: [
-      {
-        title: "GeeksforGeeks - DSA Tutorials",
-        url: "https://www.geeksforgeeks.org/data-structures/",
-      },
-      { title: "Programiz - DSA Guide", url: "https://www.programiz.com/dsa" },
-      { title: "Big-O Cheatsheet", url: "https://www.bigocheatsheet.com/" },
-    ],
-    platforms: [
-      {
-        title: "Coursera - Algorithms Specialization",
-        url: "https://www.coursera.org/specializations/algorithms",
-      },
-      {
-        title: "EdX - Algorithms & Data Structures",
-        url: "https://www.edx.org/learn/algorithms",
-      },
-      { title: "LeetCode - Practice Problems", url: "https://leetcode.com/" },
-    ],
-  },
-  {
-    id: "dbms",
-    title: "Database Management Systems (DBMS)",
-    icon: "💾",
-    description: "Learn how to store, manipulate, and define data.",
-    articles: [
-      {
-        title: "Guru99 - DBMS Tutorial",
-        url: "https://www.guru99.com/dbms-tutorial.html",
-      },
-      {
-        title: "Javatpoint - DBMS Tutorial",
-        url: "https://www.javatpoint.com/dbms-tutorial",
-      },
-      {
-        title: "W3Schools - SQL Tutorial",
-        url: "https://www.w3schools.com/sql/",
-      },
-    ],
-    platforms: [
-      {
-        title: "Coursera - Database Management",
-        url: "https://www.coursera.org/learn/database-management",
-      },
-      {
-        title: "Udemy - SQL Bootcamp",
-        url: "https://www.udemy.com/topic/sql/",
-      },
-      { title: "MongoDB University", url: "https://learn.mongodb.com/" },
-    ],
-  },
-  {
-    id: "oops",
-    title: "Object-Oriented Programming (Java)",
-    icon: "☕",
-    description: "Understand classes, objects, inheritance, and polymorphism.",
-    articles: [
-      {
-        title: "Oracle Java Documentation",
-        url: "https://docs.oracle.com/javase/tutorial/java/concepts/",
-      },
-      {
-        title: "Baeldung - Java OOP",
-        url: "https://www.baeldung.com/java-oop",
-      },
-      {
-        title: "GeeksforGeeks - Java OOPs",
-        url: "https://www.geeksforgeeks.org/object-oriented-programming-oops-concept-in-java/",
-      },
-    ],
-    platforms: [
-      {
-        title: "Codecademy - Learn Java",
-        url: "https://www.codecademy.com/learn/learn-java",
-      },
-      {
-        title: "Udemy - Java Programming Masterclass",
-        url: "https://www.udemy.com/course/java-the-complete-java-developer-course/",
-      },
-      {
-        title: "Hyperskill (JetBrains Academy)",
-        url: "https://hyperskill.org/",
-      },
-    ],
-  },
-  {
-    id: "os",
-    title: "Operating Systems",
-    icon: "🖥️",
-    description:
-      "Explore the software that manages computer hardware and resources.",
-    articles: [
-      {
-        title: "GeeksforGeeks - OS Tutorials",
-        url: "https://www.geeksforgeeks.org/operating-systems/",
-      },
-      {
-        title: "TutorialsPoint - Operating System",
-        url: "https://www.tutorialspoint.com/operating_system/index.htm",
-      },
-      { title: "OSDev Wiki", url: "https://wiki.osdev.org/Main_Page" },
-    ],
-    platforms: [
-      {
-        title: "Coursera - Operating Systems",
-        url: "https://www.coursera.org/learn/os-power-user",
-      },
-      {
-        title: "Udacity - Intro to OS",
-        url: "https://www.udacity.com/course/introduction-to-operating-systems--ud923",
-      },
-    ],
-  },
-  {
-    id: "cn",
-    title: "Computer Networking",
-    icon: "🌐",
-    description:
-      "Dive into the world of networks, protocols, and communication.",
-    articles: [
-      {
-        title: "GeeksforGeeks - Computer Network",
-        url: "https://www.geeksforgeeks.org/computer-network-tutorials/",
-      },
-      {
-        title: "Cisco Networking Basics",
-        url: "https://www.cisco.com/c/en/us/solutions/small-business/resource-center/networking/networking-basics.html",
-      },
-      {
-        title: "Cloudflare - What is the Internet?",
-        url: "https://www.cloudflare.com/learning/network-layer/what-is-the-internet/",
-      },
-    ],
-    platforms: [
-      {
-        title: "Coursera - Computer Networking",
-        url: "https://www.coursera.org/specializations/computer-communications",
-      },
-      {
-        title: "EdX - Networking Courses",
-        url: "https://www.edx.org/learn/computer-networking",
-      },
-      { title: "Cisco Networking Academy", url: "https://www.netacad.com/" },
-    ],
-  },
-  {
-    id: "ml",
-    title: "Machine Learning",
-    icon: "🤖",
-    description:
-      "Learn about algorithms that give computers the ability to learn.",
-    articles: [
-      { title: "Towards Data Science", url: "https://towardsdatascience.com/" },
-      {
-        title: "Machine Learning Mastery",
-        url: "https://machinelearningmastery.com/",
-      },
-      {
-        title: "Google AI - ML Crash Course",
-        url: "https://developers.google.com/machine-learning/crash-course",
-      },
-    ],
-    platforms: [
-      {
-        title: "Coursera - Machine Learning (Andrew Ng)",
-        url: "https://www.coursera.org/specializations/machine-learning-introduction",
-      },
-      { title: "Kaggle - Learn", url: "https://www.kaggle.com/learn" },
-      { title: "Fast.ai", url: "https://www.fast.ai/" },
-    ],
-  },
-];
 
 const ReferenceCard = ({ data, isOpen, toggle }) => {
   return (
@@ -257,7 +78,7 @@ const ReferenceCard = ({ data, isOpen, toggle }) => {
                     gap: "0.5rem",
                   }}
                 >
-                  📄 Articles & Concepts
+                  📄 {data.articleTitle}
                 </h4>
                 <div
                   style={{
@@ -302,7 +123,7 @@ const ReferenceCard = ({ data, isOpen, toggle }) => {
                     gap: "0.5rem",
                   }}
                 >
-                  🎓 Learning Platforms
+                  🎓 {data.platformTitle}
                 </h4>
                 <div
                   style={{
@@ -339,11 +160,196 @@ const ReferenceCard = ({ data, isOpen, toggle }) => {
 };
 
 export default function References() {
-  // State to track which accordion item is open.
-  // Using an ID ensures only one is open at a time (optional, can also use an array/set for multiple).
-  // Let's allow multiple to be open for now as it's often more user-friendly, or just one?
-  // User asked for "slide down", let's keep it simple with independently toggleable items.
+  const { t } = useTranslation();
   const [openItems, setOpenItems] = useState({});
+
+  const referencesData = useMemo(() => [
+    {
+      id: "dsa",
+      title: t('references.topics.dsa'),
+      icon: "🧩",
+      description: t('references.topics.dsa_desc'),
+      articleTitle: t('references.articles'),
+      platformTitle: t('references.platforms'),
+      articles: [
+        {
+          title: "GeeksforGeeks - DSA Tutorials",
+          url: "https://www.geeksforgeeks.org/data-structures/",
+        },
+        { title: "Programiz - DSA Guide", url: "https://www.programiz.com/dsa" },
+        { title: "Big-O Cheatsheet", url: "https://www.bigocheatsheet.com/" },
+      ],
+      platforms: [
+        {
+          title: "Coursera - Algorithms Specialization",
+          url: "https://www.coursera.org/specializations/algorithms",
+        },
+        {
+          title: "EdX - Algorithms & Data Structures",
+          url: "https://www.edx.org/learn/algorithms",
+        },
+        { title: "LeetCode - Practice Problems", url: "https://leetcode.com/" },
+      ],
+    },
+    {
+      id: "dbms",
+      title: t('references.topics.dbms'),
+      icon: "💾",
+      description: t('references.topics.dbms_desc'),
+      articleTitle: t('references.articles'),
+      platformTitle: t('references.platforms'),
+      articles: [
+        {
+          title: "Guru99 - DBMS Tutorial",
+          url: "https://www.guru99.com/dbms-tutorial.html",
+        },
+        {
+          title: "Javatpoint - DBMS Tutorial",
+          url: "https://www.javatpoint.com/dbms-tutorial",
+        },
+        {
+          title: "W3Schools - SQL Tutorial",
+          url: "https://www.w3schools.com/sql/",
+        },
+      ],
+      platforms: [
+        {
+          title: "Coursera - Database Management",
+          url: "https://www.coursera.org/learn/database-management",
+        },
+        {
+          title: "Udemy - SQL Bootcamp",
+          url: "https://www.udemy.com/topic/sql/",
+        },
+        { title: "MongoDB University", url: "https://learn.mongodb.com/" },
+      ],
+    },
+    {
+      id: "oops",
+      title: t('references.topics.oops'),
+      icon: "☕",
+      description: t('references.topics.oops_desc'),
+      articleTitle: t('references.articles'),
+      platformTitle: t('references.platforms'),
+      articles: [
+        {
+          title: "Oracle Java Documentation",
+          url: "https://docs.oracle.com/javase/tutorial/java/concepts/",
+        },
+        {
+          title: "Baeldung - Java OOP",
+          url: "https://www.baeldung.com/java-oop",
+        },
+        {
+          title: "GeeksforGeeks - Java OOPs",
+          url: "https://www.geeksforgeeks.org/object-oriented-programming-oops-concept-in-java/",
+        },
+      ],
+      platforms: [
+        {
+          title: "Codecademy - Learn Java",
+          url: "https://www.codecademy.com/learn/learn-java",
+        },
+        {
+          title: "Udemy - Java Programming Masterclass",
+          url: "https://www.udemy.com/course/java-the-complete-java-developer-course/",
+        },
+        {
+          title: "Hyperskill (JetBrains Academy)",
+          url: "https://hyperskill.org/",
+        },
+      ],
+    },
+    {
+      id: "os",
+      title: t('references.topics.os'),
+      icon: "🖥️",
+      description: t('references.topics.os_desc'),
+      articleTitle: t('references.articles'),
+      platformTitle: t('references.platforms'),
+      articles: [
+        {
+          title: "GeeksforGeeks - OS Tutorials",
+          url: "https://www.geeksforgeeks.org/operating-systems/",
+        },
+        {
+          title: "TutorialsPoint - Operating System",
+          url: "https://www.tutorialspoint.com/operating_system/index.htm",
+        },
+        { title: "OSDev Wiki", url: "https://wiki.osdev.org/Main_Page" },
+      ],
+      platforms: [
+        {
+          title: "Coursera - Operating Systems",
+          url: "https://www.coursera.org/learn/os-power-user",
+        },
+        {
+          title: "Udacity - Intro to OS",
+          url: "https://www.udacity.com/course/introduction-to-operating-systems--ud923",
+        },
+      ],
+    },
+    {
+      id: "cn",
+      title: t('references.topics.cn'),
+      icon: "🌐",
+      description: t('references.topics.cn_desc'),
+      articleTitle: t('references.articles'),
+      platformTitle: t('references.platforms'),
+      articles: [
+        {
+          title: "GeeksforGeeks - Computer Network",
+          url: "https://www.geeksforgeeks.org/computer-network-tutorials/",
+        },
+        {
+          title: "Cisco Networking Basics",
+          url: "https://www.cisco.com/c/en/us/solutions/small-business/resource-center/networking/networking-basics.html",
+        },
+        {
+          title: "Cloudflare - What is the Internet?",
+          url: "https://www.cloudflare.com/learning/network-layer/what-is-the-internet/",
+        },
+      ],
+      platforms: [
+        {
+          title: "Coursera - Computer Networking",
+          url: "https://www.coursera.org/specializations/computer-communications",
+        },
+        {
+          title: "EdX - Networking Courses",
+          url: "https://www.edx.org/learn/computer-networking",
+        },
+        { title: "Cisco Networking Academy", url: "https://www.netacad.com/" },
+      ],
+    },
+    {
+      id: "ml",
+      title: t('references.topics.ml'),
+      icon: "🤖",
+      description: t('references.topics.ml_desc'),
+      articleTitle: t('references.articles'),
+      platformTitle: t('references.platforms'),
+      articles: [
+        { title: "Towards Data Science", url: "https://towardsdatascience.com/" },
+        {
+          title: "Machine Learning Mastery",
+          url: "https://machinelearningmastery.com/",
+        },
+        {
+          title: "Google AI - ML Crash Course",
+          url: "https://developers.google.com/machine-learning/crash-course",
+        },
+      ],
+      platforms: [
+        {
+          title: "Coursera - Machine Learning (Andrew Ng)",
+          url: "https://www.coursera.org/specializations/machine-learning-introduction",
+        },
+        { title: "Kaggle - Learn", url: "https://www.kaggle.com/learn" },
+        { title: "Fast.ai", url: "https://www.fast.ai/" },
+      ],
+    },
+  ], [t]);
 
   const toggleItem = (id) => {
     setOpenItems((prev) => ({
@@ -368,10 +374,10 @@ export default function References() {
             marginBottom: "1rem",
           }}
         >
-          Knowledge Hub
+          {t('references.title')}
         </h1>
         <p className="ka-text-xl ka-text-muted">
-          Curated resources to master your engineering skills.
+          {t('references.subtitle')}
         </p>
       </div>
 

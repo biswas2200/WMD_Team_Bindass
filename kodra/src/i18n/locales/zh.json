@@ -16,34 +16,326 @@
     "submit": "提交",
     "refresh": "刷新"
   },
+  "footer": {
+    "tagline": "通过AI驱动的见解和游戏化任务，助力开发者编写更好的代码。",
+    "features": "平台",
+    "resources": "资源",
+    "copyright": "为开发者❤️构建。"
+  },
   "navigation": {
     "profile": "个人资料",
-    "career": "分析",
-    "recommendations": "职业",
-    "learning": "学习",
-    "assessment": "评估",
+    "dashboard": "仪表板",
+    "missions": "任务",
+    "analysis": "代码分析",
+    "references": "参考资料",
     "chat": "AI聊天",
     "colleges": "大学",
     "mentor": "导师",
-    "logout": "登出"
+    "blog": "工程博客",
+    "logout": "注销"
   },
   "auth": {
     "login": {
       "title": "欢迎回来",
-      "subtitle": "登录开始您的职业之旅",
-      "email": "邮箱地址",
+      "subtitle": "登录以开始您的职业旅程",
+      "email": "电子邮件地址",
       "password": "密码",
       "signin": "登录",
-      "signingin": "登录中...",
-      "noAccount": "没有账户？",
+      "signingin": "正在登录...",
+      "noAccount": "没有帐户？",
       "signup": "在此注册",
-      "welcome": "欢迎来到CareerConnect",
-      "tagline": "您更美好未来的旅程从这里开始。"
+      "welcome": "欢迎来到Kodra.ai",
+      "tagline": "您通往更美好未来的旅程从这里开始。"
+    },
+    "register": {
+      "title": "创建帐户",
+      "subtitle": "注册以发现您的开发者之路",
+      "header_personal": "个人信息",
+      "header_location": "位置",
+      "header_education": "教育详情",
+      "header_security": "帐户安全",
+      "name": "全名",
+      "full_name_placeholder": "全名 *",
+      "email": "电子邮件地址",
+      "email_placeholder": "电子邮件地址 *",
+      "phone": "手机号码",
+      "phone_placeholder": "手机号码（10位数字） *",
+      "age": "年龄",
+      "age_placeholder": "年龄 *",
+      "city": "城市",
+      "city_placeholder": "城市 *",
+      "state": "州/省",
+      "select_state": "选择州/省 *",
+      "education_level": "教育水平",
+      "select_education": "选择教育水平 *",
+      "institution": "机构名称",
+      "institution_placeholder": "机构名称 *",
+      "stream": "专业",
+      "stream_placeholder": "专业/研究领域 *",
+      "password": "密码",
+      "password_placeholder": "密码（至少8个字符） *",
+      "confirmPassword": "确认密码",
+      "confirm_password_placeholder": "确认密码 *",
+      "agree_terms": "我同意服务条款",
+      "agree_privacy": "我同意隐私政策",
+      "signup": "创建学生帐户",
+      "signingup": "正在创建帐户...",
+      "hasAccount": "已有帐户？",
+      "signin": "登录"
+    }
+  },
+  "onboarding": {
+    "title": "让我们了解您",
+    "subtitle": "帮助我们个性化您的职业旅程",
+    "personalInfo": "个人信息",
+    "name": "全名",
+    "age": "年龄",
+    "location": "位置",
+    "selectLocation": "选择您的位置",
+    "education": "教育",
+    "currentLevel": "当前教育水平",
+    "institution": "机构/学校名称",
+    "interests": "兴趣与目标",
+    "careerInterests": "职业兴趣",
+    "goals": "您的目标",
+    "complete": "完成个人资料",
+    "completing": "正在设置您的个人资料..."
+  },
+  "profile": {
+    "title": "您的个人资料",
+    "personalInfo": "个人信息",
+    "education": "教育",
+    "interests": "兴趣",
+    "goals": "目标",
+    "editProfile": "编辑个人资料",
+    "saveChanges": "保存更改",
+    "lastUpdated": "最后更新"
+  },
+  "career": {
+    "title": "职业分析",
+    "subtitle": "发现符合您技能和兴趣的工作",
+    "startAnalysis": "开始分析",
+    "analyzing": "正在分析您的个人资料...",
+    "recommendations": "职业推荐",
+    "skillGap": "技能差距分析",
+    "learningPath": "建议学习路径"
+  },
+  "assessment": {
+    "title": "技能评估",
+    "subtitle": "评估您当前的技能",
+    "startAssessment": "开始评估",
+    "question": "问题 {{number}} / {{total}}",
+    "next": "下一题",
+    "previous": "上一题",
+    "submit": "提交评估",
+    "results": "评估结果",
+    "score": "您的得分"
+  },
+  "chat": {
+    "title": "AI职业顾问",
+    "subtitle": "获取个性化职业指导",
+    "placeholder": "关于职业、技能或教育的问题请问我...",
+    "send": "发送",
+    "typing": "AI正在思考...",
+    "thinking": "🤔 思考中...",
+    "error": "抱歉，我无法处理该请求。请重试。",
+    "welcome": "嗨！我是您的职业助手。关于您的职业旅程，尽管问我！",
+    "backend_error": "⚠️ 抱歉，我现在无法连接到AI后端。"
+  },
+  "colleges": {
+    "title": "大学查找器",
+    "subtitle": "找到完美的教育机构",
+    "searchPlaceholder": "搜索大学...",
+    "filters": {
+      "location": "位置",
+      "type": "大学类型",
+      "rating": "最低评分",
+      "fees": "费用范围"
+    }
+  },
+  "learning": {
+    "title": "学习路径",
+    "subtitle": "为您的职业目标构建结构化学习",
+    "createPath": "创建学习路径",
+    "myPaths": "我的学习路径",
+    "progress": "进度",
+    "completed": "已完成",
+    "inProgress": "进行中",
+    "notStarted": "未开始"
+  },
+  "mentor": {
+    "title": "寻找导师",
+    "subtitle": "与行业专家联系",
+    "book": "预订会议",
+    "available": "可用",
+    "rating": "评分",
+    "experience": "{{years}} 年经验",
+    "specialty": "专长"
+  },
+  "connection": {
+    "status": "连接状态",
+    "online": "在线",
+    "offline": "离线",
+    "springboot": "Spring Boot",
+    "pythonai": "Python AI",
+    "refresh": "刷新"
+  },
+  "landing": {
+    "hero": {
+      "title": "精通编程",
+      "highlight": "通过AI驱动的任务",
+      "subtitle": "连接您的GitHub。我们会分析您的代码，发现差距，并生成个性化的编程任务，帮助您成为更好的开发者。",
+      "cta": "开始分析"
+    },
+    "feature": {
+      "analysis": {
+        "title": "深度代码分析",
+        "desc": "关于安全漏洞和性能瓶颈的即时反馈。"
+      },
+      "missions": {
+        "title": "游戏化任务",
+        "desc": "将您的代码问题转化为互动学习任务。"
+      },
+      "skills": {
+        "title": "技能差距识别",
+        "desc": "AI分析您的编程模式，以确定您接下来需要学习什么。"
+      },
+      "mentor": {
+        "title": "AI结对程序员",
+        "desc": "在编程时从您的个人AI导师那里获取实时指导。"
+      },
+      "health": {
+        "title": "仓库健康仪表板",
+        "desc": "通过直观的图表可视化您的代码库健康状况。"
+      },
+      "career": {
+        "title": "职业准备",
+        "desc": "建立一个作品集来展示您的工程技能。"
+      }
+    },
+    "features": {
+      "title": "为什么选择Kodra.ai？",
+      "subtitle": "提升您技能的最明智方式"
+    },
+    "stats": {
+      "lines": "分析行数",
+      "bugs": "修复的Bug",
+      "devs": "帮助的开发者",
+      "repos": "连接的仓库"
+    },
+    "companies": {
+      "title": "支持的技术"
+    },
+    "testimonials": {
+      "title": "开发者故事",
+      "subtitle": "看看其他人如何精通他们的技艺"
+    },
+    "cta": {
+      "title": "准备好升级了吗？",
+      "subtitle": "立即连接您的GitHub仓库并获取您的第一个任务。",
+      "button": "开始编程",
+      "notice": "开源免费 • 即时分析 • 安全集成"
+    }
+  },
+  "search": {
+    "placeholder": "搜索职业、技能、大学...",
+    "results": "搜索结果",
+    "noResults": "未找到结果",
+    "categories": {
+      "all": "全部",
+      "careers": "职业",
+      "skills": "技能",
+      "colleges": "大学",
+      "mentors": "导师"
     }
   },
   "language": {
     "select": "选择语言",
     "current": "当前语言",
-    "auto": "根据位置自动检测"
+    "auto": "从位置自动检测"
+  },
+  "dashboard": {
+    "welcome": "欢迎，{{name}}！",
+    "title": "仓库健康仪表板",
+    "connect_repo": "连接一个仓库以查看您的代码分析统计信息。",
+    "analysis_intro": "这是您的仓库分析。",
+    "security_rating": "安全评分",
+    "no_critical_vulns": "未发现严重漏洞",
+    "code_quality": "代码质量",
+    "maintainability_high": "可维护性指数高",
+    "open_missions": "开放任务",
+    "pending_tasks": "待处理任务"
+  },
+  "missions": {
+    "title": "任务",
+    "no_missions": "没有可用任务。",
+    "select_mission": "选择一个任务以查看详情。"
+  },
+  "references": {
+    "title": "知识中心",
+    "subtitle": "精通工程技能的资源。",
+    "articles": "文章与概念",
+    "platforms": "学习平台",
+    "topics": {
+      "dsa": "数据结构与算法 (DSA)",
+      "dsa_desc": "掌握高效软件的基础构建模块。",
+      "dbms": "数据库管理系统 (DBMS)",
+      "dbms_desc": "学习如何存储和管理数据。",
+      "oops": "面向对象编程 (Java)",
+      "oops_desc": "理解类、对象和继承。",
+      "os": "操作系统",
+      "os_desc": "探索管理计算机硬件和资源的软件。",
+      "cn": "计算机网络",
+      "cn_desc": "深入网络和协议的世界。",
+      "ml": "机器学习",
+      "ml_desc": "学习赋予计算机学习能力的算法。"
+    }
+  },
+  "profile_details": {
+    "basic_details": "基本详情",
+    "motivation": "动机",
+    "agreements": "协议与状态",
+    "edit": "编辑个人资料",
+    "refresh": "刷新",
+    "saved_careers": "保存的职业",
+    "delete": "删除",
+    "yes": "是",
+    "no": "否",
+    "fields": {
+      "name": "姓名",
+      "email": "电子邮件",
+      "city": "城市",
+      "state": "州/省",
+      "educationLevel": "教育水平",
+      "institution": "机构",
+      "stream": "专业",
+      "phone": "电话",
+      "age": "年龄",
+      "workPreference": "工作偏好",
+      "careerGoal": "职业目标",
+      "aspirations": "愿望"
+    },
+    "agreement_labels": {
+      "terms": "已同意条款",
+      "privacy": "已同意隐私政策",
+      "onboarding": "入职已完成",
+      "profile": "个人资料已完成"
+    },
+    "github": {
+      "connect": "连接GitHub",
+      "connected": "GitHub已连接"
+    },
+    "learning_path": {
+      "title": "学习路径与进度",
+      "step": "步骤",
+      "show_all": "显示所有职业"
+    },
+    "search_ui": {
+      "quick_actions": "快速操作",
+      "searching": "搜索中...",
+      "no_results_title": "未找到结果",
+      "no_results_desc": "尝试不同的关键词",
+      "results_header": "搜索结果"
+    }
   }
 }

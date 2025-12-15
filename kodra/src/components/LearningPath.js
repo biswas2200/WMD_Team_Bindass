@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { careers } from "./careersData";
 
 export default function LearningPath({ profile, selectedCareer, setSelectedCareer }) {
+  const { t } = useTranslation();
   const [expanded, setExpanded] = useState({});
 
   const toggleCareer = id => setExpanded(e => ({ ...e, [id]: !e[id] }));
@@ -16,7 +18,7 @@ export default function LearningPath({ profile, selectedCareer, setSelectedCaree
   return (
     <div style={{ minHeight: "80vh", padding: 20 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <h2 style={{ color: "#0077b6" }}>Learning Path & Progress</h2>
+        <h2 style={{ color: "#0077b6" }}>{t('learning_path.title', 'Learning Path & Progress')}</h2>
         <button
           onClick={handleRefresh}
           style={{
@@ -26,7 +28,7 @@ export default function LearningPath({ profile, selectedCareer, setSelectedCaree
             fontSize: 20,
             color: "#0077b6"
           }}
-          title="Show all careers"
+          title={t('learning_path.show_all', 'Show all careers')}
         >
           🔄
         </button>
@@ -54,7 +56,7 @@ export default function LearningPath({ profile, selectedCareer, setSelectedCaree
               <div style={{ marginTop: 12 }}>
                 {c.learningPath.map((step, idx) => (
                   <div key={idx} style={{ marginBottom: 10 }}>
-                    <strong>Step {idx + 1}: {step.step}</strong>
+                    <strong>{t('learning_path.step', 'Step')} {idx + 1}: {step.step}</strong>
                     <ul style={{ marginTop: 4, marginLeft: 16 }}>
                       {step.resources.map((r, ri) => (
                         <li key={ri}>
